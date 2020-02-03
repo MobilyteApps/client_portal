@@ -1,5 +1,5 @@
+import 'package:client_portal_app/src/controllers/ProjectLogController.dart';
 import "package:flutter/material.dart";
-import 'home.dart';
 
 class WelcomeScreen extends StatefulWidget {
   WelcomeScreen({Key key}) : super(key: key);
@@ -40,7 +40,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 onPressed: () {
                   // @todo check if logged in,  if not, navigate to the login screen, otherwise the home screen
                   Navigator.of(context).pushReplacement(
-                    new MaterialPageRoute(builder: (context) => HomeScreen(title: "Mosby Building Arts",)));
+                    new MaterialPageRoute(builder: (context) => ProjectLogController()));
                 },
               ),
             ),  

@@ -1,3 +1,4 @@
+import 'package:client_portal_app/src/controllers/LoginController.dart';
 import 'package:client_portal_app/src/models/UserModel.dart';
 import 'package:client_portal_app/src/widgets/MenuPrimary.dart';
 import '../widgets/MenuSecondary.dart';
@@ -12,10 +13,22 @@ class ProjectLogController extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<UserModel>(
       builder: (context, widget, model) {
-        Widget content = Text('this is the content');
+        Widget content = Column(
+          children: <Widget>[
+            Text('Hello ${model.username}, this is the content'),
+            FlatButton(
+              child: Text('sign out'),
+              onPressed: () async {
+                await model.logout();
+                Navigator.of(context).pushReplacement(new MaterialPageRoute(
+                    builder: (context) => LoginController()));
+              },
+            ),
+          ],
+        );
 
         return Scaffold(
-          body: Row(        
+          body: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               ScopedModel(
@@ -43,27 +56,29 @@ class ProjectLogController extends StatelessWidget {
                         "https://ashleyfurniture.scene7.com/is/image/AshleyFurniture/D583-25-02%284%29-00-59"),
               ),
               Expanded(
-                flex: 1, 
+                flex: 1,
                 child: Container(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,                    
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        height: 130,                        
-                        decoration: BoxDecoration(color: Color.fromRGBO(231, 231, 231, 1)),
+                        height: 130,
+                        decoration: BoxDecoration(
+                            color: Color.fromRGBO(231, 231, 231, 1)),
                         child: Container(
                           alignment: Alignment.centerLeft,
                           padding: EdgeInsets.only(left: 60),
-                          child: Image.asset('images/logo.png'), 
-                          constraints: BoxConstraints.expand(),                          
+                          child: Image.asset('images/logo.png'),
+                          constraints: BoxConstraints.expand(),
                         ),
                       ),
-                      Padding(child: content, padding: EdgeInsets.all(60),),                      
+                      Padding(
+                        child: content,
+                        padding: EdgeInsets.all(60),
+                      ),
                     ],
-                  ), 
-                  decoration: BoxDecoration(
-                    color: Colors.white
                   ),
+                  decoration: BoxDecoration(color: Colors.white),
                 ),
               ),
             ],

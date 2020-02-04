@@ -10,7 +10,9 @@ class AppController extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<UserModel>(
       builder: (context, widget, model) {
-        return model.isAuthenticated() ? ProjectLogController() : ProjectLogController();
+        return model.isAuthenticated()
+            ? ProjectLogController()
+            : LoginController();
       },
     );
   }

@@ -1,3 +1,4 @@
+import 'package:client_portal_app/src/models/ProjectModel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,7 @@ void main() async {
     Hive.init(appDocumentDirectory.path);
   }
   Hive.registerAdapter(UserModelAdapter());
+  Hive.registerAdapter(ProjectModelAdapter());
   const bool isProduction = bool.fromEnvironment('dart.vm.product');
   if (isProduction) {
     Config.setIsProduction();

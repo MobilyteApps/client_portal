@@ -1,9 +1,9 @@
+import 'package:client_portal_app/src/controllers/LoginController.dart';
+import 'package:client_portal_app/src/controllers/ProjectLogController.dart';
+import 'package:client_portal_app/src/controllers/ScheduleController.dart';
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
-import 'package:hive/hive.dart';
 
 import 'controllers/AppController.dart';
-import 'models/UserModel.dart';
 
 class AppMain extends StatefulWidget {
   @override
@@ -18,32 +18,17 @@ class _AppMainState extends State<AppMain> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          } else {
-            UserModel identity = Hive.box('identity').get(0);
-            return ScopedModel<UserModel>(
-              model: identity == null ? UserModel() : identity,
-              child: MaterialApp(
-                title: 'Client Portal',
-                theme: ThemeData(
-                  primarySwatch: Colors.blue,
-                ),
-                home: AppController(),
-              ),
-            );
-          }
-        } else {
-          return MaterialApp(
-            theme: ThemeData(primarySwatch: Colors.blue),
-            home: Text(''),
-          );
-        }
+    return MaterialApp(
+      title: 'Client Portal',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),    
+      initialRoute: '/',
+      routes: {
+        '/': (context) => AppController(controller: ProjectLogController(),),
+        '/login': (context) => LoginController(),
+        '/schedule': (context) => AppController(controller: ScheduleController(),),
       },
-      future: Hive.openBox('identity'),
     );
   }
 }

@@ -10,9 +10,7 @@ class MenuPrimary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Menu(
-      backgroundColor: Color.fromRGBO(0, 169, 209, 1),
-      items: [
+    return Menu(backgroundColor: Color.fromRGBO(0, 169, 209, 1), items: [
       ListTile(
         leading: Icon(
           Icons.library_books,
@@ -21,7 +19,10 @@ class MenuPrimary extends StatelessWidget {
         title: Text(
           'Project Log',
           style: textStyle,
-        ),
+        ),     
+        onTap: () {          
+          Navigator.of(context).pushReplacementNamed('/');
+        },   
       ),
       ListTile(
         leading: Icon(
@@ -32,6 +33,9 @@ class MenuPrimary extends StatelessWidget {
           'Schedule',
           style: textStyle,
         ),
+        onTap: () {          
+          Navigator.of(context).pushReplacementNamed('/schedule');
+        },
       ),
       ListTile(
         leading: Icon(

@@ -150,12 +150,9 @@ class _LoginFormState extends State<LoginForm> {
                         case 200:
                           var body = json.decode(response.body.toString());
 
-                          widget.userModel.login(body);
+                          await widget.userModel.login(body);
                           // navigate to home screen
-                          Navigator.of(context).pushReplacement(
-                              new MaterialPageRoute(
-                                  builder: (context) =>
-                                      ProjectLogController()));
+                          Navigator.of(context).pushReplacementNamed('/');
 
                           break;
                         case 401:

@@ -6,12 +6,12 @@ import 'package:scoped_model/scoped_model.dart';
 import '../views/desktop/login.dart';
 
 class LoginController extends StatelessWidget {
+  final UserModel identity = UserModel();
+
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<UserModel>(
-      builder: (context, widget, model) {
-        return kIsWeb ? DesktopLoginScreen(userModel: model) : Text('mobile login screen');
-      },
-    );
+    return kIsWeb
+        ? DesktopLoginScreen(userModel: identity)
+        : Text('mobile login screen');
   }
 }

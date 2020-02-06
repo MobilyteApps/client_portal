@@ -21,8 +21,16 @@ class Api {
     return http.get('$baseUrl/project', headers: authorizationHeaders());
   }
 
+  Future<http.Response> projectLog() {
+    return http.get('$baseUrl/project/log', headers: authorizationHeaders());
+  }
+
   Map<String, String> authorizationHeaders() {
     UserModel user = Hive.box('identity').get(0);
-    return {'Authorization': 'Bearer ${user.accessToken}'};
+    if (user == null) {
+      return null;
+    }
+    String token = user == null ? '' : user.accessToken;
+    return {'Authorization': 'Bearer $token'};
   }
 }

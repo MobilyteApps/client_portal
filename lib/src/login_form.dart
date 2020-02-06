@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'controllers/ProjectLogController.dart';
 import 'models/UserModel.dart';
+import 'Api.dart';
+import 'utils/Config.dart';
 
 import 'package:flutter/material.dart';
 
@@ -21,6 +23,8 @@ class _LoginFormState extends State<LoginForm> {
 
   bool passwordVisible;
 
+  Api api = Api(baseUrl: Config.apiBaseUrl);
+
   bool rememberMe;
 
   String email;
@@ -31,16 +35,6 @@ class _LoginFormState extends State<LoginForm> {
   void initState() {
     passwordVisible = false;
     rememberMe = false;
-  }
-
-  Future<http.Response> doLogin(email, password, bool rememberMe) {
-    Map<String, dynamic> body = {
-      'email': email,
-      'password': password,
-      'rememberMe': rememberMe ? '1' : '0'
-    };
-    return http.post('http://localhost:8080/index.php?r=site/login',
-        body: body);
   }
 
   @override
@@ -150,7 +144,7 @@ class _LoginFormState extends State<LoginForm> {
                     ));
                     try {
                       http.Response response =
-                          await doLogin(email, password, rememberMe);
+                          await api.login(email, password, rememberMe);
 
                       switch (response.statusCode) {
                         case 200:

@@ -10,6 +10,7 @@ import 'src/utils/Config.dart';
 import 'src/AppMain.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb == false) {
     final appDocumentDirectory =
         await pathProvider.getApplicationDocumentsDirectory();

@@ -21,7 +21,13 @@ class AppController extends StatelessWidget {
 
     UserModel identity = Hive.box('identity').get(0);
 
-    ProjectModel project = Hive.box('project').get(identity.id);
+    if (identity == null) {
+      print('early return');
+      return LayoutModel();
+    }
+
+    ProjectModel project =
+        Hive.box('project').get(identity != null ? identity.id : null);
 
     if (project == null) {
       final Api api = Api(baseUrl: Config.apiBaseUrl);
@@ -30,6 +36,10 @@ class AppController extends StatelessWidget {
           ProjectModel.fromJson(response.body.toString());
 
       Hive.box('project').put(identity.id, model);
+    }
+
+    if (project == null) {
+      project = ProjectModel();
     }
 
     return LayoutModel(project: project, identity: identity);

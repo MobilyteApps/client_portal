@@ -1,17 +1,41 @@
 import 'package:client_portal_app/src/models/UserModel.dart';
 import 'package:flutter/foundation.dart';
 import "package:flutter/material.dart";
-import 'package:scoped_model/scoped_model.dart';
 
 import '../views/desktop/login.dart';
+import '../views/welcome.dart';
+import '../views/login.dart';
 
-class LoginController extends StatelessWidget {
+class LoginController extends StatefulWidget {
+  @override
+  _LoginControllerState createState() => _LoginControllerState();
+}
+
+class _LoginControllerState extends State<LoginController> {
   final UserModel identity = UserModel();
+
+  Widget content;
+
+  @override
+  void initState() {
+    content = kIsWeb
+        ? DesktopLoginScreen(userModel: identity)
+        : WelcomeScreen(
+            onLoginPress: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginScreen(
+                      userModel: identity,
+                    ),
+                  ));
+            },
+          );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return kIsWeb
-        ? DesktopLoginScreen(userModel: identity)
-        : Text('mobile login screen');
+    return content;
   }
 }

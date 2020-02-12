@@ -1,8 +1,11 @@
 import 'package:client_portal_app/src/controllers/ProjectLogController.dart';
+import 'package:client_portal_app/src/widgets/background_with_logo.dart';
 import "package:flutter/material.dart";
 
 class WelcomeScreen extends StatefulWidget {
-  WelcomeScreen({Key key}) : super(key: key);
+  WelcomeScreen({Key key, this.onLoginPress}) : super(key: key);
+
+  final VoidCallback onLoginPress;
 
   @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
@@ -11,42 +14,76 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              color: Color.fromRGBO(100, 100, 100, .5),
-              child: Row(              
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            height: MediaQuery.of(context).size.height / 2,
+            color: Color.fromRGBO(100, 100, 100, .5),
+            child: BackgroundWithLogo(),
+          ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.only(top: 75),
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    child: Text(
+                      'Welcome',
+                      style: TextStyle(
+                        color: Color.fromRGBO(117, 117, 117, 1),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    padding: EdgeInsets.only(
+                      bottom: 30,
+                    ),
+                  ),
+                  RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(18.0),
+                    ),
+                    color: Color.fromRGBO(0, 94, 184, 1),
+                    child: Text(
+                      'Login',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: widget.onLoginPress,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 100, bottom: 60),
+            constraints: BoxConstraints(
+              maxWidth: 250,
+            ),
+            child: RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                style: TextStyle(
+                  color: Color.fromRGBO(117, 117, 117, 1),
+                ),
                 children: [
-                  Expanded(
-                    child: Padding(child: Center(child: Text('logo here')), padding: EdgeInsets.all(100),),
+                  TextSpan(
+                    text: "By continuing, you agree to Mosby Building Art's ",
+                  ),
+                  TextSpan(
+                    text: 'Terms of Service',
+                    style: TextStyle(
+                      color: Color.fromRGBO(0, 89, 146, 1),
+                    ),
                   )
                 ],
               ),
             ),
-            Padding(padding: EdgeInsets.only(top: 100, bottom: 50),child: Text(
-                'Welcome',
-              ),             
-            ),
-            Center(
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(18.0),
-                ),
-                color: Color.fromRGBO(0, 94, 184, 1),
-                child: Text('Login', style: TextStyle(color: Colors.white),), 
-                onPressed: () {
-                  // @todo check if logged in,  if not, navigate to the login screen, otherwise the home screen
-                  Navigator.of(context).pushReplacement(
-                    new MaterialPageRoute(builder: (context) => ProjectLogController()));
-                },
-              ),
-            ),  
-            Padding(padding: EdgeInsets.only(top: 100), child: Text("By continuing, you agree to Mosby Building Art's Terms of Service"),)   
-          ],
-        ),
+          )
+        ],
+      ),
     );
   }
 }

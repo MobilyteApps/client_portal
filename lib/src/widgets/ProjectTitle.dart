@@ -5,8 +5,8 @@ import '../models/ProjectModel.dart';
 
 class ProjectTitle extends StatelessWidget {
   final String beforeTitle;
-
-  ProjectTitle({this.beforeTitle});
+  final double height;
+  ProjectTitle({this.beforeTitle, this.height = 130.0});
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +25,13 @@ class ProjectTitle extends StatelessWidget {
 
         columns.add(
           Text(
-            projectModel.title,
+            projectModel.title != null ? projectModel.title : '',
             style: TextStyle(fontSize: 24, color: Colors.white),
           ),
         );
 
         return Container(
-          height: 130,
+          height: height,
           child: Stack(
             fit: StackFit.expand,
             children: <Widget>[

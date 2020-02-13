@@ -8,9 +8,8 @@ class MenuPrimary extends StatelessWidget {
     fontSize: 14,
   );
 
-  @override
-  Widget build(BuildContext context) {
-    return Menu(backgroundColor: Color.fromRGBO(0, 169, 209, 1), items: [
+  List<ListTile> items(BuildContext context) {
+    return [
       ListTile(
         leading: Icon(
           Icons.library_books,
@@ -19,10 +18,10 @@ class MenuPrimary extends StatelessWidget {
         title: Text(
           'Project Log',
           style: textStyle,
-        ),     
-        onTap: () {          
+        ),
+        onTap: () {
           Navigator.of(context).pushReplacementNamed('/');
-        },   
+        },
       ),
       ListTile(
         leading: Icon(
@@ -33,7 +32,7 @@ class MenuPrimary extends StatelessWidget {
           'Schedule',
           style: textStyle,
         ),
-        onTap: () {          
+        onTap: () {
           Navigator.of(context).pushReplacementNamed('/schedule');
         },
       ),
@@ -57,6 +56,14 @@ class MenuPrimary extends StatelessWidget {
           style: textStyle,
         ),
       ),
-    ]);
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Menu(
+      backgroundColor: Color.fromRGBO(0, 169, 209, 1),
+      items: items(context),
+    );
   }
 }

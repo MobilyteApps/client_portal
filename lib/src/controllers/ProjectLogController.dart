@@ -26,12 +26,9 @@ class ProjectLogController extends StatelessWidget {
           future: getProjectLog(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              //print(snapshot.data.body.toString());
-
               List<dynamic> result = json.decode(snapshot.data.body.toString());
 
               result.forEach((entry) {
-                print(entry);
                 items.add(ProjectLogHeader(title: entry['date']));
                 entry['notes'].forEach((note) {
                   items.add(

@@ -7,46 +7,50 @@ class MenuSecondary extends StatelessWidget {
     fontSize: 14,
   );
 
+  List<ListTile> items() {
+    return [
+      ListTile(
+        title: Text(
+          'Billing and Payments',
+          style: textStyle,
+        ),
+        leading: Icon(Icons.payment),
+      ),
+      ListTile(
+        title: Text(
+          'Your Mosby Team',
+          style: textStyle,
+        ),
+        leading: Icon(Icons.group),
+      ),
+      ListTile(
+        title: Text(
+          'Project Documentation',
+          style: textStyle,
+        ),
+        leading: Icon(Icons.inbox),
+      ),
+      ListTile(
+        title: Text(
+          'Settings',
+          style: textStyle,
+        ),
+        leading: Icon(Icons.settings),
+      ),
+      ListTile(
+        title: Text(
+          'Help & Feedback',
+          style: textStyle,
+        ),
+        leading: Icon(Icons.live_help),
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Menu(
-      items: [
-        ListTile(
-          title: Text(
-            'Billing and Payments',
-            style: textStyle,
-          ),
-          leading: Icon(Icons.payment),
-        ),
-        ListTile(
-          title: Text(
-            'Your Mosby Team',
-            style: textStyle,
-          ),
-          leading: Icon(Icons.group),
-        ),
-        ListTile(
-          title: Text(
-            'Project Documentation',
-            style: textStyle,
-          ),
-          leading: Icon(Icons.inbox),
-        ),
-        ListTile(
-          title: Text(
-            'Settings',
-            style: textStyle,
-          ),
-          leading: Icon(Icons.settings),
-        ),
-        ListTile(
-          title: Text(
-            'Help & Feedback',
-            style: textStyle,
-          ),
-          leading: Icon(Icons.live_help),
-        ),
-      ],
+      items: items(),
     );
   }
 }

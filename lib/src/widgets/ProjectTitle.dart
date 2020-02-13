@@ -38,7 +38,9 @@ class ProjectTitle extends StatelessWidget {
               Opacity(
                 opacity: .99,
                 child: Image.network(
-                  projectModel.coverPhoto,
+                  projectModel.coverPhoto != null
+                      ? projectModel.coverPhoto
+                      : '',
                   fit: BoxFit.cover,
                   colorBlendMode: BlendMode.dstATop,
                 ),

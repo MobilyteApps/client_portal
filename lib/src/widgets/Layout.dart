@@ -114,7 +114,7 @@ class _LayoutState extends State<Layout> {
     return LayoutDrawer(
       version: '1.0',
       logo: Image.asset('images/logo.png'),
-      tiles: secondaryMenu.items(),
+      tiles: secondaryMenu.items(context),
     );
   }
 

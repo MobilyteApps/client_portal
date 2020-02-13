@@ -7,7 +7,7 @@ class MenuSecondary extends StatelessWidget {
     fontSize: 14,
   );
 
-  List<ListTile> items() {
+  List<ListTile> items(BuildContext context) {
     return [
       ListTile(
         title: Text(
@@ -15,6 +15,9 @@ class MenuSecondary extends StatelessWidget {
           style: textStyle,
         ),
         leading: Icon(Icons.payment),
+        onTap: () {
+          Navigator.pushNamed(context, '/payments');
+        },
       ),
       ListTile(
         title: Text(
@@ -50,7 +53,7 @@ class MenuSecondary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Menu(
-      items: items(),
+      items: items(context),
     );
   }
 }

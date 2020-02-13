@@ -1,6 +1,10 @@
+import 'package:client_portal_app/src/Brand.dart';
 import 'package:client_portal_app/src/controllers/LoginController.dart';
+import 'package:client_portal_app/src/controllers/PaymentController.dart';
 import 'package:client_portal_app/src/controllers/ProjectLogController.dart';
 import 'package:client_portal_app/src/controllers/ScheduleController.dart';
+import 'package:client_portal_app/src/transitions/SlideLeftRoute.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'controllers/AppController.dart';
@@ -18,17 +22,47 @@ class _AppMainState extends State<AppMain> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Client Portal',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),    
-      initialRoute: '/',
-      routes: {
-        '/': (context) => AppController(controller: ProjectLogController(),),
-        '/login': (context) => LoginController(),
-        '/schedule': (context) => AppController(controller: ScheduleController(),),
-      },
+    var home = AppController(
+      controller: ProjectLogController(),
     );
+
+    return MaterialApp(
+        title: 'Client Portal',
+        theme: ThemeData(
+          primarySwatch: Brand.primary,
+        ),
+        home: home,
+        onGenerateRoute: (RouteSettings settings) {
+          switch (settings.name) {
+            case '/':
+              return MaterialPageRoute(
+                settings: settings,
+                builder: (context) => home,
+              );
+              break;
+            case '/login':
+              return MaterialPageRoute(
+                settings: settings,
+                builder: (context) => LoginController(),
+              );
+              break;
+            case '/schedule':
+              return MaterialPageRoute(
+                settings: settings,
+                builder: (context) => AppController(
+                  controller: ScheduleController(),
+                ),
+              );
+              break;
+            case '/payments':
+              return CupertinoPageRoute(
+                settings: settings,
+                builder: (context) => AppController(
+                  controller: PaymentController(),
+                ),
+              );
+              break;
+          }
+        });
   }
 }

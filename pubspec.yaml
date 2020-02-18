@@ -23,6 +23,7 @@ dependencies:
   hive_flutter: ^0.3.0+1
   path_provider: ^1.6.0
   hive_generator: ^0.7.0
+  intl: ^0.16.1
   flutter:
     sdk: flutter
 

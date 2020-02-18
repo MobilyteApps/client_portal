@@ -25,7 +25,7 @@ class _MenuPrimaryControllerState extends State<MenuPrimaryController> {
 
   @override
   void initState() {
-    content = switchContent('Project Log');
+    content = switchContent('Schedule');
     super.initState();
   }
 

@@ -8,6 +8,8 @@ class LayoutModel extends Model {
   final UserModel identity;
   final ProjectModel project;
 
+  Widget endDrawer;
+
   LayoutModel({this.identity, this.project});
 
   List<MenuItem> primaryMenuItems() {
@@ -17,5 +19,10 @@ class LayoutModel extends Model {
       MenuItem(icon: Icons.inbox, label: 'Project'),
       MenuItem(icon: Icons.notifications, label: 'Notifications')
     ];
+  }
+
+  void setEndDrawer(Widget drawer) {
+    endDrawer = drawer;
+    notifyListeners();
   }
 }

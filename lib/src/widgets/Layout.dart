@@ -1,5 +1,7 @@
 import 'package:client_portal_app/src/models/LayoutModel.dart';
+import 'package:client_portal_app/src/models/RightDrawerModel.dart';
 import 'package:client_portal_app/src/widgets/ButtonBarButton.dart';
+import 'package:client_portal_app/src/widgets/EventEntryDetailPanel.dart';
 import 'package:client_portal_app/src/widgets/MenuPrimary.dart';
 import 'package:client_portal_app/src/widgets/MenuSecondary.dart';
 import 'package:client_portal_app/src/widgets/ProjectTitle.dart';
@@ -25,7 +27,15 @@ class Layout extends StatefulWidget {
 class _LayoutState extends State<Layout> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  RightDrawerModel rightDrawerModel;
+
   MenuSecondary secondaryMenu = MenuSecondary();
+
+  @override
+  void initState() {
+    super.initState();
+    rightDrawerModel = RightDrawerModel();
+  }
 
   bool usePortrait() {
     Size size = MediaQuery.of(context).size;
@@ -153,6 +163,16 @@ class _LayoutState extends State<Layout> {
     return Scaffold(
       key: _scaffoldKey,
       drawer: drawer,
+      endDrawer: Container(
+        width: MediaQuery.of(context).size.width >= 480 ? 480 : double.infinity,
+        child: Drawer(
+          child: ScopedModelDescendant<RightDrawerModel>(
+            builder: (context, widget, model) {
+              return model.child;
+            },
+          ),
+        ),
+      ),
       drawerScrimColor: Color.fromRGBO(50, 50, 50, 0.5),
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
@@ -214,9 +234,22 @@ class _LayoutState extends State<Layout> {
 
   @override
   Widget build(BuildContext context) {
+    Scaffold child;
     if (usePortrait()) {
-      return scaffold(portrait(), drawer());
+      child = scaffold(
+        portrait(),
+        Drawer(
+          child: drawer(),
+        ),
+      );
+    } else {
+      child = scaffold(landscape(), null);
     }
-    return scaffold(landscape(), null);
+    
+
+    return ScopedModel<RightDrawerModel>(
+      child: child,
+      model: rightDrawerModel,
+    );
   }
 }

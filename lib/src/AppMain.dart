@@ -1,4 +1,5 @@
 import 'package:client_portal_app/src/Brand.dart';
+import 'package:client_portal_app/src/controllers/CalendarController.dart';
 import 'package:client_portal_app/src/controllers/LoginController.dart';
 import 'package:client_portal_app/src/controllers/PaymentController.dart';
 import 'package:client_portal_app/src/controllers/MenuPrimaryController.dart';
@@ -26,6 +27,7 @@ class _AppMainState extends State<AppMain> {
     );
 
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Client Portal',
         theme: ThemeData(
           primarySwatch: Brand.primary,
@@ -45,7 +47,13 @@ class _AppMainState extends State<AppMain> {
                 builder: (context) => LoginController(),
               );
               break;
-
+            case '/calendar':
+              return CupertinoPageRoute(
+                settings: settings,
+                builder: (context) => AppController(
+                  controller: CalendarController(),
+                ),
+              );
             case '/payments':
               return CupertinoPageRoute(
                 settings: settings,

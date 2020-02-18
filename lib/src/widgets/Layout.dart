@@ -3,6 +3,7 @@ import 'package:client_portal_app/src/widgets/ButtonBarButton.dart';
 import 'package:client_portal_app/src/widgets/MenuPrimary.dart';
 import 'package:client_portal_app/src/widgets/MenuSecondary.dart';
 import 'package:client_portal_app/src/widgets/ProjectTitle.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -13,7 +14,9 @@ class Layout extends StatefulWidget {
 
   final Widget content;
 
-  Layout({this.model, this.content});
+  final MenuPrimary primaryMenu;
+
+  Layout({this.model, this.content, @required this.primaryMenu});
 
   @override
   _LayoutState createState() => _LayoutState();
@@ -24,26 +27,41 @@ class _LayoutState extends State<Layout> {
 
   MenuSecondary secondaryMenu = MenuSecondary();
 
-  MenuPrimary primaryMenu = MenuPrimary();
+  bool usePortrait() {
+    Size size = MediaQuery.of(context).size;
+    // declare all devices with a width < 1024 to portrait
+    if (size.width < 1024) {
+      return true;
+    }
+    // use device orientation to determine,  note web should always considered landscape
+    // by now,  if code execution reaches this point and we are building for web, our width is >= 1024 we are not portrait
+    if (kIsWeb) {
+      return false;
+    }
 
-  Widget mobilePrimaryNav(BuildContext context) {
+    // use the device orientation
+    Orientation orientation = MediaQuery.of(context).orientation;
+
+    return orientation == Orientation.portrait;
+  }
+
+  Widget mobilePrimaryNav() {
     List<ButtonBarButton> buttons = [];
 
-    primaryMenu.items(context).forEach((item) {
-      Icon icon = item.leading;
-      Text title = item.title;
+    widget.model.primaryMenuItems().forEach((item) {
+      Icon icon = Icon(item.icon);
+      Text title = Text(item.label);
       buttons.add(
         ButtonBarButton(
           icon: icon.icon,
           label: title.data,
-          onPressed: item.onTap,
+          onPressed: () {
+            widget.primaryMenu.onPressed(item.label);
+          },
         ),
       );
     });
 
-    if (MediaQuery.of(context).size.width > 1024) {
-      return Container();
-    }
     return Container(
       color: Color.fromRGBO(0, 169, 209, 1),
       child: ButtonBar(
@@ -53,11 +71,7 @@ class _LayoutState extends State<Layout> {
     );
   }
 
-  Widget desktopHeader(BuildContext context) {
-    if (MediaQuery.of(context).size.width < 1024) {
-      return Container();
-    }
-
+  Widget desktopHeader() {
     return Container(
       height: 130,
       decoration: BoxDecoration(color: Color.fromRGBO(231, 231, 231, 1)),
@@ -70,11 +84,7 @@ class _LayoutState extends State<Layout> {
     );
   }
 
-  Widget mobileHeader(BuildContext context) {
-    if (MediaQuery.of(context).size.width > 1024) {
-      return Container();
-    }
-
+  Widget mobileHeader() {
     return Container(
       color: Colors.black,
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
@@ -107,7 +117,7 @@ class _LayoutState extends State<Layout> {
     );
   }
 
-  Widget drawer(BuildContext context) {
+  Widget drawer() {
     if (MediaQuery.of(context).size.width >= 1024) {
       return null;
     }
@@ -118,9 +128,8 @@ class _LayoutState extends State<Layout> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    Widget sidebar = Container(
+  Widget leftSidebar() {
+    return Container(
       decoration: BoxDecoration(
         color: Color.fromRGBO(250, 250, 250, 1),
         boxShadow: [
@@ -133,50 +142,81 @@ class _LayoutState extends State<Layout> {
       child: Column(
         children: <Widget>[
           ProjectTitle(beforeTitle: 'My'),
-          primaryMenu,
+          widget.primaryMenu,
           secondaryMenu,
         ],
       ),
     );
+  }
 
-    if (MediaQuery.of(context).size.width < 1024) {
-      sidebar = Container();
-    }
-
+  Scaffold scaffold(Widget child, Drawer drawer) {
     return Scaffold(
       key: _scaffoldKey,
-      drawer: drawer(context),
+      drawer: drawer,
       drawerScrimColor: Color.fromRGBO(50, 50, 50, 0.5),
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            ScopedModel(
-              child: sidebar,
-              model: widget.model.project,
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    mobileHeader(context),
-                    mobilePrimaryNav(context),
-                    desktopHeader(context),
-                    Padding(
-                      child: widget.content,
-                      padding: EdgeInsets.all(60),
-                    ),
-                  ],
-                ),
-                decoration: BoxDecoration(color: Colors.white),
-              ),
-            ),
-          ],
-        ),
+        child: child,
       ),
     );
+  }
+
+  Widget portrait() {
+    return Column(
+      children: <Widget>[
+        mobileHeader(),
+        mobilePrimaryNav(),
+        Expanded(
+          child: Container(
+            child: widget.content,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget landscape() {
+    return Container(
+      padding: kIsWeb == false
+          ? EdgeInsets.only(top: MediaQuery.of(context).padding.top)
+          : null,
+      color: kIsWeb == false ? Colors.black : null,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          ScopedModel(
+            child: leftSidebar(),
+            model: widget.model.project,
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  desktopHeader(),
+                  Expanded(
+                    child: Container(
+                      child: widget.content,
+                      padding: EdgeInsets.only(top: 0, left: 60, right: 60),
+                    ),
+                  ),
+                ],
+              ),
+              decoration: BoxDecoration(color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (usePortrait()) {
+      return scaffold(portrait(), drawer());
+    }
+    return scaffold(landscape(), null);
   }
 }

@@ -1,4 +1,3 @@
-import 'package:client_portal_app/src/controllers/ProjectLogController.dart';
 import 'package:client_portal_app/src/widgets/background_with_logo.dart';
 import "package:flutter/material.dart";
 

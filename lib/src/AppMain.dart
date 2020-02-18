@@ -1,9 +1,8 @@
 import 'package:client_portal_app/src/Brand.dart';
 import 'package:client_portal_app/src/controllers/LoginController.dart';
 import 'package:client_portal_app/src/controllers/PaymentController.dart';
-import 'package:client_portal_app/src/controllers/ProjectLogController.dart';
-import 'package:client_portal_app/src/controllers/ScheduleController.dart';
-import 'package:client_portal_app/src/transitions/SlideLeftRoute.dart';
+import 'package:client_portal_app/src/controllers/MenuPrimaryController.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +22,7 @@ class _AppMainState extends State<AppMain> {
   @override
   Widget build(BuildContext context) {
     var home = AppController(
-      controller: ProjectLogController(),
+      controller: MenuPrimaryController(),
     );
 
     return MaterialApp(
@@ -46,14 +45,7 @@ class _AppMainState extends State<AppMain> {
                 builder: (context) => LoginController(),
               );
               break;
-            case '/schedule':
-              return MaterialPageRoute(
-                settings: settings,
-                builder: (context) => AppController(
-                  controller: ScheduleController(),
-                ),
-              );
-              break;
+
             case '/payments':
               return CupertinoPageRoute(
                 settings: settings,

@@ -25,6 +25,14 @@ class Api {
     return http.get('$baseUrl/project/log', headers: authorizationHeaders());
   }
 
+  Future<http.Response> upNext() {
+    return http.get('$baseUrl/schedule', headers: authorizationHeaders());
+  }
+
+  Future<http.Response> me() {
+    return http.get('$baseUrl/user/me', headers: authorizationHeaders());
+  }
+
   Map<String, String> authorizationHeaders() {
     UserModel user = Hive.box('identity').get(0);
     if (user == null) {

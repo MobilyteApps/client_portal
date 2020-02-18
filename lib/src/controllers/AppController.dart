@@ -4,7 +4,6 @@ import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/models/ProjectModel.dart';
 import 'package:client_portal_app/src/models/UserModel.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
-import 'package:client_portal_app/src/widgets/Layout.dart';
 import "package:flutter/material.dart";
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
@@ -16,13 +15,22 @@ class AppController extends StatelessWidget {
   AppController({@required this.controller});
 
   Future<LayoutModel> openBoxes() async {
+    final Api api = Api(baseUrl: Config.apiBaseUrl);
+
     await Hive.openBox('identity');
     await Hive.openBox('project');
 
     UserModel identity = Hive.box('identity').get(0);
 
     if (identity == null) {
-      print('early return');
+      return LayoutModel();
+    }
+
+    // verify user is logged in
+    http.Response userResponse = await api.me();
+
+    // re-log in
+    if (userResponse.statusCode >= 400) {
       return LayoutModel();
     }
 
@@ -30,7 +38,6 @@ class AppController extends StatelessWidget {
         Hive.box('project').get(identity != null ? identity.id : null);
 
     if (project == null) {
-      final Api api = Api(baseUrl: Config.apiBaseUrl);
       final http.Response response = await api.project();
       final ProjectModel model =
           ProjectModel.fromJson(response.body.toString());

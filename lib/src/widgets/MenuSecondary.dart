@@ -1,4 +1,7 @@
+import 'package:client_portal_app/src/models/LayoutModel.dart';
+import 'package:client_portal_app/src/models/UserModel.dart';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import 'Menu.dart';
 
@@ -7,7 +10,7 @@ class MenuSecondary extends StatelessWidget {
     fontSize: 14,
   );
 
-  List<ListTile> items(BuildContext context) {
+  List<Widget> items(BuildContext context) {
     return [
       ListTile(
         title: Text(
@@ -47,6 +50,22 @@ class MenuSecondary extends StatelessWidget {
         ),
         leading: Icon(Icons.live_help),
       ),
+      Container(
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(color: Colors.black12),
+          ),
+        ),
+        child: ListTile(
+          title: Text('Logout', style: textStyle),
+          leading: Icon(Icons.exit_to_app),
+          onTap: () {
+            LayoutModel layoutModel = ScopedModel.of<LayoutModel>(context);
+            layoutModel.identity.logout();
+            Navigator.of(context).pushReplacementNamed('/');
+          },
+        ),
+      )
     ];
   }
 

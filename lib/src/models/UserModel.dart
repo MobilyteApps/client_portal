@@ -20,7 +20,7 @@ class UserModel extends Model {
 
   Future<bool> login(dynamic body) async {
     this.username = body['username'];
-    this.id = int.parse(body['id']);
+    this.id = body['id'] is String ? int.parse(body['id']) : body['id'];
     this.accessToken = body['accessToken'];
 
     await Hive.box('identity').put(0, this);

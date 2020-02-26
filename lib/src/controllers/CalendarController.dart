@@ -13,6 +13,7 @@ class CalendarController extends StatelessWidget {
         return PanelLayout(
           model: layoutModel,
           content: Text(layoutModel.project.title + ' Calendar'),
+          title: 'Full Schedule',
         );
       },
     );

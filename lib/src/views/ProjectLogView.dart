@@ -30,7 +30,43 @@ class ProjectLogView extends StatelessWidget {
     return padding > 0 ? padding : 0;
   }
 
+  ListView photoListView(entry) {
+    ListView photoListView = ListView.builder(
+      shrinkWrap: true,
+      scrollDirection: Axis.horizontal,
+      itemCount: entry['photos'].length,
+      itemBuilder: (context, index) {
+        return Container(
+          margin: EdgeInsets.all(1),
+          child: Image.network(entry['photos'][index]['url']),
+        );
+      },
+    );
+
+    return photoListView;
+  }
+
+  GridView photoGridView(entry) {
+    return GridView.builder(
+      shrinkWrap: true,
+      itemCount: entry['photos'].length,
+      gridDelegate:
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+      itemBuilder: (context, index) {
+        return Container(
+          margin: EdgeInsets.all(3),
+          child: Image.network(
+            entry['photos'][index]['url'],
+            fit: BoxFit.cover,
+          ),
+        );
+      },
+    );
+  }
+
   Widget build(BuildContext context) {
+    double mediaQueryWidth = MediaQuery.of(context).size.width;
+
     return ScopedModelDescendant<LayoutModel>(
       builder: (context, widget, model) {
         List<Widget> items = [];
@@ -80,37 +116,40 @@ class ProjectLogView extends StatelessWidget {
                       ),
                     );
 
-                    ListView photoListView = ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: entry['photos'].length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          child: Image.network(entry['photos'][index]['url']),
-                        );
-                      },
-                    );
-
                     items.add(
                       Container(
-                        height: 130,
-                        padding: EdgeInsets.only(bottom: 30, left: 15),
-                        child: photoListView,
+                        height: mediaQueryWidth >= 1024 ? null : 130,
+                        padding: EdgeInsets.only(
+                            bottom: 30,
+                            left: mediaQueryWidth >= 1024 ? 12 : 14),
+                        child: mediaQueryWidth >= 1024
+                            ? photoGridView(entry)
+                            : photoListView(entry),
                       ),
                     );
                   }
                 });
               }
 
-              return Container(
-                padding: EdgeInsets.only(
-                  right: rightPadding(context),
-                  top: 50,
-                ),
+              EdgeInsets padding = EdgeInsets.only(
+                top: 60,
+                left: 60,
+                right: 60,
+              );
+
+              if (mediaQueryWidth < 1024) {
+                padding = EdgeInsets.all(0);
+              }
+
+              return Padding(                
                 child: listViewContent(items),
+                padding: padding,
               );
             }
 
-            return Container();
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           },
         );
       },

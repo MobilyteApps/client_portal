@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Menu extends StatelessWidget {
-  final List<ListTile> items;
+  final List<Widget> items;
 
   final Color backgroundColor;
 

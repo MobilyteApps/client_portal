@@ -118,7 +118,17 @@ class _LayoutState extends State<Layout> {
                 color: Colors.white,
               ),
               onPressed: () {
-                _scaffoldKey.currentState.openDrawer();
+                //_scaffoldKey.currentState.openDrawer();
+                _scaffoldKey.currentState.showBottomSheet(
+                  (context) => Container(
+                    width: double.infinity,
+                    child: LayoutDrawer(
+                      version: '1.0',
+                      logo: Image.asset('images/logo.png'),
+                      tiles: secondaryMenu.items(context),
+                    ),
+                  ),
+                );
               },
             ),
           ),
@@ -211,24 +221,63 @@ class _LayoutState extends State<Layout> {
           Expanded(
             flex: 1,
             child: Container(
+              color: Colors.white,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   desktopHeader(),
                   Expanded(
-                    child: Container(
-                      child: widget.content,
-                      padding: EdgeInsets.only(top: 0, left: 60, right: 60),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          width: 580,
+                          child: Column(children: <Widget>[widget.content],),
+                        ),
+                        Expanded(child: backgroundColumn()),
+                      ],
                     ),
                   ),
                 ],
               ),
-              decoration: BoxDecoration(color: Colors.white),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget backgroundColumn() {
+    return Stack(
+      fit: StackFit.expand,
+      alignment: Alignment.centerRight,
+      children: <Widget>[
+        Opacity(
+          opacity: .99,
+          child: Image.asset(
+            'images/login-bg_compressed.jpg',
+            fit: BoxFit.cover,
+            colorBlendMode: BlendMode.dstATop,
+          ),
+        ),
+        Container(
+          height: double.infinity,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [
+              Colors.white,
+              Colors.white.withOpacity(.73),
+              Colors.white.withOpacity(0),
+            ], stops: [
+              0,
+              .54,
+              1
+            ]),
+          ),
+        ),
+        Text(''),
+      ],
     );
   }
 
@@ -245,7 +294,6 @@ class _LayoutState extends State<Layout> {
     } else {
       child = scaffold(landscape(), null);
     }
-    
 
     return ScopedModel<RightDrawerModel>(
       child: child,

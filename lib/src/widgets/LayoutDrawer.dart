@@ -9,14 +9,16 @@ class LayoutDrawer extends StatelessWidget {
 
   final String version;
 
-  final List<ListTile> tiles;
+  final List<Widget> tiles;
 
   Widget header() {
-    return DrawerHeader(
+    return Container(
+      padding: EdgeInsets.only(top: 30, left: 15, right: 15),
+      height: 187,
       decoration: BoxDecoration(color: Color.fromRGBO(231, 231, 231, 1)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Container(
             child: logo,
@@ -35,10 +37,8 @@ class LayoutDrawer extends StatelessWidget {
     );
   }
 
-  List<Widget> items() {
+  List<Widget> items(context) {
     List<Widget> items = [];
-
-    items.add(header());
 
     tiles.forEach((tile) {
       items.add(tile);
@@ -49,12 +49,34 @@ class LayoutDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      elevation: 0,
-      child: Container(
-        child: ListView(
-          children: items(),
-        ),
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(width: 1, color: Colors.black12),
+              ),
+            ),
+            child: ListTile(
+              leading: IconButton(
+                constraints: BoxConstraints(maxWidth: 20),
+                padding: EdgeInsets.all(0),
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ),
+          Expanded(
+            child: ListView(
+              children: items(context),
+            ),
+          ),
+          header()
+        ],
       ),
     );
   }

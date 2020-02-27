@@ -1,7 +1,7 @@
 class Config {
   static bool _isProduction = false;
   static String apiBaseUrl = _isProduction
-      ? 'https://clientportal.mosby.com/clientportal'
+      ? 'https://staging.righttouchcrm.net/y/clientportal'
       : 'http://local.righttouch.net/y/clientportal';
 
   static void setIsProduction() {

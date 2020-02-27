@@ -83,7 +83,6 @@ class _LayoutState extends State<Layout> {
 
   Widget desktopHeader() {
     return Container(
-      height: 130,
       decoration: BoxDecoration(color: Color.fromRGBO(231, 231, 231, 1)),
       child: Container(
         alignment: Alignment.centerLeft,
@@ -91,6 +90,14 @@ class _LayoutState extends State<Layout> {
         child: Image.asset('images/logo.png'),
         constraints: BoxConstraints.expand(),
       ),
+    );
+  }
+
+  Widget logo() {
+    return Image.asset(
+      'images/logo.png',
+      height: 55,
+      alignment: Alignment.centerLeft,
     );
   }
 
@@ -205,6 +212,44 @@ class _LayoutState extends State<Layout> {
     );
   }
 
+  Widget landscapeNew() {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        ScopedModel(
+          child: Material(
+            child: leftSidebar(),
+          ),
+          model: widget.model.project,
+        ),
+        VerticalDivider(
+          width: 1,
+          color: Colors.black54,
+        ),
+        Expanded(
+          flex: 2,
+          child: Scaffold(
+            backgroundColor: Colors.white,
+            appBar: PreferredSize(
+              child: desktopHeader(),
+              preferredSize: Size.fromHeight(130),
+            ),
+            body: Row(
+              children: <Widget>[
+                Expanded(
+                  child: widget.content,
+                ),
+                Expanded(
+                  child: backgroundColumn(),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget landscape() {
     return Container(
       padding: kIsWeb == false
@@ -233,7 +278,9 @@ class _LayoutState extends State<Layout> {
                       children: <Widget>[
                         Container(
                           width: 580,
-                          child: Column(children: <Widget>[widget.content],),
+                          child: Column(
+                            children: <Widget>[widget.content],
+                          ),
                         ),
                         Expanded(child: backgroundColumn()),
                       ],
@@ -283,7 +330,7 @@ class _LayoutState extends State<Layout> {
 
   @override
   Widget build(BuildContext context) {
-    Scaffold child;
+    Widget child;
     if (usePortrait()) {
       child = scaffold(
         portrait(),
@@ -292,7 +339,8 @@ class _LayoutState extends State<Layout> {
         ),
       );
     } else {
-      child = scaffold(landscape(), null);
+      //child = scaffold(landscape(), null);
+      child = landscapeNew();
     }
 
     return ScopedModel<RightDrawerModel>(

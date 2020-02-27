@@ -38,7 +38,10 @@ class ProjectLogView extends StatelessWidget {
       itemBuilder: (context, index) {
         return Container(
           margin: EdgeInsets.all(1),
-          child: Image.network(entry['photos'][index]['url']),
+          child: Image.network(
+            entry['photos'][index]['url'],
+            fit: BoxFit.cover,
+          ),
         );
       },
     );
@@ -141,7 +144,7 @@ class ProjectLogView extends StatelessWidget {
                 padding = EdgeInsets.all(0);
               }
 
-              return Padding(                
+              return Container(
                 child: listViewContent(items),
                 padding: padding,
               );

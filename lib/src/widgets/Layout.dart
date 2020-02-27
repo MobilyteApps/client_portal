@@ -176,20 +176,24 @@ class _LayoutState extends State<Layout> {
     );
   }
 
+  Widget endDrawer() {
+    return Container(
+      width: MediaQuery.of(context).size.width >= 480 ? 480 : double.infinity,
+      child: Drawer(
+        child: ScopedModelDescendant<RightDrawerModel>(
+          builder: (context, widget, model) {
+            return model.child;
+          },
+        ),
+      ),
+    );
+  }
+
   Scaffold scaffold(Widget child, Drawer drawer) {
     return Scaffold(
       key: _scaffoldKey,
       drawer: drawer,
-      endDrawer: Container(
-        width: MediaQuery.of(context).size.width >= 480 ? 480 : double.infinity,
-        child: Drawer(
-          child: ScopedModelDescendant<RightDrawerModel>(
-            builder: (context, widget, model) {
-              return model.child;
-            },
-          ),
-        ),
-      ),
+      endDrawer: endDrawer(),
       drawerScrimColor: Color.fromRGBO(50, 50, 50, 0.5),
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
@@ -212,7 +216,7 @@ class _LayoutState extends State<Layout> {
     );
   }
 
-  Widget landscapeNew() {
+  Widget landscape() {
     return Row(
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
@@ -229,6 +233,8 @@ class _LayoutState extends State<Layout> {
         Expanded(
           flex: 2,
           child: Scaffold(
+            endDrawer: endDrawer(),
+            drawerScrimColor: Color.fromRGBO(50, 50, 50, 0.5),
             backgroundColor: Colors.white,
             appBar: PreferredSize(
               child: desktopHeader(),
@@ -247,51 +253,6 @@ class _LayoutState extends State<Layout> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget landscape() {
-    return Container(
-      padding: kIsWeb == false
-          ? EdgeInsets.only(top: MediaQuery.of(context).padding.top)
-          : null,
-      color: kIsWeb == false ? Colors.black : null,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          ScopedModel(
-            child: leftSidebar(),
-            model: widget.model.project,
-          ),
-          Expanded(
-            flex: 1,
-            child: Container(
-              color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  desktopHeader(),
-                  Expanded(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: 580,
-                          child: Column(
-                            children: <Widget>[widget.content],
-                          ),
-                        ),
-                        Expanded(child: backgroundColumn()),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -340,7 +301,7 @@ class _LayoutState extends State<Layout> {
       );
     } else {
       //child = scaffold(landscape(), null);
-      child = landscapeNew();
+      child = landscape();
     }
 
     return ScopedModel<RightDrawerModel>(

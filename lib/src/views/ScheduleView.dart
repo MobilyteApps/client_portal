@@ -101,9 +101,9 @@ class ScheduleView extends StatelessWidget {
               http.Response response = snapshot.data;
               if (response.statusCode == 200 || response.statusCode == 201) {
                 var body = json.decode(response.body.toString());
-                return Container(                  
+                return Container(
                   constraints: BoxConstraints(maxWidth: 480),
-                  padding: EdgeInsets.only(top: 35, left: 15, right: 15),
+                  padding: EdgeInsets.only(top: 60, left: 60, right: 60),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

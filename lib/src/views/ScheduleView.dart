@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:client_portal_app/src/Brand.dart';
+import 'package:client_portal_app/src/models/EventEntryModel.dart';
 import 'package:client_portal_app/src/models/RightDrawerModel.dart';
 import 'package:client_portal_app/src/widgets/EventEntryDetailPanel.dart';
 import 'package:intl/intl.dart';
@@ -27,6 +28,7 @@ class ScheduleView extends StatelessWidget {
     jsonBody.forEach((entry) {
       DateTime startDate = DateTime.parse(entry['startDateTime']);
       String mdy = dateFormat.format(startDate);
+      EventEntryModel eventEntryModel = EventEntryModel.fromJson(entry);
 
       if (trackDates.contains(mdy) == false) {
         trackDates.add(mdy);
@@ -38,19 +40,12 @@ class ScheduleView extends StatelessWidget {
 
       entries.add(
         EventEntry(
-          title: entry['title'],
-          backgroundColor: entry['backgroundColor'],
-          textColor: entry['textColor'],
-          trailing: entry['trailing'],
-          startDateTime: entry['startDateTime'],
-          endDateTime: entry['endDateTime'],
-          location: entry['location'],
-          description: entry['description'],
+          model: eventEntryModel,
           onTap: (EventEntry eventEntry) {
             Scaffold.of(context).openEndDrawer();
             ScopedModel.of<RightDrawerModel>(context).setContent(
               EventEntryDetailPanel(
-                eventEntry: eventEntry,
+                eventEntryModel: eventEntryModel,
               ),
             );
           },

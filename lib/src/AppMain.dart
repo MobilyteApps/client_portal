@@ -1,11 +1,19 @@
 import 'package:client_portal_app/src/Brand.dart';
 import 'package:client_portal_app/src/controllers/CalendarController.dart';
+import 'package:client_portal_app/src/controllers/HomeController.dart';
 import 'package:client_portal_app/src/controllers/LoginController.dart';
 import 'package:client_portal_app/src/controllers/PaymentController.dart';
-import 'package:client_portal_app/src/controllers/MenuPrimaryController.dart';
+import 'package:client_portal_app/src/controllers/ScheduleController.dart';
+import 'package:client_portal_app/src/models/LayoutModel.dart';
+import 'package:client_portal_app/src/views/CalendarView.dart';
+import 'package:client_portal_app/src/views/ProjectLogView.dart';
+import 'package:client_portal_app/src/views/ScheduleView.dart';
+import 'package:client_portal_app/src/widgets/Layout.dart';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import 'controllers/AppController.dart';
 
@@ -15,16 +23,25 @@ class AppMain extends StatefulWidget {
 }
 
 class _AppMainState extends State<AppMain> {
+  Widget content;
+
+  Widget controller;
+
   @override
   void initState() {
     super.initState();
+    content = ProjectLogView();
+  }
+
+  Widget createController(Widget child) {
+    return AppController(
+      controller: child,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    var home = AppController(
-      controller: MenuPrimaryController(),
-    );
+    var home = createController(HomeController());
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -41,6 +58,10 @@ class _AppMainState extends State<AppMain> {
                 builder: (context) => home,
               );
               break;
+            case '/schedule':
+              return MaterialPageRoute(
+                  settings: settings,
+                  builder: (context) => createController(ScheduleController()));
             case '/login':
               return MaterialPageRoute(
                 settings: settings,
@@ -48,19 +69,16 @@ class _AppMainState extends State<AppMain> {
               );
               break;
             case '/calendar':
-              return CupertinoPageRoute(
+              return MaterialPageRoute(
                 settings: settings,
-                builder: (context) => AppController(
-                  controller: CalendarController(),
-                ),
+                builder: (context) => createController(CalendarController()),
               );
             case '/payments':
-              return CupertinoPageRoute(
+              return MaterialPageRoute(
                 settings: settings,
-                builder: (context) => AppController(
-                  controller: PaymentController(),
-                ),
+                builder: (context) => createController(PaymentController()),
               );
+
               break;
           }
         });

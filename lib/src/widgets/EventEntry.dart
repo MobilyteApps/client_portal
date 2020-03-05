@@ -1,53 +1,15 @@
+import 'package:client_portal_app/src/models/EventEntryModel.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class EventEntry extends StatelessWidget {
-  const EventEntry(
-      {Key key,
-      @required this.backgroundColor,
-      @required this.textColor,
-      @required this.title,
-      this.trailing,
-      this.onTap,
-      this.startDateTime,
-      this.endDateTime,
-      this.location,
-      this.description})
-      : super(key: key);
+  const EventEntry({
+    Key key,
+    @required this.onTap,
+    @required this.model,
+  }) : super(key: key);
 
-  final int backgroundColor;
-  final int textColor;
-  final String title;
-  final String trailing;
-  final String startDateTime;
-  final String endDateTime;
-  final String location;
-  final String description;
+  final EventEntryModel model;
   final void Function(EventEntry) onTap;
-
-  String date() {
-    final DateFormat dateFormat = DateFormat('MMMM d, y');
-    return startDateTime == null
-        ? ''
-        : dateFormat.format(DateTime.parse(startDateTime));
-  }
-
-  String time() {
-    final DateFormat timeFormat = DateFormat.jm();
-    if (startDateTime == null) {
-      return '';
-    }
-
-    if (endDateTime == null) {
-      return timeFormat.format(DateTime.parse(startDateTime));
-    }
-
-    // both start and end dates are specified
-    var start = timeFormat.format(DateTime.parse(startDateTime));
-    var end = timeFormat.format(DateTime.parse(endDateTime));
-
-    return '$start - $end';
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +18,7 @@ class EventEntry extends StatelessWidget {
       margin: EdgeInsets.only(top: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(4)),
-        color: Color(backgroundColor),
+        color: Color(model.backgroundColor),
       ),
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       child: InkWell(
@@ -68,17 +30,17 @@ class EventEntry extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              title,
+              model.title,
               style: TextStyle(
-                  color: Color(textColor),
+                  color: Color(model.textColor),
                   fontSize: 14,
                   fontWeight: FontWeight.w500),
             ),
-            trailing != null
+            model.trailing != null
                 ? Text(
-                    trailing,
+                    model.trailing,
                     style: TextStyle(
-                      color: Color(textColor).withOpacity(.7),
+                      color: Color(model.textColor).withOpacity(.7),
                       fontSize: 14,
                     ),
                   )

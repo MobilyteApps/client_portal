@@ -33,6 +33,11 @@ class Api {
     return http.get('$baseUrl/user/me', headers: authorizationHeaders());
   }
 
+  Future<http.Response> schedule() {
+    return http.get('$baseUrl/schedule/events',
+        headers: authorizationHeaders());
+  }
+
   Map<String, String> authorizationHeaders() {
     UserModel user = Hive.box('identity').get(0);
     if (user == null) {

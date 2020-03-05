@@ -1,5 +1,7 @@
+import 'package:client_portal_app/src/controllers/AppController.dart';
+import 'package:client_portal_app/src/controllers/PaymentController.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
-import 'package:client_portal_app/src/models/UserModel.dart';
+import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -11,6 +13,7 @@ class MenuSecondary extends StatelessWidget {
   );
 
   List<Widget> items(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return [
       ListTile(
         title: Text(
@@ -19,7 +22,18 @@ class MenuSecondary extends StatelessWidget {
         ),
         leading: Icon(Icons.payment),
         onTap: () {
-          Navigator.pushNamed(context, '/payments');
+          if (width >= 1024) {
+            Navigator.pushNamed(context, '/payments');
+          } else {
+            Navigator.push(
+              context,
+              SlideUpRoute(
+                page: AppController(
+                  controller: PaymentController(),
+                ),
+              ),
+            );
+          }
         },
       ),
       ListTile(

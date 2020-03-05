@@ -1,18 +1,19 @@
+import 'package:client_portal_app/src/models/EventEntryModel.dart';
 import 'package:client_portal_app/src/widgets/EventEntry.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 class EventEntryDetailPanel extends StatelessWidget {
-  const EventEntryDetailPanel({Key key, @required this.eventEntry})
+  const EventEntryDetailPanel({Key key, @required this.eventEntryModel})
       : super(key: key);
 
-  final EventEntry eventEntry;
+  final EventEntryModel eventEntryModel;
 
   Widget header(context) {
     return Container(
       constraints: BoxConstraints(minHeight: 130),
       width: double.infinity,
-      decoration: BoxDecoration(color: Color(eventEntry.backgroundColor)),
+      decoration: BoxDecoration(color: Color(eventEntryModel.backgroundColor)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -20,7 +21,7 @@ class EventEntryDetailPanel extends StatelessWidget {
           IconButton(
             icon: Icon(
               Icons.arrow_back,
-              color: Color(eventEntry.textColor),
+              color: Color(eventEntryModel.textColor),
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -28,9 +29,9 @@ class EventEntryDetailPanel extends StatelessWidget {
           ),
           Padding(
             child: Text(
-              eventEntry.title,
+              eventEntryModel.title,
               style: TextStyle(
-                color: Color(eventEntry.textColor),
+                color: Color(eventEntryModel.textColor),
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
@@ -57,14 +58,14 @@ class EventEntryDetailPanel extends StatelessWidget {
     // add the date header
     _listViewItems.add(
       Container(
-        color: darkenColor(eventEntry.backgroundColor),
+        color: darkenColor(eventEntryModel.backgroundColor),
         child: ListTile(
           leading: Icon(
             Icons.event,
             color: Colors.white,
           ),
           title: Text(
-            eventEntry.date() == null ? '' : eventEntry.date(),
+            eventEntryModel.date() == null ? '' : eventEntryModel.date(),
             style: TextStyle(
               color: Colors.white,
             ),
@@ -73,30 +74,32 @@ class EventEntryDetailPanel extends StatelessWidget {
       ),
     );
 
-    String time = eventEntry.time();
+    String time = eventEntryModel.time();
     if (time.length > 0) {
       _listViewItems.add(
         ListTile(
           leading: Icon(Icons.access_time),
-          title: Text(eventEntry.time()),
+          title: Text(eventEntryModel.time()),
         ),
       );
     }
 
-    if (eventEntry.location.length != null && eventEntry.location.length > 0) {
+    if (eventEntryModel.location.length != null &&
+        eventEntryModel.location.length > 0) {
       _listViewItems.add(
         ListTile(
           leading: Icon(Icons.place),
-          title: Text(eventEntry.location),
+          title: Text(eventEntryModel.location),
         ),
       );
     }
 
-    if (eventEntry.description != null && eventEntry.description.length > 0) {
+    if (eventEntryModel.description != null &&
+        eventEntryModel.description.length > 0) {
       _listViewItems.add(
         ListTile(
           leading: Icon(Icons.format_list_bulleted),
-          title: Text(eventEntry.description),
+          title: Text(eventEntryModel.description),
         ),
       );
     }

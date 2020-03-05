@@ -1,5 +1,7 @@
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/models/RightDrawerModel.dart';
+import 'package:client_portal_app/src/views/ProjectLogView.dart';
+import 'package:client_portal_app/src/views/ScheduleView.dart';
 import 'package:client_portal_app/src/widgets/ButtonBarButton.dart';
 import 'package:client_portal_app/src/widgets/EventEntryDetailPanel.dart';
 import 'package:client_portal_app/src/widgets/MenuPrimary.dart';
@@ -16,9 +18,7 @@ class Layout extends StatefulWidget {
 
   final Widget content;
 
-  final MenuPrimary primaryMenu;
-
-  Layout({this.model, this.content, @required this.primaryMenu});
+  Layout({this.model, this.content});
 
   @override
   _LayoutState createState() => _LayoutState();
@@ -31,10 +31,16 @@ class _LayoutState extends State<Layout> {
 
   MenuSecondary secondaryMenu = MenuSecondary();
 
+  MenuPrimary menuPrimary;
+
   @override
   void initState() {
     super.initState();
     rightDrawerModel = RightDrawerModel();
+    menuPrimary = MenuPrimary(
+      items: widget.model.primaryMenuItems(),
+      onPressed: onPressPrimaryMenu,
+    );
   }
 
   bool usePortrait() {
@@ -55,6 +61,16 @@ class _LayoutState extends State<Layout> {
     return orientation == Orientation.portrait;
   }
 
+  void onPressPrimaryMenu(identifier) {
+    switch (identifier) {
+      case 'Schedule':
+        Navigator.pushNamed(context, '/schedule');
+        break;
+      case 'Project Log':
+        Navigator.pushNamed(context, '/');
+    }
+  }
+
   Widget mobilePrimaryNav() {
     List<ButtonBarButton> buttons = [];
 
@@ -66,7 +82,7 @@ class _LayoutState extends State<Layout> {
           icon: icon.icon,
           label: title.data,
           onPressed: () {
-            widget.primaryMenu.onPressed(item.label);
+            onPressPrimaryMenu(item.label);
           },
         ),
       );
@@ -169,7 +185,7 @@ class _LayoutState extends State<Layout> {
       child: Column(
         children: <Widget>[
           ProjectTitle(beforeTitle: 'My'),
-          widget.primaryMenu,
+          menuPrimary,
           secondaryMenu,
         ],
       ),
@@ -242,8 +258,10 @@ class _LayoutState extends State<Layout> {
             ),
             body: Row(
               children: <Widget>[
-                Expanded(
+                Container(
+                  constraints: BoxConstraints(maxWidth: 580),
                   child: widget.content,
+                  width: 580,
                 ),
                 Expanded(
                   child: backgroundColumn(),

@@ -25,7 +25,6 @@ class PanelLayout extends StatelessWidget {
       ),
       body: Container(
         constraints: BoxConstraints(maxWidth: 300),
-        color: Colors.red,
         child: content,
       ),
     );

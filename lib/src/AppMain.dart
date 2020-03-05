@@ -1,21 +1,16 @@
 import 'package:client_portal_app/src/Brand.dart';
+import 'package:client_portal_app/src/controllers/BillingAndPaymentsController.dart';
 import 'package:client_portal_app/src/controllers/CalendarController.dart';
 import 'package:client_portal_app/src/controllers/HomeController.dart';
+import 'package:client_portal_app/src/controllers/InvoicesController.dart';
 import 'package:client_portal_app/src/controllers/LoginController.dart';
-import 'package:client_portal_app/src/controllers/PaymentController.dart';
 import 'package:client_portal_app/src/controllers/ScheduleController.dart';
-import 'package:client_portal_app/src/models/LayoutModel.dart';
-import 'package:client_portal_app/src/views/CalendarView.dart';
 import 'package:client_portal_app/src/views/ProjectLogView.dart';
-import 'package:client_portal_app/src/views/ScheduleView.dart';
-import 'package:client_portal_app/src/widgets/Layout.dart';
-
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 import 'controllers/AppController.dart';
+import 'controllers/PaymentsController.dart';
 
 class AppMain extends StatefulWidget {
   @override
@@ -73,12 +68,24 @@ class _AppMainState extends State<AppMain> {
                 settings: settings,
                 builder: (context) => createController(CalendarController()),
               );
-            case '/payments':
+            case '/billing':
               return MaterialPageRoute(
                 settings: settings,
-                builder: (context) => createController(PaymentController()),
+                builder: (context) =>
+                    createController(BillingAndPaymentsController()),
               );
-
+              break;
+            case '/billing/payments':
+              return MaterialPageRoute(
+                settings: settings,
+                builder: (context) => createController(PaymentsController()),
+              );
+              break;
+            case '/billing/invoices':
+              return MaterialPageRoute(
+                settings: settings,
+                builder: (context) => createController(InvoicesController()),
+              );
               break;
           }
         });

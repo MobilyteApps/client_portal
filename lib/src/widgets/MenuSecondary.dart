@@ -1,5 +1,5 @@
 import 'package:client_portal_app/src/controllers/AppController.dart';
-import 'package:client_portal_app/src/controllers/PaymentController.dart';
+import 'package:client_portal_app/src/controllers/BillingAndPaymentsController.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
 import 'package:flutter/material.dart';
@@ -23,13 +23,13 @@ class MenuSecondary extends StatelessWidget {
         leading: Icon(Icons.payment),
         onTap: () {
           if (width >= 1024) {
-            Navigator.pushNamed(context, '/payments');
+            Navigator.pushNamed(context, '/billing');
           } else {
             Navigator.push(
               context,
               SlideUpRoute(
                 page: AppController(
-                  controller: PaymentController(),
+                  controller: BillingAndPaymentsController(),
                 ),
               ),
             );

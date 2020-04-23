@@ -11,11 +11,11 @@ import 'package:client_portal_app/src/utils/Config.dart';
 class CalendarController extends ResponsiveController {
   CalendarController() : super(panelLayoutTitle: 'Calendar');
 
-  Widget buildContent(LayoutModel layoutModel) {
+  Widget buildContent(LayoutModel layoutModel, BuildContext context) {
     return createView(layoutModel);
   }
 
-  Widget buildContentPanel(LayoutModel layoutModel) {
+  Widget buildContentPanel(LayoutModel layoutModel, BuildContext context) {
     return Text('coming soon to mobile');
   }
 

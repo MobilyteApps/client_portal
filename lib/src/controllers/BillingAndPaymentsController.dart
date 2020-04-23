@@ -8,7 +8,7 @@ class BillingAndPaymentsController extends ResponsiveController {
   const BillingAndPaymentsController()
       : super(panelLayoutTitle: 'Billing and Payments');
 
-  Widget buildContent(LayoutModel layoutModel) {
+  Widget buildContent(LayoutModel layoutModel, BuildContext context) {
     return PaymentView(layoutModel: layoutModel);
   }
 }

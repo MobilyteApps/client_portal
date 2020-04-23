@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Brand {
+  static const int primaryDark = 0xff003c64;
+
   static const int _mainPrimary = 0xff0064a8;
 
   static const MaterialColor primary = MaterialColor(

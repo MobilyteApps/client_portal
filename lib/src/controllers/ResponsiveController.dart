@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 abstract class ResponsiveController extends StatelessWidget {
-  const ResponsiveController({Key key, this.panelLayoutTitle})
+  const ResponsiveController(
+      {Key key, this.panelLayoutTitle, this.panelCenterTitle = false})
       : super(key: key);
   final String panelLayoutTitle;
+  final bool panelCenterTitle;
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<LayoutModel>(
@@ -15,21 +17,22 @@ abstract class ResponsiveController extends StatelessWidget {
         if (MediaQuery.of(context).size.width >= 1024) {
           return Layout(
             model: layoutModel,
-            content: buildContent(layoutModel),
+            content: buildContent(layoutModel, context),
           );
         }
         return PanelLayout(
           title: panelLayoutTitle,
+          centerTitle: panelCenterTitle,
           model: layoutModel,
-          content: buildContentPanel(layoutModel),
+          content: buildContentPanel(layoutModel, context),
         );
       },
     );
   }
 
-  Widget buildContent(LayoutModel layoutModel);
+  Widget buildContent(LayoutModel layoutModel, BuildContext context);
 
-  Widget buildContentPanel(LayoutModel layoutModel) {
-    return buildContent(layoutModel);
+  Widget buildContentPanel(LayoutModel layoutModel, BuildContext context) {
+    return buildContent(layoutModel, context);
   }
 }

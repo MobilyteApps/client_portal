@@ -1,5 +1,6 @@
 import 'package:client_portal_app/src/controllers/AppController.dart';
 import 'package:client_portal_app/src/controllers/BillingAndPaymentsController.dart';
+import 'package:client_portal_app/src/controllers/TeamController.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,20 @@ class MenuSecondary extends StatelessWidget {
           style: textStyle,
         ),
         leading: Icon(Icons.group),
+        onTap: () {
+          if (width >= 1024) {
+            Navigator.pushNamed(context, '/team');
+          } else {
+            Navigator.push(
+              context,
+              SlideUpRoute(
+                page: AppController(
+                  controller: TeamController(),
+                ),
+              ),
+            );
+          }
+        },
       ),
       ListTile(
         title: Text(

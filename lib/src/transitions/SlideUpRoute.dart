@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 class SlideUpRoute extends PageRouteBuilder {
   final Widget page;
+  final RouteSettings settings;
 
-  SlideUpRoute({this.page})
+  SlideUpRoute({this.page, this.settings})
       : super(
+          settings: settings,
           transitionsBuilder:
               (context, animation, secondAnimation, Widget child) {
             return SlideTransition(

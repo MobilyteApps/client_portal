@@ -24,7 +24,7 @@ class _NewMessageViewState extends State<NewMessageView> {
         if (args != null) {
           toPerson = args;
         }
-        message = MessageModel(to: toPerson.id);
+        message = MessageModel(recipient: toPerson);
       });
     });
   }
@@ -86,7 +86,9 @@ class _NewMessageViewState extends State<NewMessageView> {
                 ).toList(),
                 onChanged: (value) {
                   setState(() {
-                    message = message.copyWith(to: value);
+                    var to = teamMembers
+                        .firstWhere((element) => element.id == value);
+                    message = message.copyWith(recipient: to);
                   });
                 },
               ),
@@ -146,7 +148,9 @@ class _NewMessageViewState extends State<NewMessageView> {
             Expanded(
               child: Column(
                 children: <Widget>[
-                  toField(message.to != null ? message.to : null, widget.team),
+                  toField(
+                      message.recipient != null ? message.recipient.id : null,
+                      widget.team),
                   subjectField(),
                 ],
               ),
@@ -174,7 +178,7 @@ class _NewMessageViewState extends State<NewMessageView> {
                   onPressed: () {
                     if (formKey.currentState.validate()) {
                       formKey.currentState.save();
-                      print([message.to, message.subject, message.message]);
+                      print([message.recipient, message.message]);
                     }
                   },
                 ),

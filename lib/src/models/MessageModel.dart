@@ -1,18 +1,43 @@
+import 'dart:convert';
+
+import 'package:client_portal_app/src/models/PersonModel.dart';
+
 class MessageModel {
-  final String to;
-  final String subject;
+  final DateTime date;
   final String message;
-  final String from;
+  final PersonModel author;
+  final PersonModel recipient;
+  final bool read;
 
-  MessageModel({this.to, this.subject, this.message, this.from});
+  MessageModel(
+      {this.recipient, this.message, this.author, this.date, this.read});
 
-  MessageModel copyWith(
-      {String to, String subject, String message, String from}) {
+  factory MessageModel.fromJson(String value) {
+    var _json = json.decode(value);
+    return MessageModel.fromMap(_json);
+  }
+
+  factory MessageModel.fromMap(Map<String, dynamic> map) {
     return MessageModel(
-      to: to != null ? to : this.to,
-      subject: subject != null ? subject : this.subject,
+      date: map['date'] == null ? null : DateTime.tryParse(map['date']['date']),
+      message: map['message'],
+      author: PersonModel.fromMap(map['author']),
+      recipient: PersonModel.fromMap(map['recipient']),
+    );
+  }
+
+  MessageModel copyWith({
+    PersonModel recipient,
+    String subject,
+    String message,
+    PersonModel author,
+    bool read,
+  }) {
+    return MessageModel(
+      recipient: recipient != null ? recipient : this.recipient,
       message: message != null ? message : this.message,
-      from: from != null ? from : this.from,
+      author: author != null ? author : this.author,
+      read: read != null ? read : this.read,
     );
   }
 }

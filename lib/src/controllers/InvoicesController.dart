@@ -6,7 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 
 class InvoicesController extends BaseController {
   @override
-  Widget buildContent(LayoutModel layoutModel) {
+  Widget buildContent(LayoutModel layoutModel, _) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

@@ -10,11 +10,11 @@ abstract class BaseController extends StatelessWidget {
       builder: (context, widget, layoutModel) {
         return Layout(
           model: layoutModel,
-          content: buildContent(layoutModel),
+          content: buildContent(layoutModel, context),
         );
       },
     );
   }
 
-  Widget buildContent(LayoutModel layoutModel);
+  Widget buildContent(LayoutModel layoutModel, BuildContext context);
 }

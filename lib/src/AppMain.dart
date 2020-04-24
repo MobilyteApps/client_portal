@@ -1,9 +1,11 @@
 import 'package:client_portal_app/src/Brand.dart';
+import 'package:client_portal_app/src/controllers/AllMessagesController.dart';
 import 'package:client_portal_app/src/controllers/BillingAndPaymentsController.dart';
 import 'package:client_portal_app/src/controllers/CalendarController.dart';
 import 'package:client_portal_app/src/controllers/HomeController.dart';
 import 'package:client_portal_app/src/controllers/InvoicesController.dart';
 import 'package:client_portal_app/src/controllers/LoginController.dart';
+import 'package:client_portal_app/src/controllers/MessagesController.dart';
 import 'package:client_portal_app/src/controllers/NewMessageController.dart';
 import 'package:client_portal_app/src/controllers/ScheduleController.dart';
 import 'package:client_portal_app/src/controllers/TeamController.dart';
@@ -99,6 +101,18 @@ class _AppMainState extends State<AppMain> {
               return MaterialPageRoute(
                 settings: settings,
                 builder: (context) => createController(NewMessageController()),
+              );
+              break;
+            case '/all-messages':
+              return MaterialPageRoute(
+                settings: settings,
+                builder: (context) => createController(AllMessagesController()),
+              );
+              break;
+            case '/messages':
+              return MaterialPageRoute(
+                settings: settings,
+                builder: (context) => createController(MessagesController()),
               );
               break;
           }

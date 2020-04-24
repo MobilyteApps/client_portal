@@ -68,6 +68,10 @@ class _LayoutState extends State<Layout> {
         break;
       case 'Project Log':
         Navigator.pushNamed(context, '/');
+        break;
+      case 'Messages':
+        Navigator.pushNamed(context, '/messages');
+        break;
     }
   }
 

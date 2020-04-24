@@ -4,7 +4,7 @@ import 'package:client_portal_app/src/views/ScheduleView.dart';
 import 'package:flutter/material.dart';
 
 class ScheduleController extends BaseController {
-  Widget buildContent(LayoutModel layoutModel) {
+  Widget buildContent(LayoutModel layoutModel, _) {
     return ScheduleView();
   }
 }

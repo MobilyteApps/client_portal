@@ -2,6 +2,7 @@ import 'package:client_portal_app/src/Brand.dart';
 import 'package:client_portal_app/src/controllers/AppController.dart';
 import 'package:client_portal_app/src/controllers/NewMessageController.dart';
 import 'package:client_portal_app/src/controllers/ResponsiveController.dart';
+import 'package:client_portal_app/src/models/AvatarModel.dart';
 import 'package:client_portal_app/src/models/PersonModel.dart';
 import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
 import 'package:flutter/material.dart';
@@ -16,12 +17,19 @@ class TeamController extends ResponsiveController {
     return [
       PersonModel(
           name: 'Jill Huckelberry',
-          avatar: '',
+          avatar: AvatarModel(text: 'JH'),
           title: 'PROJECT MANAGER',
           id: 'jh'),
       PersonModel(
-          name: 'Michael Ford', avatar: '', title: 'LEAD REMODELER', id: 'mf'),
-      PersonModel(name: 'Kyle Royer', avatar: '', title: 'LABORER', id: 'kr'),
+          name: 'Michael Ford',
+          avatar: AvatarModel(text: 'MF'),
+          title: 'LEAD REMODELER',
+          id: 'mf'),
+      PersonModel(
+          name: 'Kyle Royer',
+          avatar: AvatarModel(text: 'KR'),
+          title: 'LABORER',
+          id: 'kr'),
     ];
   }
 

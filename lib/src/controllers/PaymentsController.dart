@@ -4,7 +4,7 @@ import 'package:client_portal_app/src/widgets/BackButtonHeading.dart';
 import 'package:flutter/material.dart';
 
 class PaymentsController extends BaseController {
-  Widget buildContent(LayoutModel layoutModel) {
+  Widget buildContent(LayoutModel layoutModel, _) {
     return Container(
       padding: EdgeInsets.only(top: 40, left: 40),
       child: Column(

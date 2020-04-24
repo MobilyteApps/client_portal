@@ -38,6 +38,11 @@ class Api {
         headers: authorizationHeaders());
   }
 
+  Future<http.Response> recentConversations() {
+    return http.get('$baseUrl/conversation/recent',
+        headers: authorizationHeaders());
+  }
+
   Map<String, String> authorizationHeaders() {
     UserModel user = Hive.box('identity').get(0);
     if (user == null) {

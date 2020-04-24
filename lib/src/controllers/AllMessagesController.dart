@@ -5,9 +5,11 @@ import 'package:client_portal_app/src/models/LayoutModel.dart';
 
 class AllMessagesController extends ResponsiveController {
   AllMessagesController()
-      : super(panelLayoutTitle: 'All Messages', panelCenterTitle: true);
+      : super(panelLayoutTitle: 'Messages', panelCenterTitle: true);
   @override
   Widget buildContent(LayoutModel layoutModel, BuildContext context) {
-    return AllMessagesView();
+    return AllMessagesView(
+      layoutModel: layoutModel,
+    );
   }
 }

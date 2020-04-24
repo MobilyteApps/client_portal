@@ -9,6 +9,7 @@ import 'package:client_portal_app/src/controllers/MessagesController.dart';
 import 'package:client_portal_app/src/controllers/NewMessageController.dart';
 import 'package:client_portal_app/src/controllers/ScheduleController.dart';
 import 'package:client_portal_app/src/controllers/TeamController.dart';
+import 'package:client_portal_app/src/controllers/ViewConversationController.dart';
 import 'package:client_portal_app/src/views/ProjectLogView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -113,6 +114,13 @@ class _AppMainState extends State<AppMain> {
               return MaterialPageRoute(
                 settings: settings,
                 builder: (context) => createController(MessagesController()),
+              );
+              break;
+            case '/view-conversation':
+              return MaterialPageRoute(
+                settings: settings,
+                builder: (context) =>
+                    createController(ViewConversationController()),
               );
               break;
           }

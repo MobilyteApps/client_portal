@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:client_portal_app/src/models/AvatarModel.dart';
 import 'package:client_portal_app/src/models/MessageModel.dart';
+import 'package:client_portal_app/src/models/PersonModel.dart';
 import 'package:intl/intl.dart';
 
 class ConversationModel {
@@ -9,8 +11,6 @@ class ConversationModel {
   final String subject;
   final List<MessageModel> messages;
   final String messagePreview;
-  final DateFormat dateFormatLong = DateFormat.yMMMMd('en_US').add_jm();
-  final DateFormat timeOnlyFormat = DateFormat.jm();
 
   ConversationModel({
     this.id,
@@ -81,16 +81,23 @@ class ConversationModel {
   }
 
   String get humanReadableTimestamp {
-    if (lastMessageDate == null) {
-      return '';
-    }
-    var now = DateTime.now();
-    if (now.day == lastMessageDate.day &&
-        now.month == lastMessageDate.month &&
-        now.year == lastMessageDate.year) {
-      return timeOnlyFormat.format(lastMessageDate);
+    return lastMessage != null ? lastMessage.humanReadableTimestamp : '';
+  }
+
+  PersonModel identity(me) {
+    if (lastMessage != null &&
+        lastMessage.author != null &&
+        lastMessage.recipient != null) {
+      return lastMessage.author.id == me
+          ? lastMessage.recipient
+          : lastMessage.author;
     }
 
-    return dateFormatLong.format(lastMessageDate);
+    return PersonModel(avatar: AvatarModel(text: ''), name: '', title: '');
+  }
+
+  bool get read {
+    // @todo
+    return true;
   }
 }

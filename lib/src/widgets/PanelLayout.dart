@@ -3,12 +3,14 @@ import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:flutter/material.dart';
 
 class PanelLayout extends StatelessWidget {
-  PanelLayout(
-      {Key key,
-      this.model,
-      this.content,
-      @required this.title,
-      this.centerTitle = false});
+  PanelLayout({
+    Key key,
+    this.model,
+    this.content,
+    @required this.title,
+    this.centerTitle = false,
+    this.appBarIcon,
+  });
 
   final LayoutModel model;
 
@@ -17,6 +19,8 @@ class PanelLayout extends StatelessWidget {
   final String title;
 
   final bool centerTitle;
+
+  final IconData appBarIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +32,7 @@ class PanelLayout extends StatelessWidget {
         centerTitle: centerTitle,
         title: Text(title),
         leading: IconButton(
-          icon: Icon(Icons.close),
+          icon: Icon(appBarIcon == null ? Icons.close : appBarIcon),
           onPressed: () {
             Navigator.of(context).pop();
           },

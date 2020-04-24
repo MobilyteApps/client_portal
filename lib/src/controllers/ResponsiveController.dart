@@ -6,10 +6,14 @@ import 'package:scoped_model/scoped_model.dart';
 
 abstract class ResponsiveController extends StatelessWidget {
   const ResponsiveController(
-      {Key key, this.panelLayoutTitle, this.panelCenterTitle = false})
+      {Key key,
+      this.panelLayoutTitle,
+      this.panelCenterTitle = false,
+      this.appBarIcon})
       : super(key: key);
   final String panelLayoutTitle;
   final bool panelCenterTitle;
+  final IconData appBarIcon;
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<LayoutModel>(
@@ -24,6 +28,7 @@ abstract class ResponsiveController extends StatelessWidget {
           title: panelLayoutTitle,
           centerTitle: panelCenterTitle,
           model: layoutModel,
+          appBarIcon: appBarIcon,
           content: buildContentPanel(layoutModel, context),
         );
       },

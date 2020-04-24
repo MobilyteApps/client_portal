@@ -43,6 +43,25 @@ class Api {
         headers: authorizationHeaders());
   }
 
+  Future<http.Response> allConversations([int before]) {
+    var url = '$baseUrl/conversation';
+    if (before != null) {
+      url += '?before=$before';
+    }
+    return http.get(url, headers: authorizationHeaders());
+  }
+
+  Future<http.Response> markConversationAsRead(String conversationId) {
+    var body = {
+      'conversationId': conversationId,
+    };
+    return http.post(
+      '$baseUrl/conversation/mark-as-read',
+      headers: authorizationHeaders(),
+      body: body,
+    );
+  }
+
   Map<String, String> authorizationHeaders() {
     UserModel user = Hive.box('identity').get(0);
     if (user == null) {

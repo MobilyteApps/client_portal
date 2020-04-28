@@ -1,9 +1,6 @@
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/models/RightDrawerModel.dart';
-import 'package:client_portal_app/src/views/ProjectLogView.dart';
-import 'package:client_portal_app/src/views/ScheduleView.dart';
 import 'package:client_portal_app/src/widgets/ButtonBarButton.dart';
-import 'package:client_portal_app/src/widgets/EventEntryDetailPanel.dart';
 import 'package:client_portal_app/src/widgets/MenuPrimary.dart';
 import 'package:client_portal_app/src/widgets/MenuSecondary.dart';
 import 'package:client_portal_app/src/widgets/ProjectTitle.dart';

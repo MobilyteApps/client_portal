@@ -1,3 +1,4 @@
+import 'package:client_portal_app/src/models/MessageModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:hive/hive.dart';
 
@@ -51,6 +52,22 @@ class Api {
     return http.get(url, headers: authorizationHeaders());
   }
 
+  Future<http.Response> getConversation(String id) {
+    var url = '$baseUrl/conversation/view?id=$id';
+    return http.get(url, headers: authorizationHeaders());
+  }
+
+  Future<http.Response> newConversation(
+      String subject, MessageModel messageModel) {
+    var url = '$baseUrl/conversation/new';
+    var body = {
+      'subject': subject,
+      'to': messageModel.recipient.id,
+      'message': messageModel.message,
+    };
+    return http.post(url, headers: authorizationHeaders(), body: body);
+  }
+
   Future<http.Response> markConversationAsRead(String conversationId) {
     var body = {
       'conversationId': conversationId,
@@ -60,6 +77,10 @@ class Api {
       headers: authorizationHeaders(),
       body: body,
     );
+  }
+
+  Future<http.Response> team() {
+    return http.get('$baseUrl/team', headers: authorizationHeaders());
   }
 
   Map<String, String> authorizationHeaders() {

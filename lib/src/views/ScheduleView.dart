@@ -60,8 +60,7 @@ class ScheduleView extends StatelessWidget {
           child: FlatButton(
             hoverColor: Colors.transparent,
             padding: EdgeInsets.all(0),
-            onPressed: () {
-              print('open the panel');
+            onPressed: () {              
               Navigator.of(context).pushNamed('/calendar');
             },
             child: Text(

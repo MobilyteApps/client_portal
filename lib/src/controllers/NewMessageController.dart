@@ -1,9 +1,14 @@
-import 'package:client_portal_app/src/models/AvatarModel.dart';
+import 'dart:convert';
+
 import 'package:client_portal_app/src/models/PersonModel.dart';
+import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/views/NewMessageView.dart';
+import 'package:client_portal_app/src/widgets/BackButtonHeading.dart';
 import 'package:flutter/material.dart';
 import 'package:client_portal_app/src/controllers/ResponsiveController.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
+
+import '../Api.dart';
 
 class NewMessageController extends ResponsiveController {
   NewMessageController()
@@ -11,6 +16,32 @@ class NewMessageController extends ResponsiveController {
 
   @override
   Widget buildContent(LayoutModel layoutModel, BuildContext context) {
+    return FutureBuilder(
+      future: _getTeam(),
+      builder: (context, AsyncSnapshot<List<PersonModel>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Padding(
+            padding: EdgeInsets.only(left: 60, top: 30, right: 60), 
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                BackButtonHeading(),
+                SizedBox(height: 30,),
+                Text('New Message', style: Theme.of(context).textTheme.headline6,),
+                NewMessageView(
+                  team: snapshot.data,
+                ),
+              ],
+            ),
+          );
+        }
+
+        return Container();
+      },
+    );
+  }
+
+  Widget buildContentPanel(LayoutModel layoutModel, BuildContext context) {
     return FutureBuilder(
       future: _getTeam(),
       builder: (context, AsyncSnapshot<List<PersonModel>> snapshot) {
@@ -26,23 +57,12 @@ class NewMessageController extends ResponsiveController {
   }
 
   Future<List<PersonModel>> _getTeam() async {
-    await Future.delayed(Duration(seconds: 1));
-    return [
-      PersonModel(
-          name: 'Jill Huckelberry',
-          avatar: AvatarModel(text: 'JH'),
-          title: 'PROJECT MANAGER',
-          id: 'jh'),
-      PersonModel(
-          name: 'Michael Ford',
-          avatar: AvatarModel(text: 'MF'),
-          title: 'LEAD REMODELER',
-          id: 'mf'),
-      PersonModel(
-          name: 'Kyle Royer',
-          avatar: AvatarModel(text: 'KR'),
-          title: 'LABORER',
-          id: 'kr'),
-    ];
+    var api = Api(baseUrl: Config.apiBaseUrl);
+    var response = await api.team();
+    List<Map<String, dynamic>> _json =
+        List<Map<String, dynamic>>.from(json.decode(response.body));
+    return _json.map((e) {
+      return PersonModel.fromMap(e);
+    }).toList();    
   }
 }

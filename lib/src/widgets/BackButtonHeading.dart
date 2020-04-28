@@ -5,21 +5,20 @@ class BackButtonHeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
+    return InkWell(
       child: Row(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Icon(Icons.arrow_back),
+          SizedBox(width: 10,),
           Text(
             'Back',
-            style: TextStyle(
-              fontSize: 18,
-            ),
+            style: Theme.of(context).textTheme.headline6,
           ),
         ],
       ),
-      onPressed: () {
+      onTap: () {
         Navigator.of(context).pop();
       },
     );

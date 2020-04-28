@@ -1,7 +1,11 @@
+import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/Brand.dart';
 import 'package:client_portal_app/src/models/ConversationModel.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
+import 'package:client_portal_app/src/models/MessageModel.dart';
 import 'package:client_portal_app/src/models/PersonModel.dart';
+import 'package:client_portal_app/src/utils/Config.dart';
+import 'package:client_portal_app/src/widgets/LoadingIndicator.dart';
 import 'package:client_portal_app/src/widgets/PersonCard.dart';
 import 'package:flutter/material.dart';
 
@@ -11,14 +15,15 @@ class ViewConversationView extends StatelessWidget {
 
   final LayoutModel layoutModel;
 
-  @override
-  Widget build(BuildContext context) {
-    ConversationModel conversation = ModalRoute.of(context).settings.arguments;
+  Future<ConversationModel> getConversation(String id) async {
+    var api = Api(baseUrl: Config.apiBaseUrl);
+    var response = await api.getConversation(id);
+    print(response.body);
+    return ConversationModel.fromJson(response.body);
+  }
 
-    PersonModel personModel =
-        conversation.identity(layoutModel.identity.id.toString());
-
-    List<Widget> _cards = conversation.messages.map((e) {
+  List<Widget> _cards(List<MessageModel> messages) {
+    return messages.map((e) {
       String authorName = e.author.id == layoutModel.identity.id.toString()
           ? 'You'
           : e.author.name;
@@ -36,6 +41,7 @@ class ViewConversationView extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(15),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(
                 children: <Widget>[
@@ -59,47 +65,72 @@ class ViewConversationView extends StatelessWidget {
         ),
       );
     }).toList();
+  }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(top: 35, left: 20, right: 20),
-          child: Text(
-            conversation.subject,
-            style: Theme.of(context).textTheme.headline6,
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 20, right: 20, top: 25),
-          child: PersonCard(
-            person: personModel,
-          ),
-        ),
-        Expanded(
-          child: ListView(
-            padding: EdgeInsets.only(left: 20, right: 20, top: 20),
-            shrinkWrap: true,
-            children: _cards,
-          ),
-        ),
-        Container(
-          color: Color(0xFFEEEEEE),
-          child: TextFormField(
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              filled: true,
-              labelText: 'Reply',
-              suffixIcon: IconButton(
-                icon: Icon(Icons.send),
-                onPressed: () {
-                  print('pressed');
-                },
+  @override
+  Widget build(BuildContext context) {
+    var id = ModalRoute.of(context).settings.arguments;
+
+    return FutureBuilder(
+      future: getConversation(id),
+      builder: (context, AsyncSnapshot<ConversationModel> snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return LoadingIndicator();
+        }
+
+        if (snapshot.hasError) {
+          return Center(
+            child: Text(snapshot.error.toString()),
+          );
+        }
+
+        ConversationModel conversation = snapshot.data;
+
+        PersonModel personModel =
+            conversation.identity(layoutModel.identity.id.toString());
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 35, left: 20, right: 20),
+              child: Text(
+                conversation.subject,
+                style: Theme.of(context).textTheme.headline6,
               ),
             ),
-          ),
-        )
-      ],
+            Padding(
+              padding: EdgeInsets.only(left: 20, right: 20, top: 25),
+              child: PersonCard(
+                person: personModel,
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+                shrinkWrap: true,
+                children: _cards(conversation.messages),
+              ),
+            ),
+            Container(
+              color: Color(0xFFEEEEEE),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  filled: true,
+                  labelText: 'Reply',
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.send),
+                    onPressed: () {
+                      print('pressed');
+                    },
+                  ),
+                ),
+              ),
+            )
+          ],
+        );
+      },
     );
   }
 }

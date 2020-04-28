@@ -5,6 +5,7 @@ import 'package:client_portal_app/src/models/ConversationModel.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/widgets/ConversationCard.dart';
+import 'package:client_portal_app/src/widgets/LoadingIndicator.dart';
 import 'package:flutter/material.dart';
 
 class AllMessagesView extends StatefulWidget {
@@ -38,7 +39,7 @@ class _AllMessagesViewState extends State<AllMessagesView> {
     return FutureBuilder(
       builder: (context, AsyncSnapshot<List<ConversationModel>> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
-          return LinearProgressIndicator();
+          return LoadingIndicator();
         }
 
         if (snapshot.hasError) {

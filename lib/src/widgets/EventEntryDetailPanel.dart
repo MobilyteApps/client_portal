@@ -1,7 +1,5 @@
 import 'package:client_portal_app/src/models/EventEntryModel.dart';
-import 'package:client_portal_app/src/widgets/EventEntry.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 
 class EventEntryDetailPanel extends StatelessWidget {
   const EventEntryDetailPanel({Key key, @required this.eventEntryModel})

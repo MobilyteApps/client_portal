@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:client_portal_app/src/models/AvatarModel.dart';
 import 'package:client_portal_app/src/models/MessageModel.dart';
 import 'package:client_portal_app/src/models/PersonModel.dart';
-import 'package:intl/intl.dart';
 
 class ConversationModel {
   final String id;
@@ -66,8 +65,7 @@ class ConversationModel {
       return null;
     }
     return messages.length > 0
-        ? messages.lastWhere((element) {
-            print(me);
+        ? messages.lastWhere((element) {            
             return element.author.id != me;
           }, orElse: () => null)
         : null;
@@ -99,5 +97,15 @@ class ConversationModel {
   bool get read {
     // @todo
     return true;
+  }
+
+  @override
+  String toString() {
+    return json.encode({
+      'id': id, 
+      'started_date': startedDate.toString(), 
+      'subject': subject,
+      //'messages': messages,
+    });
   }
 }

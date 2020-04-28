@@ -1,4 +1,3 @@
-import 'package:client_portal_app/src/Brand.dart';
 import 'package:client_portal_app/src/models/EventEntryModel.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/models/RightDrawerModel.dart';
@@ -24,7 +23,7 @@ class _CalendarViewState extends State<CalendarView> {
   Map<DateTime, List<EventEntryModel>> _events;
   List<EventEntryModel> _eventListModels = [];
   DateTime _initialSelectedDay = DateTime.now();
-  String _currentMonth = '';
+  String _currentMonth;
   @override
   void initState() {
     super.initState();

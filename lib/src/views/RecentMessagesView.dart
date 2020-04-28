@@ -125,8 +125,14 @@ class RecentMessagesView extends StatelessWidget {
 
         _columns.insert(0, heading(context));
 
+        EdgeInsets padding = EdgeInsets.only(top: 30, left: 15, right: 15);
+
+        if (MediaQuery.of(context).size.width >= 1024) {
+          padding = padding.copyWith(left: 60, right: 60);
+        }
+
         return Container(
-          padding: EdgeInsets.only(top: 30, left: 15, right: 15),
+          padding: padding,
           child: Column(
             children: _columns,
           ),

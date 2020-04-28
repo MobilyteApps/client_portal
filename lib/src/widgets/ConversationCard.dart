@@ -1,7 +1,6 @@
 import 'package:client_portal_app/src/controllers/AppController.dart';
 import 'package:client_portal_app/src/controllers/ViewConversationController.dart';
 import 'package:client_portal_app/src/models/ConversationModel.dart';
-import 'package:client_portal_app/src/models/MessageModel.dart';
 import 'package:client_portal_app/src/models/PersonModel.dart';
 import 'package:client_portal_app/src/transitions/SlideLeftRoute.dart';
 import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
@@ -45,12 +44,12 @@ class ConversationCard extends StatelessWidget {
       onTap: () {
         if (MediaQuery.of(context).size.width >= 1024) {
           Navigator.pushNamed(context, '/view-conversation',
-              arguments: conversation);
+              arguments: conversation.id);
         } else if (routeAnimationDirection == 'up') {
           Navigator.push(
             context,
             SlideUpRoute(
-              settings: RouteSettings(arguments: conversation),
+              settings: RouteSettings(arguments: conversation.id),
               page: AppController(
                 controller: ViewConversationController(),
               ),
@@ -96,7 +95,7 @@ class ConversationCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            conversation.lastMessage.recipient != null
+                            cardIdentity != null
                                 ? cardIdentity.name
                                 : '',
                             style: TextStyle(

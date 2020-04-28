@@ -123,6 +123,11 @@ class _AppMainState extends State<AppMain> {
                     createController(ViewConversationController()),
               );
               break;
+            default:
+              return MaterialPageRoute(
+                settings: settings,
+                  builder: (_) =>
+                      createController(Center(child: Text('404 Not found'))));
           }
         });
   }

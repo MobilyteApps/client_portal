@@ -1,5 +1,8 @@
+import 'package:client_portal_app/src/Api.dart';
+import 'package:client_portal_app/src/models/ConversationModel.dart';
 import 'package:client_portal_app/src/models/MessageModel.dart';
 import 'package:client_portal_app/src/models/PersonModel.dart';
+import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:flutter/material.dart';
 
 class NewMessageView extends StatefulWidget {
@@ -14,13 +17,26 @@ class NewMessageView extends StatefulWidget {
 class _NewMessageViewState extends State<NewMessageView> {
   MessageModel message = MessageModel();
   PersonModel toPerson = PersonModel();
+  String subject;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  Future<ConversationModel> submitMessage(
+      String subject, MessageModel messageModel) async {
+    var api = Api(baseUrl: Config.apiBaseUrl);
+
+    var response = await api.newConversation(subject, messageModel);
+
+    return ConversationModel.fromJson(response.body);
+  }
+
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
       setState(() {
-        PersonModel args = ModalRoute.of(context).settings.arguments;
+        PersonModel args = ModalRoute.of(context).settings == null
+            ? null
+            : ModalRoute.of(context).settings.arguments;
         if (args != null) {
           toPerson = args;
         }
@@ -30,8 +46,12 @@ class _NewMessageViewState extends State<NewMessageView> {
   }
 
   Widget toField(value, List<PersonModel> teamMembers) {
+    var margin = EdgeInsets.only(left: 20, right: 20);
+    if (MediaQuery.of(context).size.width >= 1024) {
+      margin = EdgeInsets.all(0);
+    }
     return Container(
-      margin: EdgeInsets.only(left: 20, right: 20),
+      margin: margin,
       child: Row(
         children: <Widget>[
           Text(
@@ -104,8 +124,13 @@ class _NewMessageViewState extends State<NewMessageView> {
   }
 
   Widget subjectField() {
+    var margin = EdgeInsets.only(left: 20, right: 20);
+    if (MediaQuery.of(context).size.width >= 1024) {
+      margin = EdgeInsets.only(left: 0, right: 0, bottom: 50);
+    }
+
     return Container(
-      margin: EdgeInsets.only(left: 20, right: 20),
+      margin: margin,
       decoration: BoxDecoration(
           border:
               Border(bottom: BorderSide(color: Colors.black.withOpacity(.12)))),
@@ -120,7 +145,7 @@ class _NewMessageViewState extends State<NewMessageView> {
             child: TextFormField(
               onSaved: (value) {
                 setState(() {
-                  message = message.copyWith(subject: value);
+                  subject = value;
                 });
               },
               decoration: InputDecoration(border: InputBorder.none),
@@ -137,24 +162,37 @@ class _NewMessageViewState extends State<NewMessageView> {
     );
   }
 
+  Widget _spacer() {
+    if (MediaQuery.of(context).size.width < 1024) {
+      return Expanded(
+        child: SizedBox(),
+      );
+    }
+    return SizedBox();
+  }
+
   @override
   Widget build(BuildContext context) {
+    var messageFieldPadding = EdgeInsets.all(20);
+
+    if (MediaQuery.of(context).size.width >= 1024) {
+      messageFieldPadding = null;
+    }
+
     return Container(
       padding: EdgeInsets.only(top: 40),
       child: Form(
         key: formKey,
         child: Column(
           children: <Widget>[
-            Expanded(
-              child: Column(
-                children: <Widget>[
-                  toField(
-                      message.recipient != null ? message.recipient.id : null,
-                      widget.team),
-                  subjectField(),
-                ],
-              ),
+            Column(
+              children: <Widget>[
+                toField(message.recipient != null ? message.recipient.id : null,
+                    widget.team),
+                subjectField(),
+              ],
             ),
+            _spacer(),
             TextFormField(
               validator: (value) {
                 if (value.length == 0) {
@@ -168,17 +206,18 @@ class _NewMessageViewState extends State<NewMessageView> {
                 });
               },
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.all(20),
+                contentPadding: messageFieldPadding,
                 filled: true,
                 fillColor: Color(0xFFEEEEEE),
                 labelText: 'Message',
                 border: InputBorder.none,
                 suffixIcon: IconButton(
                   icon: Icon(Icons.send),
-                  onPressed: () {
+                  onPressed: () async {
                     if (formKey.currentState.validate()) {
                       formKey.currentState.save();
-                      print([message.recipient, message.message]);
+                      await submitMessage(subject, message);                      
+                      Navigator.of(context).pop();
                     }
                   },
                 ),

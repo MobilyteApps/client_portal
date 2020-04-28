@@ -34,6 +34,7 @@ class _LoginFormState extends State<LoginForm> {
   void initState() {
     passwordVisible = false;
     rememberMe = false;
+    super.initState();
   }
 
   @override
@@ -148,8 +149,6 @@ class _LoginFormState extends State<LoginForm> {
                       switch (response.statusCode) {
                         case 200:
                           var body = json.decode(response.body.toString());
-
-                          print(body);
                           await widget.userModel.login(body);
                           // navigate to home screen
                           Navigator.of(context).pushReplacementNamed('/');
@@ -165,8 +164,6 @@ class _LoginFormState extends State<LoginForm> {
                           ));
                       }
                     } catch (e) {
-                      
-                      print(e);
                       // probably a CORS issue if the error is an XMLHttpRequest error
                       Scaffold.of(context).showSnackBar(SnackBar(
                         backgroundColor: Colors.red,

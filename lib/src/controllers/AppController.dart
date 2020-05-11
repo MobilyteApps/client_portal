@@ -15,6 +15,7 @@ class AppController extends StatelessWidget {
   AppController({@required this.controller});
 
   Future<LayoutModel> openBoxes() async {
+    print('[AppController.dart] opening identity and project boxes');
     final Api api = Api(baseUrl: Config.apiBaseUrl);
 
     await Hive.openBox('identity');
@@ -23,26 +24,32 @@ class AppController extends StatelessWidget {
     UserModel identity = Hive.box('identity').get(0);
 
     if (identity == null) {
+      print('[AppController.dart] identity not found');
       return LayoutModel();
     }
 
     // verify user is logged in
-    http.Response userResponse = await api.me();
-
-    // re-log in
-    if (userResponse.statusCode >= 400) {
+    try {
+      await api.me();
+    } catch (e) {
+      print('[AppController.dart] identity error');
       return LayoutModel();
     }
+
+    // re-log in
 
     ProjectModel project =
         Hive.box('project').get(identity != null ? identity.id : null);
 
     if (project == null) {
-      final http.Response response = await api.project();
-      final ProjectModel model =
-          ProjectModel.fromJson(response.body.toString());
-
-      Hive.box('project').put(identity.id, model);
+      try {
+        final http.Response response = await api.project();
+        final ProjectModel model =
+            ProjectModel.fromJson(response.body.toString());
+        Hive.box('project').put(identity.id, model);
+      } catch (e) {
+        print(e);
+      }
     }
 
     if (project == null) {
@@ -60,15 +67,24 @@ class AppController extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           UserModel model = snapshot.data.identity;
           if (model == null) {
-            return LoginController();
+            return ScopedModel<LayoutModel>(
+              child: LoginController(),
+              model: snapshot.data,
+            );
           }
           return ScopedModel<LayoutModel>(
             child: controller,
             model: snapshot.data,
           );
-        } else {
-          return Container();
         }
+
+        if (snapshot.hasError) {
+          return Container(
+            child: Text(snapshot.error.toString()),
+          );
+        }
+
+        return Container();
       },
     );
   }

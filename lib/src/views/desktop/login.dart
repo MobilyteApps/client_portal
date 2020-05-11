@@ -25,7 +25,7 @@ class _DesktopLoginScreenState extends State<DesktopLoginScreen> {
   Widget buildForWeb() {
     return Row(
       children: <Widget>[
-        Expanded(          
+        Expanded(
           flex: 5,
           child: BackgroundWithLogo(),
         ),

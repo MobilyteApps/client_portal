@@ -6,7 +6,7 @@ import 'package:scoped_model/scoped_model.dart';
 
 class LayoutModel extends Model {
   final UserModel identity;
-  final ProjectModel project;
+  ProjectModel project;
 
   Widget endDrawer;
 
@@ -23,6 +23,11 @@ class LayoutModel extends Model {
 
   void setEndDrawer(Widget drawer) {
     endDrawer = drawer;
+    notifyListeners();
+  }
+
+  void setProject(ProjectModel project) {
+    this.project = project;
     notifyListeners();
   }
 }

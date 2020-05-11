@@ -1,3 +1,4 @@
+import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/Brand.dart';
 import 'package:client_portal_app/src/controllers/AllMessagesController.dart';
 import 'package:client_portal_app/src/controllers/BillingAndPaymentsController.dart';
@@ -10,6 +11,7 @@ import 'package:client_portal_app/src/controllers/NewMessageController.dart';
 import 'package:client_portal_app/src/controllers/ScheduleController.dart';
 import 'package:client_portal_app/src/controllers/TeamController.dart';
 import 'package:client_portal_app/src/controllers/ViewConversationController.dart';
+import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/views/ProjectLogView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +28,8 @@ class _AppMainState extends State<AppMain> {
   Widget content;
 
   Widget controller;
+
+  final Api api = Api(baseUrl: Config.apiBaseUrl);
 
   @override
   void initState() {
@@ -65,7 +69,7 @@ class _AppMainState extends State<AppMain> {
             case '/login':
               return MaterialPageRoute(
                 settings: settings,
-                builder: (context) => LoginController(),
+                builder: (context) => createController(LoginController()),
               );
               break;
             case '/calendar':
@@ -125,7 +129,7 @@ class _AppMainState extends State<AppMain> {
               break;
             default:
               return MaterialPageRoute(
-                settings: settings,
+                  settings: settings,
                   builder: (_) =>
                       createController(Center(child: Text('404 Not found'))));
           }

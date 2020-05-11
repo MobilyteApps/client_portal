@@ -19,6 +19,7 @@ class Api {
   }
 
   Future<http.Response> project() {
+    print('[Api.dart] requesting project');
     return http.get('$baseUrl/project', headers: authorizationHeaders());
   }
 
@@ -31,6 +32,7 @@ class Api {
   }
 
   Future<http.Response> me() {
+    print('[Api.dart] requesting identity');
     return http.get('$baseUrl/user/me', headers: authorizationHeaders());
   }
 
@@ -84,10 +86,15 @@ class Api {
   }
 
   Map<String, String> authorizationHeaders() {
+    print('[Api.dart] finding user identity');
     UserModel user = Hive.box('identity').get(0);
     if (user == null) {
+      print('[Api.dart] user identity not found');
       return null;
+    } else {
+      print('[Api.dart] user identity found ' + user.id.toString());
     }
+
     String token = user == null ? '' : user.accessToken;
     return {'Authorization': 'Bearer $token'};
   }

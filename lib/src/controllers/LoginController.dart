@@ -22,13 +22,7 @@ class _LoginControllerState extends State<LoginController> {
         ? DesktopLoginScreen(userModel: identity)
         : WelcomeScreen(
             onLoginPress: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LoginScreen(
-                      userModel: identity,
-                    ),
-                  ));
+              Navigator.of(context).pushReplacementNamed('/login');
             },
           );
     super.initState();

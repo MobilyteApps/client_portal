@@ -258,6 +258,7 @@ class _LayoutState extends State<Layout> {
               preferredSize: Size.fromHeight(130),
             ),
             body: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
                   constraints: BoxConstraints(maxWidth: 580),

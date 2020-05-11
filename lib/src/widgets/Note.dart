@@ -16,6 +16,8 @@ class Note extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(15),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Row(
               children: <Widget>[

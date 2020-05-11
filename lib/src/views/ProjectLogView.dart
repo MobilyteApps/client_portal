@@ -17,11 +17,17 @@ class ProjectLogView extends StatelessWidget {
   }
 
   Widget listViewContent(items) {
-    return ListView(
-      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      children: items,
+    final ScrollController _scrollController = ScrollController();
+    return Scrollbar(
+      controller: _scrollController,
+      isAlwaysShown: true,
+      child: ListView(
+        controller: _scrollController,
+        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        children: items,
+      ),
     );
   }
 

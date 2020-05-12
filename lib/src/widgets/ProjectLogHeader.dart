@@ -20,6 +20,61 @@ class ProjectLogHeader extends StatelessWidget {
 
   final String icon;
 
+  Widget _weatherIcon() {
+    if (this.icon == null) {
+      return SizedBox();
+    }
+    return Image.network(
+      this.icon,
+      height: 20,
+    );
+  }
+
+  Widget _precipitation() {
+    if (precipitation == null) {
+      return SizedBox();
+    }
+    return Text(
+      precipitation,
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 12,
+        color: Colors.black54,
+      ),
+    );
+  }
+
+  Widget _temps() {
+    if (this.temperatureHigh == null || this.temperatureLow == null) {
+      return SizedBox();
+    }
+
+    return Container(
+      padding: EdgeInsets.only(left: 10),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            temperatureHigh + '\u00b0',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+              color: Colors.black54,
+            ),
+          ),
+          Text(
+            temperatureLow + '\u00b0',
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.black54,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,48 +94,15 @@ class ProjectLogHeader extends StatelessWidget {
             flex: 0,
             child: Row(
               children: <Widget>[
-                Text(
-                  '20%',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                    color: Colors.black54,
-                  ),
-                ),
+                _precipitation(),
                 Padding(
                   padding: EdgeInsets.only(left: 0, right: 0),
                   child: VerticalDivider(
                     color: Colors.black87,
                   ),
                 ),
-                Image.network(
-                  this.icon,
-                  height: 20,
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        '35\u00b0',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                          color: Colors.black54,
-                        ),
-                      ),
-                      Text(
-                        '27\u00b0',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                _weatherIcon(),
+                _temps(),
               ],
             ),
           ),

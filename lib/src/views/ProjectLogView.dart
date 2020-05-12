@@ -93,6 +93,11 @@ class ProjectLogView extends StatelessWidget {
                   items.add(ProjectLogHeader(
                     title: entry['date'],
                     icon: entry['weather']['iconUrl'],
+                    temperatureHigh:
+                        entry['weather']['temperatureHigh'].toString(),
+                    temperatureLow:
+                        entry['weather']['temperatureLow'].toString(),
+                    precipitation: entry['weather']['precipitation'],
                   ));
                   entry['notes'].forEach((note) {
                     items.add(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ProjectLogHeader extends StatelessWidget {
   const ProjectLogHeader(
@@ -20,10 +21,33 @@ class ProjectLogHeader extends StatelessWidget {
 
   final String icon;
 
+  static const Map<String, IconData> iconMap = {
+    'fa-sun': FontAwesomeIcons.lightSun,
+    'fa-clouds-sun': FontAwesomeIcons.lightCloudsSun,
+    'fa-clouds': FontAwesomeIcons.lightClouds,
+    'fa-cloud-drizzle': FontAwesomeIcons.lightCloudDrizzle,
+    'fa-snowflake': FontAwesomeIcons.lightSnowflake,
+    'fa-cloud-sleet': FontAwesomeIcons.lightCloudSleet,
+    'fa-thunderstorm': FontAwesomeIcons.lightThunderstorm,
+    'fa-fog': FontAwesomeIcons.lightFog,
+    'fa-raindrops': FontAwesomeIcons.lightRaindrops,
+  };
+
   Widget _weatherIcon() {
     if (this.icon == null) {
       return SizedBox();
     }
+    if (iconMap.containsKey(icon)) {
+      return SizedBox(
+        width: 20,
+        child: FaIcon(
+          iconMap[icon],
+          size: 16,
+          color: Colors.black.withOpacity(.7),
+        ),
+      );
+    }
+
     return Image.network(
       this.icon,
       height: 20,

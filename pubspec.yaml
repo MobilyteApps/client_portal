@@ -25,6 +25,7 @@ dependencies:
   path_provider: ^1.6.0
   hive_generator: ^0.7.0
   intl: ^0.16.1
+  font_awesome_flutter: '>= 4.7.0'
   flutter:
     sdk: flutter
 
@@ -39,6 +40,8 @@ dev_dependencies:
 
 dependency_overrides:
   dartx: ^0.3.0
+  font_awesome_flutter:
+    path: '../font_awesome_flutter'
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

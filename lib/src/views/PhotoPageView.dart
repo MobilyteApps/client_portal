@@ -72,7 +72,7 @@ class _PhotoPageViewState extends State<PhotoPageView> {
       child: RoundButton(
         backgroundColor: Colors.black,
         textColor: Colors.white,
-        child: Icon(Icons.arrow_back),
+        child: Icon(Icons.arrow_back_ios),
         onPressed: currentPage != 0
             ? () {
                 pageController.previousPage(
@@ -91,7 +91,7 @@ class _PhotoPageViewState extends State<PhotoPageView> {
       child: RoundButton(
         backgroundColor: Colors.black,
         textColor: Colors.white,
-        child: Icon(Icons.arrow_forward),
+        child: Icon(Icons.arrow_forward_ios),
         onPressed: (widget.photos.length -1) != currentPage ? () {          
           pageController.nextPage(
               duration: Duration(milliseconds: 250), curve: Curves.bounceIn);

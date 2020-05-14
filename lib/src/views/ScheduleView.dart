@@ -31,10 +31,16 @@ class ScheduleView extends StatelessWidget {
       EventEntryModel eventEntryModel = EventEntryModel.fromJson(entry);
 
       if (trackDates.contains(mdy) == false) {
+        double _top = 0;
+
+        if (trackDates.length > 0) {
+          _top = 25;
+        }
+
         trackDates.add(mdy);
         entries.add(Container(
           child: Text(mdy),
-          margin: EdgeInsets.only(top: 25),
+          margin: EdgeInsets.only(top: _top),
         ));
       }
 
@@ -60,7 +66,7 @@ class ScheduleView extends StatelessWidget {
           child: FlatButton(
             hoverColor: Colors.transparent,
             padding: EdgeInsets.all(0),
-            onPressed: () {              
+            onPressed: () {
               Navigator.of(context).pushNamed('/calendar');
             },
             child: Text(
@@ -79,6 +85,7 @@ class ScheduleView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScrollController _scrollController = ScrollController();
     return ScopedModelDescendant<LayoutModel>(
       builder: (context, widget, layoutModel) {
         return FutureBuilder(
@@ -109,10 +116,19 @@ class ScheduleView extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                        margin: EdgeInsets.only(bottom: 25),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: entries(body, context, layoutModel),
+                      Expanded(
+                        child: Scrollbar(
+                          controller: _scrollController,
+                          isAlwaysShown: true,
+                          child: ListView(
+                            padding: EdgeInsets.only(right: 15),
+                            controller: _scrollController,
+                            shrinkWrap: true,
+                            children: entries(body, context, layoutModel),
+                          ),
+                        ),
                       ),
                     ],
                   ),

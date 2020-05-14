@@ -38,11 +38,11 @@ class _ViewConversationViewState extends State<ViewConversationView> {
     Future.delayed(Duration.zero, () async {
       print('event source init');
       var _conversationId = ModalRoute.of(context).settings.arguments;
-      var _eventSource = await _initStream(_conversationId);
+      //var _eventSource = await _initStream(_conversationId);
 
       setState(() {
         conversationId = _conversationId;
-        eventSource = _eventSource;
+        //eventSource = _eventSource;
       });
     });
   }

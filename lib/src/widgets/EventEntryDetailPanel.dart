@@ -73,7 +73,7 @@ class EventEntryDetailPanel extends StatelessWidget {
     );
 
     String time = eventEntryModel.time();
-    if (time.length > 0) {
+    if (time.length > 0 && eventEntryModel.allDay == false) {
       _listViewItems.add(
         ListTile(
           leading: Icon(Icons.access_time),

@@ -26,6 +26,7 @@ dependencies:
   hive_generator: ^0.7.0
   intl: ^0.16.1
   eventsource: ^0.2.2
+  photo_view: ^0.9.2
   font_awesome_flutter: '>= 4.7.0'
   flutter:
     sdk: flutter

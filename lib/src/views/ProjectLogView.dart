@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
+import 'package:client_portal_app/src/views/PhotoPageView.dart';
 import 'package:client_portal_app/src/widgets/Note.dart';
 import 'package:client_portal_app/src/widgets/ProjectLogHeader.dart';
 import 'package:http/http.dart' as http;
@@ -36,7 +37,7 @@ class ProjectLogView extends StatelessWidget {
     return padding > 0 ? padding : 0;
   }
 
-  ListView photoListView(entry) {
+  ListView photoListView(context, entry) {
     ListView photoListView = ListView.builder(
       shrinkWrap: true,
       scrollDirection: Axis.horizontal,
@@ -44,10 +45,8 @@ class ProjectLogView extends StatelessWidget {
       itemBuilder: (context, index) {
         return Container(
           margin: EdgeInsets.all(1),
-          child: Image.network(
-            entry['photos'][index]['url'],
-            fit: BoxFit.cover,
-          ),
+          child: _image(
+              context, entry['photos'][index]['url'], entry['photos'], index),
         );
       },
     );
@@ -55,7 +54,7 @@ class ProjectLogView extends StatelessWidget {
     return photoListView;
   }
 
-  GridView photoGridView(entry) {
+  GridView photoGridView(context, entry) {
     return GridView.builder(
       shrinkWrap: true,
       itemCount: entry['photos'].length,
@@ -64,11 +63,29 @@ class ProjectLogView extends StatelessWidget {
       itemBuilder: (context, index) {
         return Container(
           margin: EdgeInsets.all(3),
-          child: Image.network(
-            entry['photos'][index]['url'],
-            fit: BoxFit.cover,
-          ),
+          child: _image(
+              context, entry['photos'][index]['url'], entry['photos'], index),
         );
+      },
+    );
+  }
+
+  Widget _image(context, String url, List photos, int index) {
+    return InkWell(
+      child: Image.network(
+        url,
+        fit: BoxFit.cover,
+      ),
+      onTap: () {
+        showModalBottomSheet(
+            isScrollControlled: true,
+            context: context,
+            builder: (context) {
+              return PhotoPageView(
+                photos: photos,
+                initialPage: index,
+              );
+            });
       },
     );
   }
@@ -137,8 +154,8 @@ class ProjectLogView extends StatelessWidget {
                             bottom: 30,
                             left: mediaQueryWidth >= 1024 ? 12 : 14),
                         child: mediaQueryWidth >= 1024
-                            ? photoGridView(entry)
-                            : photoListView(entry),
+                            ? photoGridView(context, entry)
+                            : photoListView(context, entry),
                       ),
                     );
                   }

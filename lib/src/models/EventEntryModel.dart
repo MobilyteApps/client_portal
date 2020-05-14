@@ -1,15 +1,18 @@
 import 'package:intl/intl.dart';
 
 class EventEntryModel {
-  EventEntryModel(
-      {this.backgroundColor,
-      this.textColor,
-      this.title,
-      this.trailing,
-      this.startDateTime,
-      this.endDateTime,
-      this.location,
-      this.description});
+  EventEntryModel({
+    this.backgroundColor,
+    this.textColor,
+    this.title,
+    this.trailing,
+    this.startDateTime,
+    this.endDateTime,
+    this.location,
+    this.description,
+    this.isMultiDay,
+    this.allDay,
+  });
 
   int backgroundColor;
   int textColor;
@@ -19,8 +22,29 @@ class EventEntryModel {
   String endDateTime;
   String location;
   String description;
+  bool isMultiDay;
+  bool allDay;
 
   EventEntryModel.fromJson(dynamic event) {
+    var startDate = event['startDateTime'] == null
+        ? null
+        : DateTime.tryParse(event['startDateTime']);
+
+    var endDate = event['endDateTime'] == null
+        ? null
+        : DateTime.tryParse(event['endDateTime']);
+
+    bool sameDay(DateTime start, DateTime end) {
+      return start.day == end.day &&
+          start.month == end.month &&
+          start.year == end.year;
+    }
+
+    bool _isMultiDay = false;
+    if (endDate != null && sameDay(startDate, endDate) == false) {
+      _isMultiDay = true;
+    }
+
     backgroundColor = event['backgroundColor'];
     textColor = event['textColor'];
     title = event['title'];
@@ -29,6 +53,9 @@ class EventEntryModel {
     endDateTime = event['endDateTime'];
     location = event['location'];
     description = event['description'];
+    isMultiDay = _isMultiDay;
+    allDay =
+        event['startDateTime'] != null && event['startDateTime'].length == 10;
   }
 
   String date() {

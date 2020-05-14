@@ -1,4 +1,5 @@
 import 'package:client_portal_app/src/models/MessageModel.dart';
+import 'package:eventsource/eventsource.dart';
 import 'package:http/http.dart' as http;
 import 'package:hive/hive.dart';
 
@@ -60,11 +61,11 @@ class Api {
   }
 
   Future<http.Response> newConversation(
-      String subject, MessageModel messageModel) {
+      String subject, MessageModel messageModel, String to) {
     var url = '$baseUrl/conversation/new';
     var body = {
       'subject': subject,
-      'to': messageModel.recipient.id,
+      'to': to,
       'message': messageModel.message,
     };
     return http.post(url, headers: authorizationHeaders(), body: body);
@@ -81,8 +82,21 @@ class Api {
     );
   }
 
+  Future<http.Response> replyToConversation(
+      String conversationId, String reply) {
+    var body = {'conversationId': conversationId, 'reply': reply};
+    return http.post('$baseUrl/conversation/reply',
+        body: body, headers: authorizationHeaders());
+  }
+
   Future<http.Response> team() {
     return http.get('$baseUrl/team', headers: authorizationHeaders());
+  }
+
+  Future<EventSource> conversationStream(String id) async {
+    return await EventSource.connect(
+        "$baseUrl/conversation/stream?id=$id&_format=text/event-stream",
+        headers: authorizationHeaders());
   }
 
   Map<String, String> authorizationHeaders() {

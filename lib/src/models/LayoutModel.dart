@@ -17,7 +17,7 @@ class LayoutModel extends Model {
       MenuItem(icon: Icons.library_books, label: 'Project Log'),
       MenuItem(icon: Icons.event_note, label: 'Schedule'),
       MenuItem(icon: Icons.message, label: 'Messages'),
-      MenuItem(icon: Icons.notifications, label: 'Notifications')
+      // MenuItem(icon: Icons.notifications, label: 'Notifications')
     ];
   }
 

@@ -7,26 +7,60 @@ import 'package:client_portal_app/src/models/PersonModel.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/widgets/LoadingIndicator.dart';
 import 'package:client_portal_app/src/widgets/PersonCard.dart';
+import 'package:eventsource/eventsource.dart';
 import 'package:flutter/material.dart';
 
-class ViewConversationView extends StatelessWidget {
+class ViewConversationView extends StatefulWidget {
   const ViewConversationView({Key key, @required this.layoutModel})
       : super(key: key);
 
   final LayoutModel layoutModel;
 
+  @override
+  _ViewConversationViewState createState() => _ViewConversationViewState();
+}
+
+class _ViewConversationViewState extends State<ViewConversationView> {
+  var api = Api(baseUrl: Config.apiBaseUrl);
+
+  String conversationId;
+
+  EventSource eventSource;
+
   Future<ConversationModel> getConversation(String id) async {
-    var api = Api(baseUrl: Config.apiBaseUrl);
     var response = await api.getConversation(id);
-    print(response.body);
     return ConversationModel.fromJson(response.body);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () async {
+      print('event source init');
+      var _conversationId = ModalRoute.of(context).settings.arguments;
+      var _eventSource = await _initStream(_conversationId);
+
+      setState(() {
+        conversationId = _conversationId;
+        eventSource = _eventSource;
+      });
+    });
+  }
+
+  Future<EventSource> _initStream(conversationId) async {
+    var eventSource = await api.conversationStream(conversationId);
+    eventSource.listen((event) {
+      print(event);
+    });
+    return eventSource;
   }
 
   List<Widget> _cards(List<MessageModel> messages) {
     return messages.map((e) {
-      String authorName = e.author.id == layoutModel.identity.id.toString()
-          ? 'You'
-          : e.author.name;
+      String authorName =
+          e.author.id == widget.layoutModel.identity.id.toString()
+              ? 'You'
+              : e.author.name;
 
       TextStyle textStyle = TextStyle(
         color: authorName == 'You' ? Colors.white.withOpacity(.87) : null,
@@ -69,10 +103,15 @@ class ViewConversationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var id = ModalRoute.of(context).settings.arguments;
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    final _replyTextController = TextEditingController();
+
+    if (conversationId == null) {
+      return Container();
+    }
 
     return FutureBuilder(
-      future: getConversation(id),
+      future: getConversation(conversationId),
       builder: (context, AsyncSnapshot<ConversationModel> snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return LoadingIndicator();
@@ -87,7 +126,7 @@ class ViewConversationView extends StatelessWidget {
         ConversationModel conversation = snapshot.data;
 
         PersonModel personModel =
-            conversation.identity(layoutModel.identity.id.toString());
+            conversation.identity(widget.layoutModel.identity.id.toString());
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,16 +153,37 @@ class ViewConversationView extends StatelessWidget {
             ),
             Container(
               color: Color(0xFFEEEEEE),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  filled: true,
-                  labelText: 'Reply',
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.send),
-                    onPressed: () {
-                      print('pressed');
-                    },
+              child: Form(
+                key: _formKey,
+                child: TextFormField(
+                  controller: _replyTextController,
+                  validator: (value) {
+                    if (value.length == 0) {
+                      return 'Please enter a message';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    filled: true,
+                    labelText: 'Reply',
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.send),
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          try {
+                            final Api api = Api(baseUrl: Config.apiBaseUrl);
+                            await api.replyToConversation(conversation.id,
+                                _replyTextController.value.text);
+
+                            setState(() {});
+                          } catch (e) {
+                            Scaffold.of(context).showSnackBar(
+                                SnackBar(content: Text(e.toString())));
+                          }
+                        }
+                      },
+                    ),
                   ),
                 ),
               ),

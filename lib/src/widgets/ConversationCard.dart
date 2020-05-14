@@ -40,6 +40,8 @@ class ConversationCard extends StatelessWidget {
 
     PersonModel cardIdentity = conversation.identity(me);
 
+    print(cardIdentity.avatar.text);
+
     return InkWell(
       onTap: () {
         if (MediaQuery.of(context).size.width >= 1024) {
@@ -95,9 +97,7 @@ class ConversationCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            cardIdentity != null
-                                ? cardIdentity.name
-                                : '',
+                            cardIdentity != null ? cardIdentity.name : '',
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: conversation.read != true

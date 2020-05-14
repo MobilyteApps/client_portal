@@ -25,6 +25,7 @@ dependencies:
   path_provider: ^1.6.0
   hive_generator: ^0.7.0
   intl: ^0.16.1
+  eventsource: ^0.2.2
   font_awesome_flutter: '>= 4.7.0'
   flutter:
     sdk: flutter

@@ -10,6 +10,7 @@ class ConversationModel {
   final String subject;
   final List<MessageModel> messages;
   final String messagePreview;
+  final PersonModel owner;
 
   ConversationModel({
     this.id,
@@ -17,6 +18,7 @@ class ConversationModel {
     this.subject,
     this.messages,
     this.messagePreview,
+    this.owner,
   });
 
   factory ConversationModel.fromMap(Map<String, dynamic> map) {
@@ -48,6 +50,9 @@ class ConversationModel {
       subject: _json['subject'],
       messagePreview: _messagePreview,
       messages: _messages,
+      owner: _json['owner'] == null
+          ? PersonModel()
+          : PersonModel.fromMap(_json['owner']),
     );
   }
 
@@ -65,7 +70,7 @@ class ConversationModel {
       return null;
     }
     return messages.length > 0
-        ? messages.lastWhere((element) {            
+        ? messages.lastWhere((element) {
             return element.author.id != me;
           }, orElse: () => null)
         : null;
@@ -83,12 +88,13 @@ class ConversationModel {
   }
 
   PersonModel identity(me) {
-    if (lastMessage != null &&
-        lastMessage.author != null &&
-        lastMessage.recipient != null) {
-      return lastMessage.author.id == me
-          ? lastMessage.recipient
-          : lastMessage.author;
+    // if the owner of the conversation is not me then use that
+    if (owner != null && owner.id != me) {
+      return owner;
+    }
+
+    if (lastMessage != null) {
+      return lastMessage.author;
     }
 
     return PersonModel(avatar: AvatarModel(text: ''), name: '', title: '');
@@ -102,8 +108,8 @@ class ConversationModel {
   @override
   String toString() {
     return json.encode({
-      'id': id, 
-      'started_date': startedDate.toString(), 
+      'id': id,
+      'started_date': startedDate.toString(),
       'subject': subject,
       //'messages': messages,
     });

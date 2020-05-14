@@ -21,10 +21,10 @@ class _NewMessageViewState extends State<NewMessageView> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   Future<ConversationModel> submitMessage(
-      String subject, MessageModel messageModel) async {
+      String subject, MessageModel messageModel, String to) async {
     var api = Api(baseUrl: Config.apiBaseUrl);
 
-    var response = await api.newConversation(subject, messageModel);
+    var response = await api.newConversation(subject, messageModel, to);
 
     return ConversationModel.fromJson(response.body);
   }
@@ -40,7 +40,7 @@ class _NewMessageViewState extends State<NewMessageView> {
         if (args != null) {
           toPerson = args;
         }
-        message = MessageModel(recipient: toPerson);
+        message = MessageModel();
       });
     });
   }
@@ -108,7 +108,8 @@ class _NewMessageViewState extends State<NewMessageView> {
                   setState(() {
                     var to = teamMembers
                         .firstWhere((element) => element.id == value);
-                    message = message.copyWith(recipient: to);
+
+                    toPerson = to;
                   });
                 },
               ),
@@ -187,8 +188,7 @@ class _NewMessageViewState extends State<NewMessageView> {
           children: <Widget>[
             Column(
               children: <Widget>[
-                toField(message.recipient != null ? message.recipient.id : null,
-                    widget.team),
+                toField(toPerson != null ? toPerson.id : null, widget.team),
                 subjectField(),
               ],
             ),
@@ -216,8 +216,9 @@ class _NewMessageViewState extends State<NewMessageView> {
                   onPressed: () async {
                     if (formKey.currentState.validate()) {
                       formKey.currentState.save();
-                      await submitMessage(subject, message);                      
-                      Navigator.of(context).pop();
+                      var conversation =
+                          await submitMessage(subject, message, toPerson.id);
+                      Navigator.of(context).pop(conversation);
                     }
                   },
                 ),

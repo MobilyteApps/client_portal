@@ -12,13 +12,19 @@ import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/widgets/ConversationCard.dart';
 import 'package:flutter/material.dart';
 
-class RecentMessagesView extends StatelessWidget {
+class RecentMessagesView extends StatefulWidget {
   const RecentMessagesView({Key key, @required this.layoutModel})
       : super(key: key);
 
   final LayoutModel layoutModel;
 
+  @override
+  _RecentMessagesViewState createState() => _RecentMessagesViewState();
+}
+
+class _RecentMessagesViewState extends State<RecentMessagesView> {
   Future<List<ConversationModel>> conversations() async {
+    print('loading conversations');
     var api = Api(baseUrl: Config.apiBaseUrl);
     var response = await api.recentConversations();
     List<Map<String, dynamic>> _json =
@@ -38,7 +44,9 @@ class RecentMessagesView extends StatelessWidget {
     }
     return conversations.map((e) {
       return ConversationCard(
-        me: layoutModel != null ? layoutModel.identity.id.toString() : '',
+        me: widget.layoutModel != null
+            ? widget.layoutModel.identity.id.toString()
+            : '',
         conversation: e,
       );
     }).toList();
@@ -58,11 +66,11 @@ class RecentMessagesView extends StatelessWidget {
             Icons.edit,
             color: Brand.primary,
           ),
-          onPressed: () {
+          onPressed: () async {
             if (MediaQuery.of(context).size.width >= 1024) {
-              Navigator.pushNamed(context, '/new-message');
+              await Navigator.pushNamed(context, '/new-message');
             } else {
-              Navigator.push(
+              await Navigator.push(
                 context,
                 SlideUpRoute(
                   page: AppController(
@@ -71,6 +79,7 @@ class RecentMessagesView extends StatelessWidget {
                 ),
               );
             }
+            setState(() {});
           },
         )
       ],
@@ -123,8 +132,6 @@ class RecentMessagesView extends StatelessWidget {
 
         _columns.add(button(context));
 
-        _columns.insert(0, heading(context));
-
         EdgeInsets padding = EdgeInsets.only(top: 30, left: 15, right: 15);
 
         if (MediaQuery.of(context).size.width >= 1024) {
@@ -134,7 +141,15 @@ class RecentMessagesView extends StatelessWidget {
         return Container(
           padding: padding,
           child: Column(
-            children: _columns,
+            children: [
+              heading(context),
+              Expanded(
+                child: ListView(
+                  shrinkWrap: true,
+                  children: _columns,
+                ),
+              ),
+            ],
           ),
         );
       },

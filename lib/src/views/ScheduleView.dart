@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 import 'package:client_portal_app/src/Brand.dart';
 import 'package:client_portal_app/src/models/EventEntryModel.dart';
@@ -21,42 +22,58 @@ class ScheduleView extends StatelessWidget {
   }
 
   List<Widget> entries(jsonBody, context, LayoutModel model) {
-    DateFormat dateFormat = DateFormat('EEEEE, MMMM d');
     List<String> trackDates = [];
 
     List<Widget> entries = [];
+
+    Map<String, List<EventEntryModel>> _entryModels = {};
+
     jsonBody.forEach((entry) {
-      DateTime startDate = DateTime.parse(entry['startDateTime']);
-      String mdy = dateFormat.format(startDate);
       EventEntryModel eventEntryModel = EventEntryModel.fromJson(entry);
 
-      if (trackDates.contains(mdy) == false) {
+      eventEntryModel.sequence().forEach((seq) {
+        if (_entryModels.containsKey(seq.ymd()) == false) {
+          _entryModels[seq.ymd()] = [];
+        }
+        _entryModels[seq.ymd()].add(seq);
+      });
+    });
+
+    SplayTreeMap<String, List<EventEntryModel>> _sortedModels =
+        SplayTreeMap.from(_entryModels);
+
+    var dates = _sortedModels.keys.toList();
+
+    dates.forEach((date) {
+      if (trackDates.contains(date) == false) {
         double _top = 0;
 
         if (trackDates.length > 0) {
           _top = 25;
         }
 
-        trackDates.add(mdy);
+        trackDates.add(date);
         entries.add(Container(
-          child: Text(mdy),
+          child: Text(_sortedModels[date].first.dateLong),
           margin: EdgeInsets.only(top: _top),
         ));
       }
 
-      entries.add(
-        EventEntry(
-          model: eventEntryModel,
-          onTap: (EventEntry eventEntry) {
-            Scaffold.of(context).openEndDrawer();
-            ScopedModel.of<RightDrawerModel>(context).setContent(
-              EventEntryDetailPanel(
-                eventEntryModel: eventEntryModel,
-              ),
-            );
-          },
-        ),
-      );
+      _sortedModels[date].forEach((eventEntryModel) {
+        entries.add(
+          EventEntry(
+            model: eventEntryModel,
+            onTap: (EventEntry eventEntry) {
+              Scaffold.of(context).openEndDrawer();
+              ScopedModel.of<RightDrawerModel>(context).setContent(
+                EventEntryDetailPanel(
+                  eventEntryModel: eventEntryModel,
+                ),
+              );
+            },
+          ),
+        );
+      });
     });
 
     if (entries.length > 0) {

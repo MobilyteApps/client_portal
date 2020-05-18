@@ -1,10 +1,8 @@
-import 'dart:collection';
 import 'dart:convert';
 import 'package:client_portal_app/src/Brand.dart';
-import 'package:client_portal_app/src/models/EventEntryModel.dart';
 import 'package:client_portal_app/src/models/RightDrawerModel.dart';
+import 'package:client_portal_app/src/reducers/EventEntryReducer.dart';
 import 'package:client_portal_app/src/widgets/EventEntryDetailPanel.dart';
-import 'package:intl/intl.dart';
 
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
@@ -22,25 +20,16 @@ class ScheduleView extends StatelessWidget {
   }
 
   List<Widget> entries(jsonBody, context, LayoutModel model) {
-    List<String> trackDates = [];
+    List<DateTime> trackDates = [];
 
     List<Widget> entries = [];
 
-    Map<String, List<EventEntryModel>> _entryModels = {};
+    var reducer =
+        EventEntryReducer(payload: List<Map<String, dynamic>>.from(jsonBody));
 
-    jsonBody.forEach((entry) {
-      EventEntryModel eventEntryModel = EventEntryModel.fromJson(entry);
+    reducer.reduce();
 
-      eventEntryModel.sequence().forEach((seq) {
-        if (_entryModels.containsKey(seq.ymd()) == false) {
-          _entryModels[seq.ymd()] = [];
-        }
-        _entryModels[seq.ymd()].add(seq);
-      });
-    });
-
-    SplayTreeMap<String, List<EventEntryModel>> _sortedModels =
-        SplayTreeMap.from(_entryModels);
+    var _sortedModels = reducer.asSplayTreeMap();
 
     var dates = _sortedModels.keys.toList();
 

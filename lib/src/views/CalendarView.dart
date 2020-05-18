@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:client_portal_app/src/models/EventEntryModel.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/models/RightDrawerModel.dart';
@@ -8,12 +10,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:client_portal_app/src/utils/DateExtension.dart';
 
 class CalendarView extends StatefulWidget {
   const CalendarView({Key key, this.layoutModel, this.events})
       : super(key: key);
   final LayoutModel layoutModel;
-  final List<EventEntryModel> events;
+  final SplayTreeMap<DateTime, List<EventEntryModel>> events;
   @override
   _CalendarViewState createState() => _CalendarViewState();
 }
@@ -33,19 +36,13 @@ class _CalendarViewState extends State<CalendarView> {
     _calendarController = CalendarController();
 
     _events = {};
-    String today = DateFormat.yMd().format(DateTime.now());
+    DateTime today = DateTime.now().copyWithHMS(0, 0, 0);
 
-    widget.events.forEach((event) {
-      DateTime ymd = DateTime.parse(event.ymd());
-      if (_events.containsKey(ymd) == false) {
-        _events[ymd] = [];
-      }
-      _events[ymd].add(event);
+    _events = widget.events;
 
-      if (DateFormat.yMd().format(ymd) == today) {
-        _eventListModels.add(event);
-      }
-    });
+    if (_events.containsKey(today)) {
+      _eventListModels = _events[today];
+    }
   }
 
   @override

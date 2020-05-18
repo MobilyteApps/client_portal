@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:client_portal_app/src/controllers/ResponsiveController.dart';
 import 'package:client_portal_app/src/models/EventEntryModel.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
+import 'package:client_portal_app/src/reducers/EventEntryReducer.dart';
 import 'package:client_portal_app/src/views/CalendarView.dart';
 import 'package:flutter/material.dart';
 import 'package:client_portal_app/src/Api.dart';
@@ -19,33 +20,34 @@ class CalendarController extends ResponsiveController {
     return Text('coming soon to mobile');
   }
 
-  Future<List<EventEntryModel>> getSchedule() async {
+  Future<List<Map<String, dynamic>>> getSchedule() async {
     Api api = Api(baseUrl: Config.apiBaseUrl);
     var response = await api.schedule();
     var body = json.decode(response.body);
-    List<EventEntryModel> events = [];
-    body.forEach((event) {
-      events.add(EventEntryModel.fromJson(event));
-    });
-    return events;
+    return List<Map<String, dynamic>>.from(body);
   }
 
   Widget createView(LayoutModel layoutModel) {
     return FutureBuilder(
       future: getSchedule(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return CalendarView(
-            events: snapshot.data,
-            layoutModel: layoutModel,
-          );
-        }
-
         if (snapshot.hasError) {
           return Center(
             child: Text(
               snapshot.error.toString(),
             ),
+          );
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          var reducer = EventEntryReducer(
+              payload: List<Map<String, dynamic>>.from(snapshot.data));
+
+          reducer.reduce();
+
+          return CalendarView(
+            events: reducer.asSplayTreeMap(),
+            layoutModel: layoutModel,
           );
         }
 

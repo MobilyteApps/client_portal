@@ -43,9 +43,9 @@ class ConversationCard extends StatelessWidget {
     print(cardIdentity.avatar.text);
 
     return InkWell(
-      onTap: () {
+      onTap: () async {
         if (MediaQuery.of(context).size.width >= 1024) {
-          Navigator.pushNamed(context, '/view-conversation',
+          await Navigator.pushNamed(context, '/view-conversation',
               arguments: conversation.id);
         } else if (routeAnimationDirection == 'up') {
           Navigator.push(

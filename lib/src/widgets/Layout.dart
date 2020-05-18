@@ -61,7 +61,7 @@ class _LayoutState extends State<Layout> {
   void onPressPrimaryMenu(identifier) {
     switch (identifier) {
       case 'Schedule':
-        Navigator.pushNamed(context, '/schedule');
+        Navigator.pushReplacementNamed(context, '/schedule');
         break;
       case 'Project Log':
         Navigator.pushNamed(context, '/');

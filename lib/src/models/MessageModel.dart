@@ -10,8 +10,9 @@ class MessageModel {
   final bool read;
   final DateFormat dateFormatLong = DateFormat.yMMMMd('en_US').add_jm();
   final DateFormat timeOnlyFormat = DateFormat.jm();
+  final String id;
 
-  MessageModel({this.message, this.author, this.date, this.read});
+  MessageModel({this.message, this.author, this.date, this.read, this.id});
 
   factory MessageModel.fromJson(String value) {
     var _json = json.decode(value);
@@ -23,6 +24,7 @@ class MessageModel {
       date: map['date'] == null ? null : DateTime.tryParse(map['date']['date']),
       message: map['message'],
       author: PersonModel.fromMap(map['author']),
+      id: map['id'].toString(),
     );
   }
 

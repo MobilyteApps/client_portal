@@ -99,6 +99,11 @@ class Api {
         headers: authorizationHeaders());
   }
 
+  Future<http.Response> conversationPoll(String id, int last) async {
+    return await http.post('$baseUrl/conversation/poll?id=$id&after=$last',
+        headers: authorizationHeaders());
+  }
+
   Map<String, String> authorizationHeaders() {
     print('[Api.dart] finding user identity');
     UserModel user = Hive.box('identity').get(0);

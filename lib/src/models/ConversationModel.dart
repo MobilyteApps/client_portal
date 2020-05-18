@@ -61,6 +61,22 @@ class ConversationModel {
     return ConversationModel.fromMap(_json);
   }
 
+  ConversationModel copyWithMessages(List<MessageModel> messages) {
+    var _messages = this.messages;
+    _messages.addAll(messages);
+    return ConversationModel(
+      id: this.id,
+      startedDate: this.startedDate,
+      subject: this.subject,
+      owner: this.owner,
+      messages: _messages,
+    );
+  }
+
+  String get lastMessageId {
+    return lastMessage != null ? lastMessage.id.toString() : '0';
+  }
+
   MessageModel get lastMessage {
     return messages.length > 0 ? messages.last : MessageModel();
   }

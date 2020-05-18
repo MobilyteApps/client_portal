@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/Brand.dart';
 import 'package:client_portal_app/src/models/ConversationModel.dart';
@@ -23,28 +26,52 @@ class ViewConversationView extends StatefulWidget {
 class _ViewConversationViewState extends State<ViewConversationView> {
   var api = Api(baseUrl: Config.apiBaseUrl);
 
-  String conversationId;
+  ConversationModel conversationModel;
 
   EventSource eventSource;
+
+  Timer _timer;
 
   Future<ConversationModel> getConversation(String id) async {
     var response = await api.getConversation(id);
     return ConversationModel.fromJson(response.body);
   }
 
+  var streamController = StreamController();
+
+  @override
+  void dispose() {
+    //_timer.cancel();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () async {
-      print('event source init');
-      var _conversationId = ModalRoute.of(context).settings.arguments;
-      //var _eventSource = await _initStream(_conversationId);
 
+    Future.delayed(Duration.zero, () async {
+      var _conversationId = ModalRoute.of(context).settings.arguments;
+      var _conversation = await getConversation(_conversationId);
       setState(() {
-        conversationId = _conversationId;
-        //eventSource = _eventSource;
+        conversationModel = _conversation;
       });
     });
+
+    /*_timer = Timer.periodic(Duration(seconds: 15), (timer) async {
+      var response = await api.conversationPoll(
+          conversationModel.id, int.tryParse(conversationModel.lastMessageId));
+
+      List<MessageModel> _messages = [];
+      var body = List<Map<String, dynamic>>.from(json.decode(response.body));
+      body.forEach((element) {
+        _messages.add(MessageModel.fromMap(element));
+        streamController.add(element);
+      });
+
+      setState(() {
+        conversationModel = conversationModel.copyWithMessages(_messages);
+      });
+    });*/
   }
 
   Future<EventSource> _initStream(conversationId) async {
@@ -101,96 +128,98 @@ class _ViewConversationViewState extends State<ViewConversationView> {
     }).toList();
   }
 
+  Widget streamTest() {
+    return StreamBuilder(
+      builder: (context, snapshot) {
+        print(snapshot.data);
+        if (snapshot.hasError) {
+          return Text(snapshot.error.toString());
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Text(snapshot.data.toString());
+        }
+
+        return Container();
+      },
+      stream: streamController.stream,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     final _replyTextController = TextEditingController();
 
-    if (conversationId == null) {
+    if (conversationModel == null) {
       return Container();
     }
 
-    return FutureBuilder(
-      future: getConversation(conversationId),
-      builder: (context, AsyncSnapshot<ConversationModel> snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return LoadingIndicator();
-        }
+    PersonModel personModel =
+        conversationModel.identity(widget.layoutModel.identity.id.toString());
 
-        if (snapshot.hasError) {
-          return Center(
-            child: Text(snapshot.error.toString()),
-          );
-        }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(top: 35, left: 20, right: 20),
+          child: Text(
+            conversationModel.subject,
+            style: Theme.of(context).textTheme.headline6,
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 20, right: 20, top: 25),
+          child: PersonCard(
+            person: personModel,
+          ),
+        ),
+        Expanded(
+          child: ListView(
+            padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+            shrinkWrap: true,
+            children: _cards(conversationModel.messages),
+          ),
+        ),
+        streamTest(),
+        Container(
+          color: Color(0xFFEEEEEE),
+          child: Form(
+            key: _formKey,
+            child: TextFormField(
+              controller: _replyTextController,
+              validator: (value) {
+                if (value.length == 0) {
+                  return 'Please enter a message';
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                filled: true,
+                labelText: 'Reply',
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.send),
+                  onPressed: () async {
+                    if (_formKey.currentState.validate()) {
+                      try {
+                        final Api api = Api(baseUrl: Config.apiBaseUrl);
+                        await api.replyToConversation(conversationModel.id,
+                            _replyTextController.value.text);
 
-        ConversationModel conversation = snapshot.data;
-
-        PersonModel personModel =
-            conversation.identity(widget.layoutModel.identity.id.toString());
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 35, left: 20, right: 20),
-              child: Text(
-                conversation.subject,
-                style: Theme.of(context).textTheme.headline6,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20, right: 20, top: 25),
-              child: PersonCard(
-                person: personModel,
-              ),
-            ),
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.only(left: 20, right: 20, top: 20),
-                shrinkWrap: true,
-                children: _cards(conversation.messages),
-              ),
-            ),
-            Container(
-              color: Color(0xFFEEEEEE),
-              child: Form(
-                key: _formKey,
-                child: TextFormField(
-                  controller: _replyTextController,
-                  validator: (value) {
-                    if (value.length == 0) {
-                      return 'Please enter a message';
+                        setState(() {});
+                      } catch (e) {
+                        Scaffold.of(context).showSnackBar(
+                            SnackBar(content: Text(e.toString())));
+                      }
                     }
-                    return null;
                   },
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    filled: true,
-                    labelText: 'Reply',
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.send),
-                      onPressed: () async {
-                        if (_formKey.currentState.validate()) {
-                          try {
-                            final Api api = Api(baseUrl: Config.apiBaseUrl);
-                            await api.replyToConversation(conversation.id,
-                                _replyTextController.value.text);
-
-                            setState(() {});
-                          } catch (e) {
-                            Scaffold.of(context).showSnackBar(
-                                SnackBar(content: Text(e.toString())));
-                          }
-                        }
-                      },
-                    ),
-                  ),
                 ),
               ),
-            )
-          ],
-        );
-      },
+            ),
+          ),
+        )
+      ],
     );
   }
 }

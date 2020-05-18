@@ -37,8 +37,6 @@ class _ViewConversationViewState extends State<ViewConversationView> {
     return ConversationModel.fromJson(response.body);
   }
 
-  var streamController = StreamController();
-
   @override
   void dispose() {
     //_timer.cancel();
@@ -128,24 +126,6 @@ class _ViewConversationViewState extends State<ViewConversationView> {
     }).toList();
   }
 
-  Widget streamTest() {
-    return StreamBuilder(
-      builder: (context, snapshot) {
-        print(snapshot.data);
-        if (snapshot.hasError) {
-          return Text(snapshot.error.toString());
-        }
-
-        if (snapshot.connectionState == ConnectionState.done) {
-          return Text(snapshot.data.toString());
-        }
-
-        return Container();
-      },
-      stream: streamController.stream,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -181,7 +161,6 @@ class _ViewConversationViewState extends State<ViewConversationView> {
             children: _cards(conversationModel.messages),
           ),
         ),
-        streamTest(),
         Container(
           color: Color(0xFFEEEEEE),
           child: Form(

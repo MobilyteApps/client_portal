@@ -15,6 +15,8 @@ class Layout extends StatefulWidget {
 
   final Widget content;
 
+  final String version = '0.0.1';
+
   Layout({this.model, this.content});
 
   @override
@@ -147,7 +149,7 @@ class _LayoutState extends State<Layout> {
                   (context) => Container(
                     width: double.infinity,
                     child: LayoutDrawer(
-                      version: '0.0.1',
+                      version: widget.version,
                       logo: Image.asset('images/logo.png'),
                       tiles: secondaryMenu.items(context),
                     ),

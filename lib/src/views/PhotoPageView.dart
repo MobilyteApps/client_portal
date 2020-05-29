@@ -82,7 +82,7 @@ class _PhotoPageViewState extends State<PhotoPageView> {
         child: Icon(Icons.arrow_back_ios),
         onPressed: () {
           pageController.previousPage(
-              duration: Duration(milliseconds: 250), curve: Curves.bounceIn);
+              duration: Duration(milliseconds: 250), curve: Curves.ease);
         },
       ),
     );
@@ -102,7 +102,7 @@ class _PhotoPageViewState extends State<PhotoPageView> {
         child: Icon(Icons.arrow_forward_ios),
         onPressed: () {
           pageController.nextPage(
-              duration: Duration(milliseconds: 250), curve: Curves.bounceIn);
+              duration: Duration(milliseconds: 250), curve: Curves.ease);
         },
       ),
     );
@@ -120,7 +120,19 @@ class _PhotoPageViewState extends State<PhotoPageView> {
           maxScale: PhotoViewComputedScale.covered * 2,
         );
       },
-      scrollPhysics: BouncingScrollPhysics(),
+      loadingBuilder: (context, event) => Center(
+        child: Container(
+          width: 20.0,
+          height: 20.0,
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            value: event == null
+                ? 0
+                : event.cumulativeBytesLoaded / event.expectedTotalBytes,
+          ),
+        ),
+      ),
+      scrollPhysics: ClampingScrollPhysics(),
     );
   }
 }

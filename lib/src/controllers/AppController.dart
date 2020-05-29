@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/controllers/LoginController.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
@@ -30,7 +32,13 @@ class AppController extends StatelessWidget {
 
     // verify user is logged in
     try {
-      await api.me();
+      var response = await api.me();
+      // if response.body.project,
+      var _body = json.decode(response.body);
+      if (_body['project'] != null) {
+        Hive.box('project').put(
+            identity.id, ProjectModel.fromJson(json.encode(_body['project'])));
+      }
     } catch (e) {
       print('[AppController.dart] identity error');
       return LayoutModel();

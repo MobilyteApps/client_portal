@@ -13,13 +13,20 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:scoped_model/scoped_model.dart';
 
-class ScheduleView extends StatelessWidget {
+class ScheduleView extends StatefulWidget {
+  @override
+  _ScheduleViewState createState() => _ScheduleViewState();
+}
+
+class _ScheduleViewState extends State<ScheduleView> {
+  ScrollController _scrollController = ScrollController();
+
   Future<http.Response> upNext() {
     Api api = Api(baseUrl: Config.apiBaseUrl);
     return api.upNext();
   }
 
-  List<Widget> entries(jsonBody, context, LayoutModel model) {
+  List<Widget> entries(jsonBody, context) {
     List<DateTime> trackDates = [];
 
     List<Widget> entries = [];
@@ -91,7 +98,6 @@ class ScheduleView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ScrollController _scrollController = ScrollController();
     return ScopedModelDescendant<LayoutModel>(
       builder: (context, widget, layoutModel) {
         return FutureBuilder(
@@ -132,7 +138,7 @@ class ScheduleView extends StatelessWidget {
                             padding: EdgeInsets.only(right: 15),
                             controller: _scrollController,
                             shrinkWrap: true,
-                            children: entries(body, context, layoutModel),
+                            children: entries(body, context),
                           ),
                         ),
                       ),

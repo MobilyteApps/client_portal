@@ -147,7 +147,7 @@ class _LayoutState extends State<Layout> {
                   (context) => Container(
                     width: double.infinity,
                     child: LayoutDrawer(
-                      version: '1.0',
+                      version: '0.0.1',
                       logo: Image.asset('images/logo.png'),
                       tiles: secondaryMenu.items(context),
                     ),

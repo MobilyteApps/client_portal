@@ -49,7 +49,7 @@ class _AppMainState extends State<AppMain> {
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Client Portal',
+        title: 'Mosby Client Portal',
         theme: ThemeData(
           primarySwatch: Brand.primary,
         ),

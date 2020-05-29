@@ -1,4 +1,5 @@
 import 'package:client_portal_app/src/widgets/RoundButton.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -25,7 +26,7 @@ class _PhotoPageViewState extends State<PhotoPageView> {
     super.initState();
     pageController = PageController(initialPage: widget.initialPage);
 
-    currentPage = widget.initialPage;
+    //currentPage = widget.initialPage;
     totalPages = widget.photos.length;
   }
 
@@ -48,6 +49,9 @@ class _PhotoPageViewState extends State<PhotoPageView> {
   }
 
   Widget _close(context) {
+    if (kIsWeb == false) {
+      return SizedBox();
+    }
     return Positioned(
       top: 0,
       right: -20,
@@ -66,6 +70,9 @@ class _PhotoPageViewState extends State<PhotoPageView> {
   }
 
   Widget _prev(PageController pageController) {
+    if (kIsWeb == false) {
+      return SizedBox();
+    }
     return Positioned(
       left: -15,
       top: MediaQuery.of(context).size.height / 2 - 10,
@@ -73,18 +80,19 @@ class _PhotoPageViewState extends State<PhotoPageView> {
         backgroundColor: Colors.black,
         textColor: Colors.white,
         child: Icon(Icons.arrow_back_ios),
-        onPressed: currentPage != 0
-            ? () {
-                pageController.previousPage(
-                    duration: Duration(milliseconds: 250),
-                    curve: Curves.bounceIn);
-              }
-            : null,
+        onPressed: () {
+          pageController.previousPage(
+              duration: Duration(milliseconds: 250), curve: Curves.bounceIn);
+        },
       ),
     );
   }
 
   Widget _next(PageController pageController) {
+    if (kIsWeb == false) {
+      return SizedBox();
+    }
+
     return Positioned(
       right: -15,
       top: MediaQuery.of(context).size.height / 2 - 10,
@@ -92,21 +100,17 @@ class _PhotoPageViewState extends State<PhotoPageView> {
         backgroundColor: Colors.black,
         textColor: Colors.white,
         child: Icon(Icons.arrow_forward_ios),
-        onPressed: (widget.photos.length -1) != currentPage ? () {          
+        onPressed: () {
           pageController.nextPage(
               duration: Duration(milliseconds: 250), curve: Curves.bounceIn);
-        } : null,
+        },
       ),
     );
   }
 
   Widget _gallery(pageController) {
     return PhotoViewGallery.builder(
-      onPageChanged: (page) {
-        setState(() {
-          currentPage = page;
-        });
-      },
+      gaplessPlayback: true,
       pageController: pageController,
       itemCount: widget.photos == null ? 0 : widget.photos.length,
       builder: (context, index) {

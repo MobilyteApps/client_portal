@@ -20,9 +20,9 @@ class RoundButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
-      shape: CircleBorder(
-        side: BorderSide(color: backgroundColor),
-      ),
+      padding: EdgeInsets.only(left: 0, right: 0),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50))),
       onPressed: onPressed,
       color: backgroundColor,
       textColor: textColor,

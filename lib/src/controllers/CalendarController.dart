@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:client_portal_app/src/controllers/ResponsiveController.dart';
+import 'package:client_portal_app/src/models/EventEntryModel.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/reducers/EventEntryReducer.dart';
 import 'package:client_portal_app/src/views/CalendarView.dart';
@@ -16,7 +17,7 @@ class CalendarController extends ResponsiveController {
   }
 
   Widget buildContentPanel(LayoutModel layoutModel, BuildContext context) {
-    return Text('coming soon to mobile');
+    return createView(layoutModel);
   }
 
   Future<List<Map<String, dynamic>>> getSchedule() async {

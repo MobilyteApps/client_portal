@@ -15,4 +15,15 @@ extension DateTimeExtension on DateTime {
   bool isWeekend() {
     return this.weekday == DateTime.saturday || this.weekday == DateTime.sunday;
   }
+
+  bool isSameMonthAs(DateTime dateTime) {
+    if (dateTime == null) {
+      return false;
+    }
+    return dateTime.month == this.month && dateTime.year == this.year;
+  }
+
+  bool get isToday {
+    return this.isSameDayAs(DateTime.now());
+  }
 }

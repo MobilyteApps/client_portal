@@ -15,7 +15,7 @@ class Layout extends StatefulWidget {
 
   final Widget content;
 
-  final String version = '0.0.5';
+  final String version = '0.0.6';
 
   Layout({this.model, this.content});
 
@@ -186,10 +186,24 @@ class _LayoutState extends State<Layout> {
       ),
       width: 300,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           ProjectTitle(beforeTitle: 'My'),
           menuPrimary,
           secondaryMenu,
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.only(bottom: 10, left: 20),
+              alignment: Alignment.bottomLeft,
+              child: Text(
+                'Version ${widget.version}',
+                style: TextStyle(
+                  fontSize: 10,
+                  color: Color.fromRGBO(142, 142, 142, 1),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

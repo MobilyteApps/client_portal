@@ -21,13 +21,18 @@ class NewMessageController extends ResponsiveController {
       builder: (context, AsyncSnapshot<List<PersonModel>> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return Padding(
-            padding: EdgeInsets.only(left: 60, top: 30, right: 60), 
+            padding: EdgeInsets.only(left: 60, top: 30, right: 60),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 BackButtonHeading(),
-                SizedBox(height: 30,),
-                Text('New Message', style: Theme.of(context).textTheme.headline6,),
+                SizedBox(
+                  height: 30,
+                ),
+                Text(
+                  'New Message',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
                 NewMessageView(
                   team: snapshot.data,
                 ),
@@ -61,8 +66,13 @@ class NewMessageController extends ResponsiveController {
     var response = await api.team();
     List<Map<String, dynamic>> _json =
         List<Map<String, dynamic>>.from(json.decode(response.body));
-    return _json.map((e) {
+
+    var _list = _json.map((e) {
       return PersonModel.fromMap(e);
-    }).toList();    
+    }).toList();
+
+    _list.removeWhere((element) => element.messagingOptIn == false);
+
+    return _list;
   }
 }

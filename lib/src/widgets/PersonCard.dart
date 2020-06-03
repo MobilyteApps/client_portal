@@ -1,4 +1,5 @@
 import 'package:client_portal_app/src/models/PersonModel.dart';
+import 'package:client_portal_app/src/widgets/PersonAvatar.dart';
 import 'package:flutter/material.dart';
 
 class PersonCard extends StatelessWidget {
@@ -16,8 +17,8 @@ class PersonCard extends StatelessWidget {
     return Container(
       child: Row(
         children: <Widget>[
-          CircleAvatar(
-            child: Text(person.avatar.text.toUpperCase()),
+          PersonAvatar(
+            person: person,
           ),
           SizedBox(
             width: 10,

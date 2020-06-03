@@ -7,6 +7,7 @@ import 'package:client_portal_app/src/controllers/NewMessageController.dart';
 import 'package:client_portal_app/src/models/PersonModel.dart';
 import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
+import 'package:client_portal_app/src/widgets/PersonAvatar.dart';
 import 'package:flutter/material.dart';
 
 class TeamView extends StatelessWidget {
@@ -53,18 +54,8 @@ class TeamView extends StatelessWidget {
   }
 
   Widget _avatar(BuildContext context, PersonModel person) {
-    var _child;
-    var _background;
-
-    if (person.avatar.url != null && person.avatar.url.length > 0) {
-      _background = NetworkImage(person.avatar.url);
-    } else {
-      _child = Text(person.avatar.text != null ? person.avatar.text : '');
-    }
-
-    return CircleAvatar(
-      child: _child,
-      backgroundImage: _background,
+    return PersonAvatar(
+      person: person,
     );
   }
 

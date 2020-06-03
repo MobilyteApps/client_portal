@@ -4,6 +4,7 @@ import 'package:client_portal_app/src/models/ConversationModel.dart';
 import 'package:client_portal_app/src/models/PersonModel.dart';
 import 'package:client_portal_app/src/transitions/SlideLeftRoute.dart';
 import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
+import 'package:client_portal_app/src/widgets/PersonAvatar.dart';
 import 'package:flutter/material.dart';
 
 class ConversationCard extends StatelessWidget {
@@ -39,20 +40,6 @@ class ConversationCard extends StatelessWidget {
     }
 
     PersonModel cardIdentity = conversation.identity(me);
-
-    var _avatar;
-
-    if (cardIdentity.avatar.url != null && cardIdentity.avatar.url.length > 0) {
-      _avatar = CircleAvatar(
-        backgroundImage: NetworkImage(cardIdentity.avatar.url),
-      );
-    } else {
-      _avatar = CircleAvatar(
-        child: Text(
-          cardIdentity.avatar.text == null ? '' : cardIdentity.avatar.text,
-        ),
-      );
-    }
 
     return InkWell(
       onTap: () async {
@@ -92,7 +79,9 @@ class ConversationCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _avatar,
+            PersonAvatar(
+              person: cardIdentity,
+            ),
             SizedBox(width: 10),
             Expanded(
               child: Column(

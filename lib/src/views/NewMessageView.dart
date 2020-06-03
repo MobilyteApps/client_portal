@@ -3,6 +3,7 @@ import 'package:client_portal_app/src/models/ConversationModel.dart';
 import 'package:client_portal_app/src/models/MessageModel.dart';
 import 'package:client_portal_app/src/models/PersonModel.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
+import 'package:client_portal_app/src/widgets/PersonAvatar.dart';
 import 'package:flutter/material.dart';
 
 class NewMessageView extends StatefulWidget {
@@ -84,8 +85,8 @@ class _NewMessageViewState extends State<NewMessageView> {
                       child: Container(
                         child: Row(
                           children: <Widget>[
-                            CircleAvatar(
-                              child: Text('sc'),
+                            PersonAvatar(
+                              person: person,
                             ),
                             SizedBox(
                               width: 10,

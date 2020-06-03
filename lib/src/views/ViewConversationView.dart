@@ -43,16 +43,20 @@ class _ViewConversationViewState extends State<ViewConversationView> {
     super.dispose();
   }
 
+  void refreshConversation(String conversationId) async {
+    var _conversation = await getConversation(conversationId);
+    setState(() {
+      conversationModel = _conversation;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
 
     Future.delayed(Duration.zero, () async {
       var _conversationId = ModalRoute.of(context).settings.arguments;
-      var _conversation = await getConversation(_conversationId);
-      setState(() {
-        conversationModel = _conversation;
-      });
+      refreshConversation(_conversationId);
     });
 
     /*_timer = Timer.periodic(Duration(seconds: 15), (timer) async {
@@ -186,7 +190,7 @@ class _ViewConversationViewState extends State<ViewConversationView> {
                         await api.replyToConversation(conversationModel.id,
                             _replyTextController.value.text);
 
-                        setState(() {});
+                        refreshConversation(conversationModel.id);
                       } catch (e) {
                         Scaffold.of(context).showSnackBar(
                             SnackBar(content: Text(e.toString())));

@@ -40,7 +40,19 @@ class ConversationCard extends StatelessWidget {
 
     PersonModel cardIdentity = conversation.identity(me);
 
-    print(cardIdentity.avatar.text);
+    var _avatar;
+
+    if (cardIdentity.avatar.url != null && cardIdentity.avatar.url.length > 0) {
+      _avatar = CircleAvatar(
+        backgroundImage: NetworkImage(cardIdentity.avatar.url),
+      );
+    } else {
+      _avatar = CircleAvatar(
+        child: Text(
+          cardIdentity.avatar.text == null ? '' : cardIdentity.avatar.text,
+        ),
+      );
+    }
 
     return InkWell(
       onTap: () async {
@@ -80,9 +92,7 @@ class ConversationCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            CircleAvatar(
-              child: Text(cardIdentity.avatar.text),
-            ),
+            _avatar,
             SizedBox(width: 10),
             Expanded(
               child: Column(

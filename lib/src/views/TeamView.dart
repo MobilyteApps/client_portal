@@ -22,6 +22,52 @@ class TeamView extends StatelessWidget {
     }).toList();
   }
 
+  Widget _messageButton(context, PersonModel person) {
+    if (person.messagingOptIn == false) {
+      return SizedBox();
+    }
+
+    return FlatButton(
+      color: Brand.primary,
+      child: Text(
+        'Message'.toUpperCase(),
+        style: TextStyle(color: Colors.white),
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+      onPressed: () {
+        if (MediaQuery.of(context).size.width >= 1024) {
+          Navigator.pushNamed(context, '/new-message', arguments: person);
+        } else {
+          Navigator.push(
+            context,
+            SlideUpRoute(
+              settings: RouteSettings(arguments: person),
+              page: AppController(
+                controller: NewMessageController(),
+              ),
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Widget _avatar(BuildContext context, PersonModel person) {
+    var _child;
+    var _background;
+
+    if (person.avatar.url != null && person.avatar.url.length > 0) {
+      _background = NetworkImage(person.avatar.url);
+    } else {
+      _child = Text(person.avatar.text != null ? person.avatar.text : '');
+    }
+
+    return CircleAvatar(
+      child: _child,
+      backgroundImage: _background,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -45,9 +91,7 @@ class TeamView extends StatelessWidget {
                               color: Colors.black.withOpacity(.12)))),
                   child: Row(
                     children: <Widget>[
-                      CircleAvatar(
-                        child: Text('sc'),
-                      ),
+                      _avatar(context, snapshot.data[index]),
                       SizedBox(
                         width: 10,
                       ),
@@ -62,32 +106,7 @@ class TeamView extends StatelessWidget {
                           ],
                         ),
                       ),
-                      FlatButton(
-                        color: Brand.primary,
-                        child: Text(
-                          'Message'.toUpperCase(),
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50)),
-                        onPressed: () {
-                          if (MediaQuery.of(context).size.width >= 1024) {
-                            Navigator.pushNamed(context, '/new-message',
-                                arguments: snapshot.data[index]);
-                          } else {
-                            Navigator.push(
-                              context,
-                              SlideUpRoute(
-                                settings: RouteSettings(
-                                    arguments: snapshot.data[index]),
-                                page: AppController(
-                                  controller: NewMessageController(),
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                      )
+                      _messageButton(context, snapshot.data[index]),
                     ],
                   ),
                 );

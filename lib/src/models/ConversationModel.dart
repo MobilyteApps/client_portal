@@ -78,7 +78,17 @@ class ConversationModel {
   }
 
   MessageModel get lastMessage {
-    return messages.length > 0 ? messages.last : MessageModel();
+    if (messages.length == 0) {
+      return MessageModel();
+    }
+    var last = messages.last;
+    var first = messages.first;
+
+    if (last.date.isAfter(first.date)) {
+      return last;
+    }
+
+    return first;
   }
 
   MessageModel lastMessageNotMine(String me) {

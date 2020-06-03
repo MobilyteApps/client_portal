@@ -7,8 +7,10 @@ class PersonModel {
   final String title;
   final String id;
   final AvatarModel avatar;
+  final bool messagingOptIn;
 
-  PersonModel({this.name, this.title, this.id, this.avatar});
+  PersonModel(
+      {this.name, this.title, this.id, this.avatar, this.messagingOptIn});
 
   factory PersonModel.fromJson(String data) {
     var _json = json.decode(data);
@@ -21,6 +23,7 @@ class PersonModel {
       title: map['title'],
       id: map['id'].toString(),
       avatar: AvatarModel.fromMap(map['avatar']),
+      messagingOptIn: map['messagingOptIn'],
     );
   }
 }

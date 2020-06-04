@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:client_portal_app/src/models/MessageModel.dart';
 import 'package:eventsource/eventsource.dart';
 import 'package:http/http.dart' as http;
@@ -102,6 +104,40 @@ class Api {
   Future<http.Response> conversationPoll(String id, int last) async {
     return await http.post('$baseUrl/conversation/poll?id=$id&after=$last',
         headers: authorizationHeaders());
+  }
+
+  Future<http.Response> requestPasswordResetCode(String email) async {
+    var response =
+        await http.post('$baseUrl/user/request-reset', body: {'email': email});
+
+    processResponse(response);
+
+    return response;
+  }
+
+  Future<http.Response> verifyResetCode(String email, String code) async {
+    var response = await http.post('$baseUrl/user/verify-reset-code',
+        body: {'email': email, 'code': code});
+
+    processResponse(response);
+
+    return response;
+  }
+
+  Future<http.Response> saveNewPassword(
+      String challenge, String password) async {
+    var response = await http.post('$baseUrl/user/new-password',
+        body: {'challenge': challenge, 'password': password});
+
+    processResponse(response);
+
+    return response;
+  }
+
+  void processResponse(http.Response response) {
+    if (response.statusCode == 422) {
+      throw Exception(response.reasonPhrase);
+    }
   }
 
   Map<String, String> authorizationHeaders() {

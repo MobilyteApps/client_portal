@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:client_portal_app/src/Api.dart';
@@ -13,8 +14,9 @@ import 'package:scoped_model/scoped_model.dart';
 
 class AppController extends StatelessWidget {
   final Widget controller;
+  final bool requiresAuth;
 
-  AppController({@required this.controller});
+  AppController({@required this.controller, @required this.requiresAuth});
 
   Future<LayoutModel> openBoxes() async {
     print('[AppController.dart] opening identity and project boxes');
@@ -74,12 +76,13 @@ class AppController extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           UserModel model = snapshot.data.identity;
-          if (model == null) {
+          if (model == null && requiresAuth) {
             return ScopedModel<LayoutModel>(
               child: LoginController(),
               model: snapshot.data,
             );
           }
+          print(snapshot.data);
           return ScopedModel<LayoutModel>(
             child: controller,
             model: snapshot.data,

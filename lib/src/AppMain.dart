@@ -9,6 +9,7 @@ import 'package:client_portal_app/src/controllers/InvoicesController.dart';
 import 'package:client_portal_app/src/controllers/LoginController.dart';
 import 'package:client_portal_app/src/controllers/MessagesController.dart';
 import 'package:client_portal_app/src/controllers/NewMessageController.dart';
+import 'package:client_portal_app/src/controllers/ResetPasswordController.dart';
 import 'package:client_portal_app/src/controllers/ScheduleController.dart';
 import 'package:client_portal_app/src/controllers/TeamController.dart';
 import 'package:client_portal_app/src/controllers/ViewConversationController.dart';
@@ -38,15 +39,39 @@ class _AppMainState extends State<AppMain> {
     content = ProjectLogView();
   }
 
-  Widget createController(Widget child) {
+  Widget createController(Widget child, [bool requiresAuth = true]) {
     return AppController(
       controller: child,
+      requiresAuth: requiresAuth,
     );
+  }
+
+  PageRoute dynamicRouteMatch(RouteSettings settings) {
+    List<RoutePath> paths = [
+      RoutePath(
+          pattern: r'^/view-conversation/([\w-]+)$',
+          builder: (context, match) => createController(
+              ViewConversationController(conversationId: match), true))
+    ];
+
+    for (RoutePath path in paths) {
+      final regExpPattern = RegExp(path.pattern);
+      if (regExpPattern.hasMatch(settings.name)) {
+        final firstMatch = regExpPattern.firstMatch(settings.name);
+        final match = (firstMatch.groupCount == 1) ? firstMatch.group(1) : null;
+
+        return MaterialPageRoute<void>(
+          builder: (context) => path.builder(context, match),
+          settings: settings,
+        );
+      }
+    }
+    return null;
   }
 
   @override
   Widget build(BuildContext context) {
-    var home = createController(HomeController());
+    var home = createController(HomeController(), true);
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -56,30 +81,14 @@ class _AppMainState extends State<AppMain> {
         ),
         home: home,
         onGenerateRoute: (RouteSettings settings) {
-          var uri = Uri.parse(settings.name);
-          print(uri);
+          PageRoute dynamicPageRoute;
 
-          List<RoutePath> paths = [
-            RoutePath(
-                pattern: r'^/view-conversation/([\w-]+)$',
-                builder: (context, match) => createController(
-                    ViewConversationController(conversationId: match)))
-          ];
-
-          for (RoutePath path in paths) {
-            final regExpPattern = RegExp(path.pattern);
-            if (regExpPattern.hasMatch(settings.name)) {
-              final firstMatch = regExpPattern.firstMatch(settings.name);
-              final match =
-                  (firstMatch.groupCount == 1) ? firstMatch.group(1) : null;
-
-              return MaterialPageRoute<void>(
-                builder: (context) => path.builder(context, match),
-                settings: settings,
-              );
-            }
+          // dynamic page route matching
+          if ((dynamicPageRoute = dynamicRouteMatch(settings)) != null) {
+            return dynamicPageRoute;
           }
 
+          // exact match routes
           switch (settings.name) {
             case '/':
               return MaterialPageRoute(
@@ -94,7 +103,15 @@ class _AppMainState extends State<AppMain> {
             case '/login':
               return MaterialPageRoute(
                 settings: settings,
-                builder: (context) => createController(LoginController()),
+                builder: (context) =>
+                    createController(LoginController(), false),
+              );
+              break;
+            case '/login/reset-password':
+              return MaterialPageRoute(
+                settings: settings,
+                builder: (_) =>
+                    createController(ResetPasswordController(), false),
               );
               break;
             case '/calendar':

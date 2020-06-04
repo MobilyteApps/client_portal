@@ -100,10 +100,10 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 Container(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
-                      Checkbox(
+                      /*Checkbox(
                         value: rememberMe,
                         onChanged: (newValue) {
                           setState(() {
@@ -113,14 +113,33 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                       Text('Remember me'),
                       Spacer(),
-                      FlatButton(
-                        child: Text(
-                          'Forgot password',
-                          style: TextStyle(
-                            color: Color.fromRGBO(0, 89, 146, 1),
+                      */
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: FlatButton(
+                          child: Text(
+                            'Forgot password',
+                            style: TextStyle(
+                              color: Color.fromRGBO(0, 89, 146, 1),
+                            ),
                           ),
+                          onPressed: () async {
+                            var response = await Navigator.of(context)
+                                .pushNamed('/login/reset-password');
+                            print(response);
+                            if (response == 'passwordChangeSuccess') {
+                              Scaffold.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: Colors.green,
+                                  content: Text(
+                                    'You may now log in with your new password.',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              );
+                            }
+                          },
                         ),
-                        onPressed: () {},
                       ),
                     ],
                   ),

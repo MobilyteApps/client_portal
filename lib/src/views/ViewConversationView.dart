@@ -14,10 +14,13 @@ import 'package:eventsource/eventsource.dart';
 import 'package:flutter/material.dart';
 
 class ViewConversationView extends StatefulWidget {
-  const ViewConversationView({Key key, @required this.layoutModel})
+  const ViewConversationView(
+      {Key key, @required this.layoutModel, this.conversationId})
       : super(key: key);
 
   final LayoutModel layoutModel;
+
+  final String conversationId;
 
   @override
   _ViewConversationViewState createState() => _ViewConversationViewState();
@@ -30,8 +33,6 @@ class _ViewConversationViewState extends State<ViewConversationView> {
 
   EventSource eventSource;
 
-  Timer _timer;
-
   Future<ConversationModel> getConversation(String id) async {
     var response = await api.getConversation(id);
     return ConversationModel.fromJson(response.body);
@@ -39,15 +40,16 @@ class _ViewConversationViewState extends State<ViewConversationView> {
 
   @override
   void dispose() {
-    //_timer.cancel();
     super.dispose();
   }
 
-  void refreshConversation(String conversationId) async {
-    var _conversation = await getConversation(conversationId);
-    setState(() {
-      conversationModel = _conversation;
-    });
+  void refreshConversation() async {
+    if (widget.conversationId != null) {
+      var _conversation = await getConversation(widget.conversationId);
+      setState(() {
+        conversationModel = _conversation;
+      });
+    }
   }
 
   @override
@@ -55,33 +57,8 @@ class _ViewConversationViewState extends State<ViewConversationView> {
     super.initState();
 
     Future.delayed(Duration.zero, () async {
-      var _conversationId = ModalRoute.of(context).settings.arguments;
-      refreshConversation(_conversationId);
+      refreshConversation();
     });
-
-    /*_timer = Timer.periodic(Duration(seconds: 15), (timer) async {
-      var response = await api.conversationPoll(
-          conversationModel.id, int.tryParse(conversationModel.lastMessageId));
-
-      List<MessageModel> _messages = [];
-      var body = List<Map<String, dynamic>>.from(json.decode(response.body));
-      body.forEach((element) {
-        _messages.add(MessageModel.fromMap(element));
-        streamController.add(element);
-      });
-
-      setState(() {
-        conversationModel = conversationModel.copyWithMessages(_messages);
-      });
-    });*/
-  }
-
-  Future<EventSource> _initStream(conversationId) async {
-    var eventSource = await api.conversationStream(conversationId);
-    eventSource.listen((event) {
-      print(event);
-    });
-    return eventSource;
   }
 
   List<Widget> _cards(List<MessageModel> messages) {
@@ -190,7 +167,7 @@ class _ViewConversationViewState extends State<ViewConversationView> {
                         await api.replyToConversation(conversationModel.id,
                             _replyTextController.value.text);
 
-                        refreshConversation(conversationModel.id);
+                        refreshConversation();
                       } catch (e) {
                         Scaffold.of(context).showSnackBar(
                             SnackBar(content: Text(e.toString())));

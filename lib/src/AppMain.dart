@@ -1,5 +1,6 @@
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/Brand.dart';
+import 'package:client_portal_app/src/RoutePath.dart';
 import 'package:client_portal_app/src/controllers/AllMessagesController.dart';
 import 'package:client_portal_app/src/controllers/BillingAndPaymentsController.dart';
 import 'package:client_portal_app/src/controllers/CalendarController.dart';
@@ -55,6 +56,30 @@ class _AppMainState extends State<AppMain> {
         ),
         home: home,
         onGenerateRoute: (RouteSettings settings) {
+          var uri = Uri.parse(settings.name);
+          print(uri);
+
+          List<RoutePath> paths = [
+            RoutePath(
+                pattern: r'^/view-conversation/([\w-]+)$',
+                builder: (context, match) => createController(
+                    ViewConversationController(conversationId: match)))
+          ];
+
+          for (RoutePath path in paths) {
+            final regExpPattern = RegExp(path.pattern);
+            if (regExpPattern.hasMatch(settings.name)) {
+              final firstMatch = regExpPattern.firstMatch(settings.name);
+              final match =
+                  (firstMatch.groupCount == 1) ? firstMatch.group(1) : null;
+
+              return MaterialPageRoute<void>(
+                builder: (context) => path.builder(context, match),
+                settings: settings,
+              );
+            }
+          }
+
           switch (settings.name) {
             case '/':
               return MaterialPageRoute(

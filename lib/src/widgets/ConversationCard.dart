@@ -44,7 +44,8 @@ class ConversationCard extends StatelessWidget {
     return InkWell(
       onTap: () async {
         if (MediaQuery.of(context).size.width >= 1024) {
-          await Navigator.pushNamed(context, '/view-conversation',
+          await Navigator.pushNamed(
+              context, '/view-conversation/${conversation.id}',
               arguments: conversation.id);
         } else if (routeAnimationDirection == 'up') {
           Navigator.push(
@@ -52,7 +53,9 @@ class ConversationCard extends StatelessWidget {
             SlideUpRoute(
               settings: RouteSettings(arguments: conversation.id),
               page: AppController(
-                controller: ViewConversationController(),
+                controller: ViewConversationController(
+                  conversationId: conversation.id,
+                ),
               ),
             ),
           );
@@ -64,6 +67,7 @@ class ConversationCard extends StatelessWidget {
               page: AppController(
                 controller: ViewConversationController(
                   icon: Icons.arrow_back,
+                  conversationId: conversation.id,
                 ),
               ),
             ),

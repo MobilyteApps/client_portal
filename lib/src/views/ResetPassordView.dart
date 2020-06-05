@@ -22,6 +22,8 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
   List<FocusNode> _verificationNodes;
   List<TextEditingController> _verificationTextControllers;
   TextEditingController _emailTextController;
+  TextEditingController _passwordTextController;
+  TextEditingController _confirmPasswordTextController;
   int _step = 1;
   Api _api;
   String _challengeCode;
@@ -31,6 +33,9 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
     super.initState();
     _api = Api(baseUrl: Config.apiBaseUrl);
     _emailTextController = TextEditingController();
+    _passwordTextController = TextEditingController();
+    _confirmPasswordTextController = TextEditingController();
+
     _verificationNodes = [FocusNode(), FocusNode(), FocusNode()];
     _verificationTextControllers = [
       TextEditingController(),
@@ -190,7 +195,14 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         TextFormField(
+          controller: _passwordTextController,
           obscureText: true,
+          validator: (value) {
+            if (value.isEmpty || value.length < 6) {
+              return 'Password must be at least 6 characters long.';
+            }
+            return null;
+          },
           decoration: InputDecoration(
             labelText: 'New password',
             border: OutlineInputBorder(),
@@ -202,7 +214,14 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
           height: 15,
         ),
         TextFormField(
+          controller: _confirmPasswordTextController,
           obscureText: true,
+          validator: (value) {
+            if (value != _passwordTextController.value.text) {
+              return 'Confirm password must match Password';
+            }
+            return null;
+          },
           decoration: InputDecoration(
             labelText: 'Confirm password',
             border: OutlineInputBorder(),
@@ -220,17 +239,18 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
               style: TextStyle(color: Colors.white),
             ),
             onPressed: () async {
-              // take the new password and confirm password and if they match... send them to the api
-              var password = 'foofoofoo';
-              var challenge = 'force-fail';
+              if (_formKey.currentState.validate()) {
+                try {
+                  // take the new password and confirm password and if they match... send them to the api
+                  var password = _passwordTextController.value.text;
 
-              try {
-                // if the api responds okay,  then Navigate to Login
-                await _api.saveNewPassword(_challengeCode, password);
+                  // if the api responds okay,  then Navigate to Login
+                  await _api.saveNewPassword(_challengeCode, password);
 
-                Navigator.pop(context, 'passwordChangeSuccess');
-              } catch (error) {
-                _handleError(error);
+                  Navigator.pop(context, 'passwordChangeSuccess');
+                } catch (error) {
+                  _handleError(error);
+                }
               }
             },
           ),

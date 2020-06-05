@@ -14,6 +14,7 @@ import 'package:client_portal_app/src/controllers/ScheduleController.dart';
 import 'package:client_portal_app/src/controllers/TeamController.dart';
 import 'package:client_portal_app/src/controllers/ViewConversationController.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
+import 'package:client_portal_app/src/views/NotFoundView.dart';
 import 'package:client_portal_app/src/views/ProjectLogView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -172,8 +173,7 @@ class _AppMainState extends State<AppMain> {
             default:
               return MaterialPageRoute(
                   settings: settings,
-                  builder: (_) =>
-                      createController(Center(child: Text('404 Not found'))));
+                  builder: (_) => createController(NotFoundView(), false));
           }
         });
   }

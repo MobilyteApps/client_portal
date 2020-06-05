@@ -4,6 +4,7 @@ import 'package:client_portal_app/src/RoutePath.dart';
 import 'package:client_portal_app/src/controllers/AllMessagesController.dart';
 import 'package:client_portal_app/src/controllers/BillingAndPaymentsController.dart';
 import 'package:client_portal_app/src/controllers/CalendarController.dart';
+import 'package:client_portal_app/src/controllers/ContentController.dart';
 import 'package:client_portal_app/src/controllers/HomeController.dart';
 import 'package:client_portal_app/src/controllers/InvoicesController.dart';
 import 'package:client_portal_app/src/controllers/LoginController.dart';
@@ -50,9 +51,10 @@ class _AppMainState extends State<AppMain> {
   PageRoute dynamicRouteMatch(RouteSettings settings) {
     List<RoutePath> paths = [
       RoutePath(
-          pattern: r'^/view-conversation/([\w-]+)$',
-          builder: (context, match) => createController(
-              ViewConversationController(conversationId: match), true))
+        pattern: r'^/view-conversation/([\w-]+)$',
+        builder: (context, match) => createController(
+            ViewConversationController(conversationId: match), true),
+      ),
     ];
 
     for (RoutePath path in paths) {
@@ -170,6 +172,14 @@ class _AppMainState extends State<AppMain> {
                     createController(ViewConversationController()),
               );
               break;
+            case '/help-and-feedback':
+              return MaterialPageRoute(
+                settings: settings,
+                builder: (_) => createController(ContentController(
+                  pageId: 'help',
+                  panelLayoutTitle: 'Help & Feedback',
+                )),
+              );
             default:
               return MaterialPageRoute(
                   settings: settings,

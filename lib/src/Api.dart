@@ -134,6 +134,12 @@ class Api {
     return response;
   }
 
+  Future<http.Response> getPageContent(String pageId) async {
+    var response = await http.post('$baseUrl/content/page?pageId=${pageId}');
+    processResponse(response);
+    return response;
+  }
+
   void processResponse(http.Response response) {
     if (response.statusCode == 422) {
       throw Exception(response.reasonPhrase);

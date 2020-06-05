@@ -78,6 +78,9 @@ class MenuSecondary extends StatelessWidget {
           style: textStyle,
         ),
         leading: Icon(Icons.live_help),
+        onTap: () {
+          Navigator.of(context).pushNamed('/help-and-feedback');
+        },
       ),
       Container(
         decoration: BoxDecoration(

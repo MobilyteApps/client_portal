@@ -1,11 +1,10 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 
 import 'package:client_portal_app/src/controllers/ResponsiveController.dart';
-import 'package:client_portal_app/src/models/EventEntryModel.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/reducers/EventEntryReducer.dart';
 import 'package:client_portal_app/src/views/CalendarView.dart';
-import 'package:flutter/material.dart';
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
 

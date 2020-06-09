@@ -33,11 +33,73 @@ class _LoginFormState extends State<LoginForm> {
 
   String password;
 
+  FocusNode _passwordNode;
+
   @override
   void initState() {
     passwordVisible = false;
     rememberMe = false;
+    _passwordNode = FocusNode();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _passwordNode.dispose();
+    super.dispose();
+  }
+
+  void _doLogin(LayoutModel layoutModel) async {
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Logging in.  Please wait...'),
+      ));
+      try {
+        http.Response response = await api.login(email, password, rememberMe);
+
+        switch (response.statusCode) {
+          case 200:
+            var body = json.decode(response.body.toString());
+
+            await widget.userModel.login(body);
+
+            var project = await ProjectModel.load(body['id']);
+            if (project != null) {
+              layoutModel.setProject(project);
+            }
+            Navigator.of(context).pushReplacementNamed('/');
+            break;
+          case 401:
+            Scaffold.of(context).showSnackBar(SnackBar(
+              backgroundColor: Colors.red,
+              content: Text(
+                'Invalid email or password',
+                style: TextStyle(color: Colors.white),
+              ),
+            ));
+            break;
+          case 422:
+            Scaffold.of(context).showSnackBar(SnackBar(
+              backgroundColor: Colors.red,
+              content: Text(
+                'Invalid email or password',
+                style: TextStyle(color: Colors.white),
+              ),
+            ));
+            break;
+        }
+      } catch (e) {
+        // probably a CORS issue if the error is an XMLHttpRequest error
+        Scaffold.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(
+            'Network error has occured - ' + e,
+            style: TextStyle(color: Colors.white),
+          ),
+        ));
+      }
+    }
   }
 
   @override
@@ -71,6 +133,7 @@ class _LoginFormState extends State<LoginForm> {
                   padding: EdgeInsets.only(top: 15),
                   margin: EdgeInsets.symmetric(horizontal: 15),
                   child: TextFormField(
+                    focusNode: _passwordNode,
                     onSaved: (val) {
                       setState(() {
                         password = val;
@@ -81,6 +144,9 @@ class _LoginFormState extends State<LoginForm> {
                         return 'Password is required';
                       }
                       return null;
+                    },
+                    onFieldSubmitted: (value) {
+                      _doLogin(layoutModel);
                     },
                     obscureText: !passwordVisible,
                     decoration: InputDecoration(
@@ -126,7 +192,7 @@ class _LoginFormState extends State<LoginForm> {
                           onPressed: () async {
                             var response = await Navigator.of(context)
                                 .pushNamed('/login/reset-password');
-                            print(response);
+
                             if (response == 'passwordChangeSuccess') {
                               Scaffold.of(context).showSnackBar(
                                 SnackBar(
@@ -161,57 +227,7 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                     ),
                     onPressed: () async {
-                      if (_formKey.currentState.validate()) {
-                        _formKey.currentState.save();
-                        Scaffold.of(context).showSnackBar(SnackBar(
-                          content: Text('Logging in.  Please wait...'),
-                        ));
-                        try {
-                          http.Response response =
-                              await api.login(email, password, rememberMe);
-
-                          switch (response.statusCode) {
-                            case 200:
-                              var body = json.decode(response.body.toString());
-
-                              await widget.userModel.login(body);
-
-                              var project = await ProjectModel.load(body['id']);
-                              if (project != null) {
-                                layoutModel.setProject(project);
-                              }
-                              Navigator.of(context).pushReplacementNamed('/');
-                              break;
-                            case 401:
-                              Scaffold.of(context).showSnackBar(SnackBar(
-                                backgroundColor: Colors.red,
-                                content: Text(
-                                  'Invalid email or password',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ));
-                              break;
-                            case 422:
-                              Scaffold.of(context).showSnackBar(SnackBar(
-                                backgroundColor: Colors.red,
-                                content: Text(
-                                  'Invalid email or password',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ));
-                              break;
-                          }
-                        } catch (e) {
-                          // probably a CORS issue if the error is an XMLHttpRequest error
-                          Scaffold.of(context).showSnackBar(SnackBar(
-                            backgroundColor: Colors.red,
-                            content: Text(
-                              'Network error has occured - ' + e,
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ));
-                        }
-                      }
+                      _doLogin(layoutModel);
                     },
                   ),
                 ),

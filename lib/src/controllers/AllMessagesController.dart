@@ -29,6 +29,7 @@ class AllMessagesController extends ResponsiveController {
               SlideUpRoute(
                 page: AppController(
                   controller: NewMessageController(),
+                  requiresAuth: true,
                 ),
               ),
             );

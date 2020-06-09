@@ -65,6 +65,27 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
     );
   }
 
+  void _handleVerificationControlSubmit() async {
+    // fire off api request that includes the 9 digit code and email address
+    var one = _verificationTextControllers[0].value.text;
+    var two = _verificationTextControllers[1].value.text;
+    var three = _verificationTextControllers[2].value.text;
+
+    var code = '${one}${two}${three}';
+    var email = _emailTextController.value.text;
+
+    try {
+      var response = await _api.verifyResetCode(email, code);
+      var body = json.decode(response.body);
+      setState(() {
+        _step = 3;
+        _challengeCode = body['challenge'];
+      });
+    } catch (error) {
+      _handleError(error);
+    }
+  }
+
   Widget _verificationCodeControl() {
     return Row(
       children: <Widget>[
@@ -76,6 +97,9 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
               if (value.length == 3) {
                 _verificationNodes[1].requestFocus();
               }
+            },
+            onFieldSubmitted: (_) {
+              _handleVerificationControlSubmit();
             },
             focusNode: _verificationNodes[0],
             textAlign: TextAlign.center,
@@ -98,6 +122,9 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                 _verificationNodes[2].requestFocus();
               }
             },
+            onFieldSubmitted: (_) {
+              _handleVerificationControlSubmit();
+            },
             textAlign: TextAlign.center,
             decoration: InputDecoration(
                 border: OutlineInputBorder(),
@@ -115,6 +142,9 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
             textAlign: TextAlign.center,
             maxLength: 3,
             maxLengthEnforced: true,
+            onFieldSubmitted: (_) {
+              _handleVerificationControlSubmit();
+            },
             decoration: InputDecoration(
               counterText: '',
               border: OutlineInputBorder(),
@@ -125,26 +155,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
         SizedBox(width: 10),
         RaisedButton(
           color: Brand.primary,
-          onPressed: () async {
-            // fire off api request that includes the 9 digit code and email address
-            var one = _verificationTextControllers[0].value.text;
-            var two = _verificationTextControllers[1].value.text;
-            var three = _verificationTextControllers[2].value.text;
-
-            var code = '${one}${two}${three}';
-            var email = _emailTextController.value.text;
-
-            try {
-              var response = await _api.verifyResetCode(email, code);
-              var body = json.decode(response.body);
-              setState(() {
-                _step = 3;
-                _challengeCode = body['challenge'];
-              });
-            } catch (error) {
-              _handleError(error);
-            }
-          },
+          onPressed: _handleVerificationControlSubmit,
           padding: EdgeInsets.only(top: 14, bottom: 13),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -164,8 +175,25 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
     );
   }
 
+  void _handleEmailAddressControl() async {
+    if (_formKey.currentState.validate()) {
+      try {
+        await _api.requestPasswordResetCode(_emailTextController.value.text);
+        setState(() {
+          _step = 2;
+        });
+      } catch (error) {
+        _handleError(error);
+      }
+    }
+  }
+
   Widget _emailAddressControl() {
     return TextFormField(
+      autofocus: true,
+      onFieldSubmitted: (_) {
+        _handleEmailAddressControl();
+      },
       keyboardType: TextInputType.emailAddress,
       validator: EmptyValidator().validate,
       controller: _emailTextController,
@@ -173,21 +201,25 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
           labelText: 'Email address',
           suffixIcon: InkWell(
             child: Icon(Icons.send),
-            onTap: () async {
-              if (_formKey.currentState.validate()) {
-                try {
-                  await _api.requestPasswordResetCode(
-                      _emailTextController.value.text);
-                  setState(() {
-                    _step = 2;
-                  });
-                } catch (error) {
-                  _handleError(error);
-                }
-              }
-            },
+            onTap: _handleEmailAddressControl,
           )),
     );
+  }
+
+  void _handlePasswordInputControlSubmit() async {
+    if (_formKey.currentState.validate()) {
+      try {
+        // take the new password and confirm password and if they match... send them to the api
+        var password = _passwordTextController.value.text;
+
+        // if the api responds okay,  then Navigate to Login
+        await _api.saveNewPassword(_challengeCode, password);
+
+        Navigator.pop(context, 'passwordChangeSuccess');
+      } catch (error) {
+        _handleError(error);
+      }
+    }
   }
 
   Widget _passwordInputControl() {
@@ -195,6 +227,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         TextFormField(
+          autofocus: true,
           controller: _passwordTextController,
           obscureText: true,
           validator: (value) {
@@ -222,6 +255,9 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
             }
             return null;
           },
+          onFieldSubmitted: (_) {
+            _handlePasswordInputControlSubmit();
+          },
           decoration: InputDecoration(
             labelText: 'Confirm password',
             border: OutlineInputBorder(),
@@ -238,21 +274,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
               'Save Password',
               style: TextStyle(color: Colors.white),
             ),
-            onPressed: () async {
-              if (_formKey.currentState.validate()) {
-                try {
-                  // take the new password and confirm password and if they match... send them to the api
-                  var password = _passwordTextController.value.text;
-
-                  // if the api responds okay,  then Navigate to Login
-                  await _api.saveNewPassword(_challengeCode, password);
-
-                  Navigator.pop(context, 'passwordChangeSuccess');
-                } catch (error) {
-                  _handleError(error);
-                }
-              }
-            },
+            onPressed: _handlePasswordInputControlSubmit,
           ),
         )
       ],
@@ -260,9 +282,6 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
   }
 
   Widget _inputControl() {
-    if (_step == 2) {
-      return _verificationCodeControl();
-    }
     switch (_step) {
       case 1:
         return _emailAddressControl();

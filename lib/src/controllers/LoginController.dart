@@ -4,7 +4,6 @@ import "package:flutter/material.dart";
 
 import '../views/desktop/login.dart';
 import '../views/welcome.dart';
-import '../views/login.dart';
 
 class LoginController extends StatefulWidget {
   @override

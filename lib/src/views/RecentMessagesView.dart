@@ -75,6 +75,7 @@ class _RecentMessagesViewState extends State<RecentMessagesView> {
                 SlideUpRoute(
                   page: AppController(
                     controller: NewMessageController(),
+                    requiresAuth: true,
                   ),
                 ),
               );
@@ -103,6 +104,7 @@ class _RecentMessagesViewState extends State<RecentMessagesView> {
               SlideUpRoute(
                 page: AppController(
                   controller: AllMessagesController(),
+                  requiresAuth: true,
                 ),
               ),
             );

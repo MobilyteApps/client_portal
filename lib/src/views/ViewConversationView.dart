@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
+import 'package:flutter/material.dart';
 
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/Brand.dart';
@@ -8,10 +8,8 @@ import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/models/MessageModel.dart';
 import 'package:client_portal_app/src/models/PersonModel.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
-import 'package:client_portal_app/src/widgets/LoadingIndicator.dart';
 import 'package:client_portal_app/src/widgets/PersonCard.dart';
 import 'package:eventsource/eventsource.dart';
-import 'package:flutter/material.dart';
 
 class ViewConversationView extends StatefulWidget {
   const ViewConversationView(
@@ -33,6 +31,9 @@ class _ViewConversationViewState extends State<ViewConversationView> {
 
   EventSource eventSource;
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _replyTextController = TextEditingController();
+
   Future<ConversationModel> getConversation(String id) async {
     var response = await api.getConversation(id);
     return ConversationModel.fromJson(response.body);
@@ -40,6 +41,7 @@ class _ViewConversationViewState extends State<ViewConversationView> {
 
   @override
   void dispose() {
+    _replyTextController.dispose();
     super.dispose();
   }
 
@@ -107,11 +109,25 @@ class _ViewConversationViewState extends State<ViewConversationView> {
     }).toList();
   }
 
+  void _submitReply() async {
+    if (_formKey.currentState.validate()) {
+      try {
+        final Api api = Api(baseUrl: Config.apiBaseUrl);
+        await api.replyToConversation(
+            conversationModel.id, _replyTextController.value.text);
+
+        refreshConversation();
+
+        _replyTextController.clear();
+      } catch (e) {
+        Scaffold.of(context)
+            .showSnackBar(SnackBar(content: Text(e.toString())));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-    final _replyTextController = TextEditingController();
-
     if (conversationModel == null) {
       return Container();
     }
@@ -130,7 +146,7 @@ class _ViewConversationViewState extends State<ViewConversationView> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 20, right: 20, top: 25),
+          padding: EdgeInsets.only(left: 20, right: 20, top: 25, bottom: 10),
           child: PersonCard(
             person: personModel,
           ),
@@ -154,6 +170,9 @@ class _ViewConversationViewState extends State<ViewConversationView> {
                 }
                 return null;
               },
+              onFieldSubmitted: (value) {
+                _submitReply();
+              },
               decoration: InputDecoration(
                 border: InputBorder.none,
                 filled: true,
@@ -161,18 +180,7 @@ class _ViewConversationViewState extends State<ViewConversationView> {
                 suffixIcon: IconButton(
                   icon: Icon(Icons.send),
                   onPressed: () async {
-                    if (_formKey.currentState.validate()) {
-                      try {
-                        final Api api = Api(baseUrl: Config.apiBaseUrl);
-                        await api.replyToConversation(conversationModel.id,
-                            _replyTextController.value.text);
-
-                        refreshConversation();
-                      } catch (e) {
-                        Scaffold.of(context).showSnackBar(
-                            SnackBar(content: Text(e.toString())));
-                      }
-                    }
+                    _submitReply();
                   },
                 ),
               ),

@@ -53,6 +53,7 @@ class ConversationCard extends StatelessWidget {
             SlideUpRoute(
               settings: RouteSettings(arguments: conversation.id),
               page: AppController(
+                requiresAuth: true,
                 controller: ViewConversationController(
                   conversationId: conversation.id,
                 ),
@@ -65,6 +66,7 @@ class ConversationCard extends StatelessWidget {
             SlideLeftRoute(
               settings: RouteSettings(arguments: conversation),
               page: AppController(
+                requiresAuth: true,
                 controller: ViewConversationController(
                   icon: Icons.arrow_back,
                   conversationId: conversation.id,

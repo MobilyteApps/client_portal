@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:client_portal_app/src/models/MessageModel.dart';
 import 'package:eventsource/eventsource.dart';
 import 'package:http/http.dart' as http;

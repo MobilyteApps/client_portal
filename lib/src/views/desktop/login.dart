@@ -1,8 +1,7 @@
-import 'package:client_portal_app/src/models/UserModel.dart';
-import 'package:client_portal_app/src/widgets/SplitLayout.dart';
 import "package:flutter/material.dart";
 
-import '../../widgets/background_with_logo.dart';
+import 'package:client_portal_app/src/models/UserModel.dart';
+import 'package:client_portal_app/src/widgets/SplitLayout.dart';
 import '../../widgets/login_form_container.dart';
 
 class DesktopLoginScreen extends StatefulWidget {

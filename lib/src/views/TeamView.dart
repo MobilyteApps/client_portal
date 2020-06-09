@@ -45,6 +45,7 @@ class TeamView extends StatelessWidget {
               settings: RouteSettings(arguments: person),
               page: AppController(
                 controller: NewMessageController(),
+                requiresAuth: true,
               ),
             ),
           );

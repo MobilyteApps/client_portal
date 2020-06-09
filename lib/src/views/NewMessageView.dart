@@ -173,6 +173,14 @@ class _NewMessageViewState extends State<NewMessageView> {
     return SizedBox();
   }
 
+  void _doSubmit() async {
+    if (formKey.currentState.validate()) {
+      formKey.currentState.save();
+      var conversation = await submitMessage(subject, message, toPerson.id);
+      Navigator.of(context).pop(conversation);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var messageFieldPadding = EdgeInsets.all(20);
@@ -206,6 +214,12 @@ class _NewMessageViewState extends State<NewMessageView> {
                   message = message.copyWith(message: value);
                 });
               },
+              onFieldSubmitted: (value) {
+                setState(() {
+                  message = message.copyWith(message: value);
+                  _doSubmit();
+                });
+              },
               decoration: InputDecoration(
                 contentPadding: messageFieldPadding,
                 filled: true,
@@ -215,12 +229,7 @@ class _NewMessageViewState extends State<NewMessageView> {
                 suffixIcon: IconButton(
                   icon: Icon(Icons.send),
                   onPressed: () async {
-                    if (formKey.currentState.validate()) {
-                      formKey.currentState.save();
-                      var conversation =
-                          await submitMessage(subject, message, toPerson.id);
-                      Navigator.of(context).pop(conversation);
-                    }
+                    _doSubmit();
                   },
                 ),
               ),

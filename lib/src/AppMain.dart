@@ -1,5 +1,6 @@
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/Brand.dart';
+import 'package:client_portal_app/src/DefaultPageRoute.dart';
 import 'package:client_portal_app/src/RoutePath.dart';
 import 'package:client_portal_app/src/controllers/AllMessagesController.dart';
 import 'package:client_portal_app/src/controllers/BillingAndPaymentsController.dart';
@@ -63,7 +64,7 @@ class _AppMainState extends State<AppMain> {
         final firstMatch = regExpPattern.firstMatch(settings.name);
         final match = (firstMatch.groupCount == 1) ? firstMatch.group(1) : null;
 
-        return MaterialPageRoute<void>(
+        return DefaultPageRouteBuilder(
           builder: (context) => path.builder(context, match),
           settings: settings,
         );
@@ -82,7 +83,6 @@ class _AppMainState extends State<AppMain> {
         theme: ThemeData(
           primarySwatch: Brand.primary,
         ),
-        home: home,
         onGenerateRoute: (RouteSettings settings) {
           PageRoute dynamicPageRoute;
 
@@ -94,96 +94,98 @@ class _AppMainState extends State<AppMain> {
           // exact match routes
           switch (settings.name) {
             case '/':
-              return MaterialPageRoute(
+              return DefaultPageRouteBuilder(
                 settings: settings,
                 builder: (context) => home,
               );
               break;
             case '/schedule':
-              return MaterialPageRoute(
+              return DefaultPageRouteBuilder(
                   settings: settings,
                   builder: (context) => createController(ScheduleController()));
             case '/login':
-              return MaterialPageRoute(
+              return DefaultPageRouteBuilder(
                 settings: settings,
                 builder: (context) =>
                     createController(LoginController(), false),
               );
               break;
             case '/login/reset-password':
-              return MaterialPageRoute(
+              return DefaultPageRouteBuilder(
                 settings: settings,
                 builder: (_) =>
                     createController(ResetPasswordController(), false),
               );
               break;
             case '/calendar':
-              return MaterialPageRoute(
+              return DefaultPageRouteBuilder(
                 settings: settings,
                 builder: (context) => createController(CalendarController()),
               );
             case '/billing':
-              return MaterialPageRoute(
+              return DefaultPageRouteBuilder(
                 settings: settings,
                 builder: (context) =>
                     createController(BillingAndPaymentsController()),
               );
               break;
             case '/billing/payments':
-              return MaterialPageRoute(
+              return DefaultPageRouteBuilder(
                 settings: settings,
                 builder: (context) => createController(PaymentsController()),
               );
               break;
             case '/billing/invoices':
-              return MaterialPageRoute(
+              return DefaultPageRouteBuilder(
                 settings: settings,
                 builder: (context) => createController(InvoicesController()),
               );
               break;
             case '/team':
-              return MaterialPageRoute(
+              return DefaultPageRouteBuilder(
                 settings: settings,
                 builder: (context) => createController(TeamController()),
               );
               break;
             case '/new-message':
-              return MaterialPageRoute(
+              return DefaultPageRouteBuilder(
                 settings: settings,
                 builder: (context) => createController(NewMessageController()),
               );
               break;
             case '/all-messages':
-              return MaterialPageRoute(
+              return DefaultPageRouteBuilder(
                 settings: settings,
                 builder: (context) => createController(AllMessagesController()),
               );
               break;
             case '/messages':
-              return MaterialPageRoute(
+              return DefaultPageRouteBuilder(
                 settings: settings,
                 builder: (context) => createController(MessagesController()),
               );
               break;
             case '/view-conversation':
-              return MaterialPageRoute(
+              return DefaultPageRouteBuilder(
                 settings: settings,
                 builder: (context) =>
                     createController(ViewConversationController()),
               );
               break;
             case '/help-and-feedback':
-              return MaterialPageRoute(
+              return DefaultPageRouteBuilder(
                 settings: settings,
-                builder: (_) => createController(ContentController(
+                builder: (context) => createController(ContentController(
                   pageId: 'help',
                   panelLayoutTitle: 'Help & Feedback',
                 )),
               );
+
             default:
-              return MaterialPageRoute(
+              return DefaultPageRouteBuilder(
                   settings: settings,
-                  builder: (_) => createController(NotFoundView(), false));
+                  builder: (context) =>
+                      createController(NotFoundView(), false));
           }
         });
   }

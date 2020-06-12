@@ -21,6 +21,7 @@ class _AllMessagesViewState extends State<AllMessagesView> {
   int cursor;
 
   Future<List<ConversationModel>> conversations() async {
+    await Future.delayed(Duration(milliseconds: 200));
     var api = Api(baseUrl: Config.apiBaseUrl);
     var response = await api.recentConversations();
     List<Map<String, dynamic>> _json =
@@ -36,35 +37,35 @@ class _AllMessagesViewState extends State<AllMessagesView> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      builder: (context, AsyncSnapshot<List<ConversationModel>> snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return LoadingIndicator();
-        }
+    return Container(
+      padding: EdgeInsets.only(top: 25),
+      child: FutureBuilder(
+        builder: (context, AsyncSnapshot<List<ConversationModel>> snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return LoadingIndicator();
+          }
 
-        if (snapshot.hasError) {
-          return Center(
-            child: Text(snapshot.error.toString()),
-          );
-        }
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(snapshot.error.toString()),
+            );
+          }
 
-        List<Widget> _cards = snapshot.data.map((e) {
-          return ConversationCard(
-            conversation: e,
-            me: widget.layoutModel.identity.id.toString(),
-            routeAnimationDirection: 'rtl',
-          );
-        }).toList();
+          List<Widget> _cards = snapshot.data.map((e) {
+            return ConversationCard(
+              conversation: e,
+              me: widget.layoutModel.identity.id.toString(),
+              routeAnimationDirection: 'rtl',
+            );
+          }).toList();
 
-        return Container(
-          padding: EdgeInsets.only(top: 25),
-          child: ListView(
+          return ListView(
             shrinkWrap: true,
             children: _cards,
-          ),
-        );
-      },
-      future: conversations(),
+          );
+        },
+        future: conversations(),
+      ),
     );
   }
 }

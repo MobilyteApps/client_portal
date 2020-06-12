@@ -10,12 +10,12 @@ abstract class ResponsiveController extends StatelessWidget {
     Key key,
     this.panelLayoutTitle,
     this.panelCenterTitle = false,
-    this.appBarIcon,    
+    this.appBarIcon,
   }) : super(key: key);
   final String panelLayoutTitle;
   final bool panelCenterTitle;
   final IconData appBarIcon;
-  
+
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<LayoutModel>(
@@ -26,7 +26,7 @@ abstract class ResponsiveController extends StatelessWidget {
             content: buildContent(layoutModel, context),
           );
         }
-        return PanelLayout(          
+        return PanelLayout(
           model: layoutModel,
           appBar: buildAppBar(context),
           content: buildContentPanel(layoutModel, context),
@@ -41,7 +41,7 @@ abstract class ResponsiveController extends StatelessWidget {
       elevation: 0,
       backgroundColor: Color(Brand.primaryDark),
       centerTitle: panelCenterTitle,
-      title: Text(panelLayoutTitle),      
+      title: Text(panelLayoutTitle),
       leading: IconButton(
         icon: Icon(appBarIcon == null ? Icons.close : appBarIcon),
         onPressed: () {

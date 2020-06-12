@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/Brand.dart';
 import 'package:client_portal_app/src/models/ConversationModel.dart';
-import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/models/MessageModel.dart';
 import 'package:client_portal_app/src/models/PersonModel.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
@@ -12,11 +11,8 @@ import 'package:client_portal_app/src/widgets/PersonCard.dart';
 import 'package:eventsource/eventsource.dart';
 
 class ViewConversationView extends StatefulWidget {
-  const ViewConversationView(
-      {Key key, @required this.layoutModel, this.conversationId})
+  const ViewConversationView({Key key, @required this.conversationId})
       : super(key: key);
-
-  final LayoutModel layoutModel;
 
   final String conversationId;
 
@@ -57,18 +53,14 @@ class _ViewConversationViewState extends State<ViewConversationView> {
   @override
   void initState() {
     super.initState();
-
     Future.delayed(Duration.zero, () async {
       refreshConversation();
     });
   }
 
-  List<Widget> _cards(List<MessageModel> messages) {
+  List<Widget> _cards(List<MessageModel> messages, String userId) {
     return messages.map((e) {
-      String authorName =
-          e.author.id == widget.layoutModel.identity.id.toString()
-              ? 'You'
-              : e.author.name;
+      String authorName = e.author.id == userId ? 'You' : e.author.name;
 
       TextStyle textStyle = TextStyle(
         color: authorName == 'You' ? Colors.white.withOpacity(.87) : null,
@@ -128,12 +120,13 @@ class _ViewConversationViewState extends State<ViewConversationView> {
 
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
+    String userId = args['userId'];
     if (conversationModel == null) {
       return Container();
     }
 
-    PersonModel personModel =
-        conversationModel.identity(widget.layoutModel.identity.id.toString());
+    PersonModel personModel = conversationModel.identity(userId);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,7 +148,7 @@ class _ViewConversationViewState extends State<ViewConversationView> {
           child: ListView(
             padding: EdgeInsets.only(left: 20, right: 20, top: 20),
             shrinkWrap: true,
-            children: _cards(conversationModel.messages),
+            children: _cards(conversationModel.messages, userId),
           ),
         ),
         Container(

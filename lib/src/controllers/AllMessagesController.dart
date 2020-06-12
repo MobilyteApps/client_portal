@@ -27,6 +27,7 @@ class AllMessagesController extends ResponsiveController {
             Navigator.push(
               context,
               SlideUpRoute(
+                settings: RouteSettings(),
                 page: AppController(
                   controller: NewMessageController(),
                   requiresAuth: true,

@@ -98,6 +98,10 @@ class _ScheduleViewState extends State<ScheduleView> {
 
   @override
   Widget build(BuildContext context) {
+    var _padding = EdgeInsets.only(top: 60, left: 60, right: 60);
+    if (MediaQuery.of(context).size.width < 1024) {
+      _padding = EdgeInsets.only(top: 40, left: 30, right: 15);
+    }
     return ScopedModelDescendant<LayoutModel>(
       builder: (context, widget, layoutModel) {
         return FutureBuilder(
@@ -116,7 +120,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                 var body = json.decode(response.body.toString());
                 return Container(
                   constraints: BoxConstraints(maxWidth: 480),
-                  padding: EdgeInsets.only(top: 60, left: 60, right: 60),
+                  padding: _padding,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

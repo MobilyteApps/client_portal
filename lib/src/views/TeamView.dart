@@ -7,6 +7,8 @@ import 'package:client_portal_app/src/controllers/NewMessageController.dart';
 import 'package:client_portal_app/src/models/PersonModel.dart';
 import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
+import 'package:client_portal_app/src/views/NewMessageView.dart';
+import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
 import 'package:client_portal_app/src/widgets/PersonAvatar.dart';
 import 'package:flutter/material.dart';
 
@@ -43,9 +45,9 @@ class TeamView extends StatelessWidget {
             context,
             SlideUpRoute(
               settings: RouteSettings(arguments: person),
-              page: AppController(
-                controller: NewMessageController(),
-                requiresAuth: true,
+              page: PanelScaffold(
+                title: 'New Message',
+                body: NewMessageView(),
               ),
             ),
           );

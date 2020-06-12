@@ -12,31 +12,34 @@ class EventEntryDetailPanel extends StatelessWidget {
       constraints: BoxConstraints(minHeight: 130),
       width: double.infinity,
       decoration: BoxDecoration(color: Color(eventEntryModel.backgroundColor)),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Color(eventEntryModel.textColor),
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          Padding(
-            child: Text(
-              eventEntryModel.title,
-              style: TextStyle(
+      child: SafeArea(
+        bottom: false,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.arrow_back,
                 color: Color(eventEntryModel.textColor),
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
               ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
-            padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
-          ),
-        ],
+            Padding(
+              child: Text(
+                eventEntryModel.title,
+                style: TextStyle(
+                  color: Color(eventEntryModel.textColor),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -111,8 +114,9 @@ class EventEntryDetailPanel extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         header(context),
-        Expanded(
+        Container(
           child: ListView(
+            padding: EdgeInsets.all(0),
             shrinkWrap: true,
             children: listViewItems(),
           ),

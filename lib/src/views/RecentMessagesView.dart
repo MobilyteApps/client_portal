@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/Brand.dart';
+import 'package:client_portal_app/src/controllers/AboutController.dart';
 import 'package:client_portal_app/src/controllers/AllMessagesController.dart';
 import 'package:client_portal_app/src/controllers/AppController.dart';
 import 'package:client_portal_app/src/controllers/NewMessageController.dart';
@@ -9,8 +10,12 @@ import 'package:client_portal_app/src/models/ConversationModel.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
+import 'package:client_portal_app/src/views/AllMessagesView.dart';
+import 'package:client_portal_app/src/views/NewMessageView.dart';
 import 'package:client_portal_app/src/widgets/ConversationCard.dart';
+import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class RecentMessagesView extends StatefulWidget {
   const RecentMessagesView({Key key, @required this.layoutModel})
@@ -73,9 +78,10 @@ class _RecentMessagesViewState extends State<RecentMessagesView> {
               await Navigator.push(
                 context,
                 SlideUpRoute(
-                  page: AppController(
-                    controller: NewMessageController(),
-                    requiresAuth: true,
+                  settings: RouteSettings(),
+                  page: PanelScaffold(
+                    title: 'New Message',
+                    body: NewMessageView(),
                   ),
                 ),
               );
@@ -100,14 +106,37 @@ class _RecentMessagesViewState extends State<RecentMessagesView> {
             Navigator.pushNamed(context, '/all-messages');
           } else {
             Navigator.push(
-              context,
-              SlideUpRoute(
-                page: AppController(
-                  controller: AllMessagesController(),
-                  requiresAuth: true,
-                ),
-              ),
-            );
+                context,
+                SlideUpRoute(
+                  settings: RouteSettings(),
+                  page: PanelScaffold(
+                    title: 'Messages',
+                    body: AllMessagesView(
+                      layoutModel: widget.layoutModel,
+                    ),
+                    actions: [
+                      IconButton(
+                        icon: Icon(Icons.edit),
+                        onPressed: () {
+                          if (MediaQuery.of(context).size.width >= 1024) {
+                            Navigator.pushNamed(context, '/new-message');
+                          } else {
+                            Navigator.push(
+                              context,
+                              SlideUpRoute(
+                                settings: RouteSettings(),
+                                page: PanelScaffold(
+                                  title: 'New Message',
+                                  body: NewMessageView(),
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      )
+                    ],
+                  ),
+                ));
           }
         },
       ),

@@ -1,3 +1,6 @@
+import 'package:client_portal_app/src/views/PaymentView.dart';
+import 'package:client_portal_app/src/views/TeamView.dart';
+import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
 import 'package:flutter/material.dart';
 
 import 'package:client_portal_app/src/controllers/AppController.dart';
@@ -29,8 +32,9 @@ class MenuSecondary extends StatelessWidget {
             Navigator.push(
               context,
               SlideUpRoute(
-                page: AppController(
-                  controller: BillingAndPaymentsController(),
+                page: PanelScaffold(
+                  title: 'Billing & Payments',
+                  body: PaymentView(),
                 ),
               ),
             );
@@ -50,10 +54,8 @@ class MenuSecondary extends StatelessWidget {
             Navigator.push(
               context,
               SlideUpRoute(
-                page: AppController(
-                  requiresAuth: true,
-                  controller: TeamController(),
-                ),
+                settings: RouteSettings(),
+                page: PanelScaffold(title: 'Your Mosby Team', body: TeamView()),
               ),
             );
           }

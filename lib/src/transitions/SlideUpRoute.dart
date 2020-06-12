@@ -6,16 +6,18 @@ class SlideUpRoute extends PageRouteBuilder {
 
   SlideUpRoute({this.page, this.settings})
       : super(
-          settings: settings,
+          settings: settings == null ? RouteSettings() : settings,
           transitionsBuilder:
               (context, animation, secondAnimation, Widget child) {
             return SlideTransition(
               child: child,
-              position: Tween<Offset>(begin: Offset(0, 1), end: Offset(0, 0))
-                  .animate(animation),
+              position: Tween<Offset>(
+                begin: Offset(0, 1),
+                end: Offset(0, 0),
+              ).animate(animation),
             );
           },
-          transitionDuration: Duration(milliseconds: 500),
+          transitionDuration: Duration(milliseconds: 200),
           pageBuilder: (context, animation, secondAnimation) {
             return page;
           },

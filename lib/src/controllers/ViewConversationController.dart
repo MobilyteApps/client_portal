@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 
 class ViewConversationController extends ResponsiveController {
-  ViewConversationController({IconData icon, this.conversationId})
+  ViewConversationController({IconData icon, @required this.conversationId})
       : super(
           panelCenterTitle: false,
           panelLayoutTitle: 'Message',
@@ -16,7 +16,6 @@ class ViewConversationController extends ResponsiveController {
   @override
   Widget buildContent(LayoutModel layoutModel, BuildContext context) {
     return ViewConversationView(
-      layoutModel: layoutModel,
       conversationId: conversationId,
     );
   }

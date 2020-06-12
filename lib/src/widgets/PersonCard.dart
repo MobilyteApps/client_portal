@@ -10,8 +10,8 @@ class PersonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> nameAndTitle = [
-      Text(person.name),
-      Text(person.title != null ? person.title : '')
+      Text(person != null && person.name != null ? person.name : ''),
+      Text(person != null && person.title != null ? person.title : '')
     ];
 
     return Container(

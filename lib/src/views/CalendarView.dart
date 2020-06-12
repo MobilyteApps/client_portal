@@ -4,6 +4,7 @@ import 'package:client_portal_app/src/Brand.dart';
 import 'package:client_portal_app/src/models/EventEntryModel.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/models/RightDrawerModel.dart';
+import 'package:client_portal_app/src/transitions/SlideLeftRoute.dart';
 import 'package:client_portal_app/src/widgets/BackButtonHeading.dart';
 import 'package:client_portal_app/src/widgets/EventEntry.dart';
 import 'package:client_portal_app/src/widgets/EventEntryDetailPanel.dart';
@@ -327,6 +328,15 @@ class _CalendarViewState extends State<CalendarView> {
     );
   }
 
+  void _openEventDetailRight(EventEntryModel eventEntryModel) {
+    Scaffold.of(context).openEndDrawer();
+    ScopedModel.of<RightDrawerModel>(context).setContent(
+      EventEntryDetailPanel(
+        eventEntryModel: eventEntryModel,
+      ),
+    );
+  }
+
   Widget _eventList() {
     List<EventEntry> entries = [];
     if (_eventListModels != null) {
@@ -335,12 +345,18 @@ class _CalendarViewState extends State<CalendarView> {
           EventEntry(
             model: element,
             onTap: (EventEntry eventEntry) {
-              Scaffold.of(context).openEndDrawer();
-              ScopedModel.of<RightDrawerModel>(context).setContent(
-                EventEntryDetailPanel(
-                  eventEntryModel: element,
-                ),
-              );
+              if (MediaQuery.of(context).size.width >= 1024) {
+                _openEventDetailRight(element);
+              } else {
+                Navigator.push(
+                    context,
+                    SlideLeftRoute(
+                        page: Material(
+                      child: EventEntryDetailPanel(
+                        eventEntryModel: element,
+                      ),
+                    )));
+              }
             },
           ),
         );

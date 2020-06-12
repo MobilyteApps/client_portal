@@ -1,11 +1,16 @@
 import 'package:client_portal_app/src/controllers/AppController.dart';
 import 'package:client_portal_app/src/controllers/ViewConversationController.dart';
 import 'package:client_portal_app/src/models/ConversationModel.dart';
+import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/models/PersonModel.dart';
 import 'package:client_portal_app/src/transitions/SlideLeftRoute.dart';
 import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
+import 'package:client_portal_app/src/views/ViewConversationView.dart';
+import 'package:client_portal_app/src/widgets/PanelBackButton.dart';
+import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
 import 'package:client_portal_app/src/widgets/PersonAvatar.dart';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class ConversationCard extends StatelessWidget {
   const ConversationCard({
@@ -51,24 +56,26 @@ class ConversationCard extends StatelessWidget {
           Navigator.push(
             context,
             SlideUpRoute(
-              settings: RouteSettings(arguments: conversation.id),
-              page: AppController(
-                requiresAuth: true,
-                controller: ViewConversationController(
-                  conversationId: conversation.id,
-                ),
-              ),
-            ),
+                settings: RouteSettings(arguments: {
+                  'userId': me,
+                  'conversationId': conversation.id
+                }),
+                page: PanelScaffold(
+                    title: 'Message',
+                    body: ViewConversationView(
+                      conversationId: conversation.id,
+                    ))),
           );
         } else if (routeAnimationDirection == 'rtl') {
           Navigator.push(
             context,
             SlideLeftRoute(
-              settings: RouteSettings(arguments: conversation),
-              page: AppController(
-                requiresAuth: true,
-                controller: ViewConversationController(
-                  icon: Icons.arrow_back,
+              settings: RouteSettings(
+                  arguments: {'userId': me, 'conversationId': conversation.id}),
+              page: PanelScaffold(
+                leading: PanelBackButton(),
+                title: 'Message',
+                body: ViewConversationView(
                   conversationId: conversation.id,
                 ),
               ),

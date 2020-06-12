@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class SlideLeftRoute extends PageRouteBuilder {
   final Widget page;
   final RouteSettings settings;
+  final int durationMS;
 
-  SlideLeftRoute({this.page, this.settings})
+  SlideLeftRoute({this.page, this.settings, this.durationMS = 200})
       : super(
           settings: settings,
           pageBuilder: (
@@ -13,7 +14,7 @@ class SlideLeftRoute extends PageRouteBuilder {
             Animation<double> secondaryAnimation,
           ) =>
               page,
-          transitionDuration: Duration(milliseconds: 500),
+          transitionDuration: Duration(milliseconds: durationMS),
           transitionsBuilder: (
             BuildContext context,
             Animation<double> animation,

@@ -58,6 +58,10 @@ class _AppMainState extends State<AppMain> {
       ),
     ];
 
+    if (settings == null) {
+      return null;
+    }
+
     for (RoutePath path in paths) {
       final regExpPattern = RegExp(path.pattern);
       if (regExpPattern.hasMatch(settings.name)) {
@@ -82,6 +86,7 @@ class _AppMainState extends State<AppMain> {
         title: 'Mosby Client Portal',
         theme: ThemeData(
           primarySwatch: Brand.primary,
+          primaryColor: Color(Brand.primaryDark),
         ),
         onGenerateRoute: (RouteSettings settings) {
           PageRoute dynamicPageRoute;
@@ -92,7 +97,7 @@ class _AppMainState extends State<AppMain> {
           }
 
           // exact match routes
-          switch (settings.name) {
+          switch (settings != null ? settings.name : '') {
             case '/':
               return DefaultPageRouteBuilder(
                 settings: settings,

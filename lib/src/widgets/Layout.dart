@@ -148,6 +148,11 @@ class _LayoutState extends State<Layout> {
                 _scaffoldKey.currentState.showBottomSheet(
                   (context) => Container(
                     width: double.infinity,
+                    padding: EdgeInsets.only(
+                      top: MediaQuery.of(_scaffoldKey.currentState.context)
+                          .viewPadding
+                          .top,
+                    ),
                     child: LayoutDrawer(
                       version: widget.version,
                       logo: Image.asset('images/logo.png'),

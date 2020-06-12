@@ -63,8 +63,10 @@ class AllMessagesController extends ResponsiveController {
             'Messages',
             style: Theme.of(context).textTheme.headline6,
           ),
-          AllMessagesView(
-            layoutModel: layoutModel,
+          Expanded(
+            child: AllMessagesView(
+              layoutModel: layoutModel,
+            ),
           ),
         ],
       ),

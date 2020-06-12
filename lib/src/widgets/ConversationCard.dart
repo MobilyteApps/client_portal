@@ -51,7 +51,7 @@ class ConversationCard extends StatelessWidget {
         if (MediaQuery.of(context).size.width >= 1024) {
           await Navigator.pushNamed(
               context, '/view-conversation/${conversation.id}',
-              arguments: conversation.id);
+              arguments: {'userId': me, 'conversationId': conversation.id});
         } else if (routeAnimationDirection == 'up') {
           Navigator.push(
             context,

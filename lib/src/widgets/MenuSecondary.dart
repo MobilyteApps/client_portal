@@ -1,10 +1,7 @@
-import 'package:client_portal_app/src/views/PaymentView.dart';
+import 'package:client_portal_app/src/views/ContentView.dart';
 import 'package:client_portal_app/src/views/TeamView.dart';
 import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
 import 'package:flutter/material.dart';
-
-import 'package:client_portal_app/src/controllers/AppController.dart';
-import 'package:client_portal_app/src/controllers/TeamController.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -82,7 +79,21 @@ class MenuSecondary extends StatelessWidget {
         ),
         leading: Icon(Icons.live_help),
         onTap: () {
-          Navigator.of(context).pushNamed('/help-and-feedback');
+          if (MediaQuery.of(context).size.width >= 1024) {
+            Navigator.of(context).pushNamed('/help-and-feedback');
+          } else {
+            Navigator.push(
+              context,
+              SlideUpRoute(
+                settings: RouteSettings(),
+                page: PanelScaffold(
+                    title: 'Help & Feedback',
+                    body: ContentView(
+                      html: '<p>todo</p>',
+                    )),
+              ),
+            );
+          }
         },
       ),
       Container(

@@ -6,6 +6,7 @@ import 'package:client_portal_app/src/controllers/AllMessagesController.dart';
 import 'package:client_portal_app/src/controllers/BillingAndPaymentsController.dart';
 import 'package:client_portal_app/src/controllers/CalendarController.dart';
 import 'package:client_portal_app/src/controllers/ContentController.dart';
+import 'package:client_portal_app/src/controllers/GhostLoginController.dart';
 import 'package:client_portal_app/src/controllers/HomeController.dart';
 import 'package:client_portal_app/src/controllers/InvoicesController.dart';
 import 'package:client_portal_app/src/controllers/LoginController.dart';
@@ -56,6 +57,11 @@ class _AppMainState extends State<AppMain> {
         builder: (context, match) => createController(
             ViewConversationController(conversationId: match), true),
       ),
+      RoutePath(
+        pattern: r'^/login/ghost/([A-Za-z0-9-_]+)$',
+        builder: (context, match) =>
+            createController(GhostLoginController(code: match), false),
+      )
     ];
 
     if (settings == null) {

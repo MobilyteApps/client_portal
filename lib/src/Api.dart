@@ -19,6 +19,14 @@ class Api {
     return http.post('$baseUrl/user/login', body: body);
   }
 
+  Future<http.Response> pinLogin(String code, String pin) {
+    Map<String, dynamic> body = {
+      'username': code,
+      'password': pin,
+    };
+    return http.post('$baseUrl/user/pin', body: body);
+  }
+
   Future<http.Response> project() {
     print('[Api.dart] requesting project');
     return http.get('$baseUrl/project', headers: authorizationHeaders());

@@ -58,7 +58,7 @@ class _AppMainState extends State<AppMain> {
             ViewConversationController(conversationId: match), true),
       ),
       RoutePath(
-        pattern: r'^/login/ghost/([A-Za-z0-9-_]+)$',
+        pattern: r'^/login/ghost/([A-Za-z0-9-_\/=+]+)$',
         builder: (context, match) =>
             createController(GhostLoginController(code: match), false),
       )

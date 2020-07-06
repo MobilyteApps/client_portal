@@ -36,6 +36,7 @@ abstract class ResponsiveController extends StatelessWidget {
   }
 
   AppBar buildAppBar(BuildContext context) {
+    print('calling app bar');
     return AppBar(
       actions: [],
       elevation: 0,

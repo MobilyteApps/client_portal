@@ -146,6 +146,13 @@ class Api {
     return response;
   }
 
+  Future<http.Response> getLastPayment() async {
+    var response = await http.post('$baseUrl/payment/last',
+        headers: authorizationHeaders());
+    processResponse(response);
+    return response;
+  }
+
   void processResponse(http.Response response) {
     if (response.statusCode == 422) {
       throw Exception(response.reasonPhrase);

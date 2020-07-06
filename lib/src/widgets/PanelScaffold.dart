@@ -12,10 +12,13 @@ class PanelScaffold extends Scaffold {
     String title,
     this.body,
     this.leading,
+    bool centerTitle = true,
   }) : super(
           key: key,
           body: body,
           appBar: AppBar(
+            centerTitle: centerTitle,
+            elevation: 0,
             title: Text(title),
             actions: actions,
             leading: leading == null ? PanelCloseButton() : leading,

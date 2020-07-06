@@ -1,6 +1,6 @@
 import 'package:client_portal_app/src/controllers/ResponsiveController.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
-import 'package:client_portal_app/src/views/PaymentView.dart';
+import 'package:client_portal_app/src/views/BillingAndPaymentsView.dart';
 
 import 'package:flutter/material.dart';
 
@@ -9,6 +9,6 @@ class BillingAndPaymentsController extends ResponsiveController {
       : super(panelLayoutTitle: 'Billing and Payments');
 
   Widget buildContent(LayoutModel layoutModel, BuildContext context) {
-    return PaymentView(layoutModel: layoutModel);
+    return BillingAndPaymentsView(layoutModel: layoutModel);
   }
 }

@@ -1,11 +1,16 @@
 import 'package:client_portal_app/src/Brand.dart';
+import 'package:client_portal_app/src/controllers/PaymentsController.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
+import 'package:client_portal_app/src/transitions/SlideLeftRoute.dart';
+import 'package:client_portal_app/src/views/PaymentsView.dart';
+import 'package:client_portal_app/src/widgets/PanelBackButton.dart';
+import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
 import 'package:client_portal_app/src/widgets/TextHeading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class PaymentView extends StatelessWidget {
-  const PaymentView({Key key, this.layoutModel}) : super(key: key);
+class BillingAndPaymentsView extends StatelessWidget {
+  const BillingAndPaymentsView({Key key, this.layoutModel}) : super(key: key);
 
   final LayoutModel layoutModel;
 
@@ -35,7 +40,24 @@ class PaymentView extends StatelessWidget {
             ),
             trailing: Icon(Icons.chevron_right),
             onTap: () {
-              Navigator.of(context).pushNamed('/billing/payments');
+              if (MediaQuery.of(context).size.width < 1024) {
+                Navigator.push(
+                  context,
+                  SlideLeftRoute(
+                    settings: RouteSettings(
+                      arguments: {},
+                    ),
+                    page: PanelScaffold(
+                      centerTitle: false,
+                      leading: PanelBackButton(),
+                      title: 'Billing and Payments',
+                      body: PaymentsView(),
+                    ),
+                  ),
+                );
+              } else {
+                Navigator.of(context).pushNamed('/billing/payments');
+              }
             },
           ),
           ListTile(
@@ -56,9 +78,13 @@ class PaymentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    EdgeInsets padding = EdgeInsets.only(top: 50, left: 45);
+    if (MediaQuery.of(context).size.width < 1024) {
+      padding = EdgeInsets.only(top: 35, left: 15, right: 15);
+    }
     return Container(
       alignment: Alignment.topLeft,
-      padding: EdgeInsets.only(top: 50, left: 45),
+      padding: padding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -92,7 +118,7 @@ class PaymentView extends StatelessWidget {
                   SizedBox(
                     height: 58,
                   ),
-                  InkWell(
+                  /*InkWell(
                     child: Text(
                       'Make a Payment',
                       style: TextStyle(
@@ -103,7 +129,7 @@ class PaymentView extends StatelessWidget {
                     onTap: () {
                       print('make a payment clicked');
                     },
-                  ),
+                  ),*/
                 ],
               ),
             ),

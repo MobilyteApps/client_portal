@@ -1,4 +1,5 @@
 import 'package:client_portal_app/src/views/ContentView.dart';
+import 'package:client_portal_app/src/views/BillingAndPaymentsView.dart';
 import 'package:client_portal_app/src/views/TeamView.dart';
 import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class MenuSecondary extends StatelessWidget {
   List<Widget> items(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return [
-      /*ListTile(
+      ListTile(
         title: Text(
           'Billing and Payments',
           style: textStyle,
@@ -31,13 +32,13 @@ class MenuSecondary extends StatelessWidget {
               SlideUpRoute(
                 page: PanelScaffold(
                   title: 'Billing & Payments',
-                  body: PaymentView(),
+                  body: BillingAndPaymentsView(),
                 ),
               ),
             );
           }
         },
-      ),*/
+      ),
       ListTile(
         title: Text(
           'Your Mosby Team',

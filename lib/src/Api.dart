@@ -153,6 +153,27 @@ class Api {
     return response;
   }
 
+  Future<http.Response> getPreviousPayments() async {
+    var response = await http.post('$baseUrl/payment/previous',
+        headers: authorizationHeaders());
+    processResponse(response);
+    return response;
+  }
+
+  Future<http.Response> getNextPaymentDue() async {
+    var response = await http.post('$baseUrl/payment/next',
+        headers: authorizationHeaders());
+    processResponse(response);
+    return response;
+  }
+
+  Future<http.Response> getInvoices() async {
+    var response = await http.post('$baseUrl/invoice/all',
+        headers: authorizationHeaders());
+    processResponse(response);
+    return response;
+  }
+
   void processResponse(http.Response response) {
     if (response.statusCode == 422) {
       throw Exception(response.reasonPhrase);

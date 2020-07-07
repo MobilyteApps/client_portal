@@ -2,14 +2,19 @@ import 'package:client_portal_app/src/models/PaymentModel.dart';
 import 'package:flutter/material.dart';
 
 class PaymentExpansionTile extends StatelessWidget {
-  const PaymentExpansionTile({Key key, @required this.paymentModel})
-      : super(key: key);
+  const PaymentExpansionTile({
+    Key key,
+    @required this.paymentModel,
+    this.expanded = false,
+  }) : super(key: key);
   final PaymentModel paymentModel;
+  final bool expanded;
 
   @override
   Widget build(BuildContext context) {
+    var boldText = TextStyle(fontWeight: FontWeight.bold);
     return ExpansionTile(
-      initiallyExpanded: true,
+      initiallyExpanded: expanded,
       tilePadding: EdgeInsets.only(top: 0, bottom: 0),
       title: Row(
         children: [
@@ -22,7 +27,10 @@ class PaymentExpansionTile extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text('Payment status: '),
+            Text(
+              'Payment status: ',
+              style: boldText,
+            ),
             Text(paymentModel.status),
           ],
         ),
@@ -31,7 +39,10 @@ class PaymentExpansionTile extends StatelessWidget {
         ),
         Row(
           children: [
-            Text('Payment method: '),
+            Text(
+              'Payment method: ',
+              style: boldText,
+            ),
             Text(paymentModel.method),
           ],
         ),
@@ -40,7 +51,10 @@ class PaymentExpansionTile extends StatelessWidget {
         ),
         Row(
           children: [
-            Text('Payment notes: '),
+            Text(
+              'Payment notes: ',
+              style: boldText,
+            ),
             Text(paymentModel.notes),
           ],
         ),

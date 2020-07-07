@@ -1,7 +1,12 @@
+import 'dart:convert';
+
+import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/Brand.dart';
-import 'package:client_portal_app/src/controllers/PaymentsController.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
+import 'package:client_portal_app/src/models/PaymentModel.dart';
 import 'package:client_portal_app/src/transitions/SlideLeftRoute.dart';
+import 'package:client_portal_app/src/utils/Config.dart';
+import 'package:client_portal_app/src/views/InvoicesView.dart';
 import 'package:client_portal_app/src/views/PaymentsView.dart';
 import 'package:client_portal_app/src/widgets/PanelBackButton.dart';
 import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
@@ -10,9 +15,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BillingAndPaymentsView extends StatelessWidget {
-  const BillingAndPaymentsView({Key key, this.layoutModel}) : super(key: key);
+  BillingAndPaymentsView({Key key, this.layoutModel}) : super(key: key);
 
   final LayoutModel layoutModel;
+
+  final Api api = Api(baseUrl: Config.apiBaseUrl);
 
   Widget _optionsListView(context) {
     TextStyle listViewTitleStyle = TextStyle(
@@ -68,11 +75,97 @@ class BillingAndPaymentsView extends StatelessWidget {
               style: listViewTitleStyle,
             ),
             onTap: () {
-              Navigator.of(context).pushNamed('/billing/invoices');
+              if (MediaQuery.of(context).size.width < 1024) {
+                Navigator.push(
+                  context,
+                  SlideLeftRoute(
+                    settings: RouteSettings(
+                      arguments: {},
+                    ),
+                    page: PanelScaffold(
+                      centerTitle: false,
+                      leading: PanelBackButton(),
+                      title: 'Billing and Payments',
+                      body: InvoicesView(),
+                    ),
+                  ),
+                );
+              } else {
+                Navigator.of(context).pushNamed('/billing/invoices');
+              }
             },
           ),
         ],
       ).toList(),
+    );
+  }
+
+  Future<PaymentModel> _nextPaymentFuture() async {
+    var response = await api.getNextPaymentDue();
+    return PaymentModel.fromMap(json.decode(response.body));
+  }
+
+  Widget _nextPaymentCard() {
+    return FutureBuilder(
+      future: _nextPaymentFuture(),
+      builder: (context, AsyncSnapshot<PaymentModel> snapshot) {
+        String _title = '';
+        String _amount = '';
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.data != null) {
+            _title = 'Payment due by ' + snapshot.data.dueDateString;
+            _amount = snapshot.data.amountDueString;
+          } else {
+            _title = 'No payment is due';
+            _amount = '\$0.00';
+          }
+        }
+
+        return Card(
+          color: Brand.primary,
+          elevation: 1,
+          child: Padding(
+            padding: EdgeInsets.all(15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Text(
+                  _title,
+                  style: TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, .87),
+                  ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  _amount,
+                  style: TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, .87),
+                    fontSize: 36,
+                  ),
+                ),
+                SizedBox(
+                  height: 58,
+                ),
+                /*InkWell(
+                    child: Text(
+                      'Make a Payment',
+                      style: TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, .87),
+                      ),
+                      textAlign: TextAlign.right,
+                    ),
+                    onTap: () {
+                      print('make a payment clicked');
+                    },
+                  ),*/
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -94,46 +187,7 @@ class BillingAndPaymentsView extends StatelessWidget {
               text: 'Billing and Payments',
             ),
           ),
-          Card(
-            color: Brand.primary,
-            elevation: 1,
-            child: Padding(
-              padding: EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Text(
-                    'No payment is due',
-                    style: TextStyle(
-                      color: Color.fromRGBO(255, 255, 255, .87),
-                    ),
-                  ),
-                  Text(
-                    "\$0.00",
-                    style: TextStyle(
-                      color: Color.fromRGBO(255, 255, 255, .87),
-                      fontSize: 36,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 58,
-                  ),
-                  /*InkWell(
-                    child: Text(
-                      'Make a Payment',
-                      style: TextStyle(
-                        color: Color.fromRGBO(255, 255, 255, .87),
-                      ),
-                      textAlign: TextAlign.right,
-                    ),
-                    onTap: () {
-                      print('make a payment clicked');
-                    },
-                  ),*/
-                ],
-              ),
-            ),
-          ),
+          _nextPaymentCard(),
           Expanded(
             child: _optionsListView(context),
           ),

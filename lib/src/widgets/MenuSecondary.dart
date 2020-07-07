@@ -30,6 +30,7 @@ class MenuSecondary extends StatelessWidget {
             Navigator.push(
               context,
               SlideUpRoute(
+                settings: RouteSettings(),
                 page: PanelScaffold(
                   title: 'Billing & Payments',
                   body: BillingAndPaymentsView(),

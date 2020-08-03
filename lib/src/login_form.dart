@@ -68,7 +68,7 @@ class _LoginFormState extends State<LoginForm> {
             if (project != null) {
               layoutModel.setProject(project);
             }
-            layoutModel.setDeviceToken();
+            layoutModel.saveDeviceToken();
             Navigator.of(context).pushReplacementNamed('/');
             break;
           case 401:

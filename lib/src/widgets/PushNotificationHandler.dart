@@ -17,7 +17,6 @@ class PushNotificationHandler extends StatefulWidget {
 }
 
 class _PushNotificationHandlerState extends State<PushNotificationHandler> {
-  
   LayoutModel model;
 
   final api = Api(baseUrl: Config.apiBaseUrl);
@@ -25,7 +24,7 @@ class _PushNotificationHandlerState extends State<PushNotificationHandler> {
   @override
   void initState() {
     super.initState();
-    
+
     model = ScopedModel.of<LayoutModel>(context);
     if (widget.platform == TargetPlatform.android ||
         widget.platform == TargetPlatform.iOS) {
@@ -105,10 +104,9 @@ class _PushNotificationHandlerState extends State<PushNotificationHandler> {
     });
   }
 
-  void _saveDeviceToken(String token) async {
-    print(token);
+  void _saveDeviceToken(String token) async {    
     try {
-      api.saveDeviceToken(token);
+      model.saveDeviceToken();
     } catch (error) {
       print(error);
     }

@@ -24,7 +24,7 @@ class Layout extends StatefulWidget {
 }
 
 class _LayoutState extends State<Layout> {
-  var _scaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> _scaffoldKey;
 
   RightDrawerModel rightDrawerModel;
 
@@ -35,6 +35,7 @@ class _LayoutState extends State<Layout> {
   @override
   void initState() {
     super.initState();
+    _scaffoldKey = widget.model.scaffoldKey;
     rightDrawerModel = RightDrawerModel();
     menuPrimary = MenuPrimary(
       items: widget.model.primaryMenuItems(),

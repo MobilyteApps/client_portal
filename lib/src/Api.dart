@@ -146,6 +146,15 @@ class Api {
     return response;
   }
 
+  Future<http.Response> saveDeviceToken(String token) async {
+    var response = await http.post('$baseUrl/user/device-token',
+        body: {'token': token}, headers: authorizationHeaders());
+
+    processResponse(response);
+
+    return response;
+  }
+
   void processResponse(http.Response response) {
     if (response.statusCode == 422) {
       throw Exception(response.reasonPhrase);

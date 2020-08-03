@@ -19,6 +19,7 @@ import 'package:client_portal_app/src/controllers/ViewConversationController.dar
 import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/views/NotFoundView.dart';
 import 'package:client_portal_app/src/views/ProjectLogView.dart';
+import 'package:client_portal_app/src/widgets/PushNotificationHandler.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -45,7 +46,10 @@ class _AppMainState extends State<AppMain> {
 
   Widget createController(Widget child, [bool requiresAuth = true]) {
     return AppController(
-      controller: child,
+      controller: PushNotificationHandler(
+        platform: Theme.of(context).platform,
+        child: child,
+      ),
       requiresAuth: requiresAuth,
     );
   }

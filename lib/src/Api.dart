@@ -146,7 +146,6 @@ class Api {
     return response;
   }
 
-<<<<<<< HEAD
   Future<http.Response> getLastPayment() async {
     var response = await http.post('$baseUrl/payment/last',
         headers: authorizationHeaders());
@@ -172,14 +171,16 @@ class Api {
     var response = await http.post('$baseUrl/invoice/all',
         headers: authorizationHeaders());
     processResponse(response);
-=======
+
+    return response;
+  }
+
   Future<http.Response> saveDeviceToken(String token) async {
     var response = await http.post('$baseUrl/user/device-token',
         body: {'token': token}, headers: authorizationHeaders());
 
     processResponse(response);
 
->>>>>>> master
     return response;
   }
 

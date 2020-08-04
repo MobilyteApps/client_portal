@@ -12,12 +12,19 @@ import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:scoped_model/scoped_model.dart';
 
-class AppController extends StatelessWidget {
+
+class AppController extends StatefulWidget {
   final Widget controller;
   final bool requiresAuth;
 
   AppController({@required this.controller, @required this.requiresAuth});
 
+  @override
+  _AppControllerState createState() => _AppControllerState();
+}
+
+class _AppControllerState extends State<AppController> {
+  
   Future<LayoutModel> openBoxes() async {
     print('[AppController.dart] opening identity and project boxes');
     final Api api = Api(baseUrl: Config.apiBaseUrl);
@@ -76,15 +83,15 @@ class AppController extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           UserModel model = snapshot.data.identity;
-          if (model == null && requiresAuth) {
+          if (model == null && widget.requiresAuth) {
             return ScopedModel<LayoutModel>(
               child: LoginController(),
               model: snapshot.data,
             );
           }
-          print(snapshot.data);
+
           return ScopedModel<LayoutModel>(
-            child: controller,
+            child: widget.controller,
             model: snapshot.data,
           );
         }

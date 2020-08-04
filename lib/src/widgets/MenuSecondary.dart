@@ -17,7 +17,7 @@ class MenuSecondary extends StatelessWidget {
   List<Widget> items(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return [
-      ListTile(
+      /*ListTile(
         title: Text(
           'Billing and Payments',
           style: textStyle,
@@ -39,7 +39,7 @@ class MenuSecondary extends StatelessWidget {
             );
           }
         },
-      ),
+      ),*/
       ListTile(
         title: Text(
           'Your Mosby Team',

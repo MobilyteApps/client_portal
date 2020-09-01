@@ -41,16 +41,11 @@ Future<void> _reportError(dynamic error, dynamic stackTrace) async {
   }
 }
 
-void _testError() {
-  throw new StateError('This is a Dart exception.');
-}
-
 void main() async {
   FlutterError.onError = (details, {bool forceReport = false}) {
     _reportError(details.exception, details.stack);
   };
   runZonedGuarded<Future<void>>(() async {
-    _testError();
     WidgetsFlutterBinding.ensureInitialized();
     if (kIsWeb == false) {
       final appDocumentDirectory =

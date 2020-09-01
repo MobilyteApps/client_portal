@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "927404267954",
+    "firebase_url": "https://mosby-client-portal.firebaseio.com",
+    "project_id": "mosby-client-portal",
+    "storage_bucket": "mosby-client-portal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:927404267954:android:371a8280580b70a41f2cab",
+        "android_client_info": {
+          "package_name": "com.mosbybuildingarts.clientportal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "927404267954-72d4l0vjhpdge8v6qopi00im1hk4481b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyRyZ_Ctef9TsDGh2b4MiTs5wbr5hU8es"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "927404267954-72d4l0vjhpdge8v6qopi00im1hk4481b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "927404267954-itnel2rud42ppt9b3ro6akmmom8fdmq3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mosbybuildingarts.clientportal"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

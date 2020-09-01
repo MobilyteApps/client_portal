@@ -38,6 +38,8 @@ PODS:
     - GoogleUtilities/UserDefaults (~> 6.2)
     - Protobuf (~> 3.1)
   - Flutter (1.0.0)
+  - flutter_money_formatter (0.0.1):
+    - Flutter
   - GoogleAppMeasurement (6.0.1):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
@@ -88,6 +90,7 @@ PODS:
 DEPENDENCIES:
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
+  - flutter_money_formatter (from `.symlinks/plugins/flutter_money_formatter/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - path_provider_linux (from `.symlinks/plugins/path_provider_linux/ios`)
   - path_provider_macos (from `.symlinks/plugins/path_provider_macos/ios`)
@@ -115,6 +118,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_messaging/ios"
   Flutter:
     :path: Flutter
+  flutter_money_formatter:
+    :path: ".symlinks/plugins/flutter_money_formatter/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   path_provider_linux:
@@ -141,6 +146,7 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: cdb3827746d53ece7ae87a5c51c25c3055443366
   FirebaseMessaging: 20b6626c41be7840aed7a3dd9a14003efae3d588
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_money_formatter: d0d18ddc5be333fad8d09964d741b59fa11a91dc
   GoogleAppMeasurement: 51d8d9ea48f0ca44484d29cfbdef976fbd4fc336
   GoogleUtilities: 996e0db07153674fd1b54b220fda3a3dc3547cba
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48

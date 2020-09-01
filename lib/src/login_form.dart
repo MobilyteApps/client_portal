@@ -95,7 +95,7 @@ class _LoginFormState extends State<LoginForm> {
         Scaffold.of(context).showSnackBar(SnackBar(
           backgroundColor: Colors.red,
           content: Text(
-            'Network error has occured - ' + e,
+            'Network error has occured - ' + e.toString(),
             style: TextStyle(color: Colors.white),
           ),
         ));

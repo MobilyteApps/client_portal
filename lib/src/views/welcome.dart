@@ -57,7 +57,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(top: 100, bottom: 60),
+            padding: EdgeInsets.only(top: 60, bottom: 60),
             constraints: BoxConstraints(
               maxWidth: 250,
             ),

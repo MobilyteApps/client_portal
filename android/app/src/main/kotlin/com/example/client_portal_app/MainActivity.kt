@@ -1,4 +1,4 @@
-package com.example.client_portal_app
+package com.mosbybuildingarts.clientportal
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

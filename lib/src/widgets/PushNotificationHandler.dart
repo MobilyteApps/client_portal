@@ -33,12 +33,20 @@ class _PushNotificationHandlerState extends State<PushNotificationHandler> {
   }
 
   void _initPushNotificationSupport() {
+    print('init firebase messaging');
     model.firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         try {
           print("onMessage: $message");
-          String title = message['aps']['alert']['title'];
-          String body = message['aps']['alert']['body'];
+          String title = '';
+          String body = '';
+          if (message['notification'] != null) {
+            title = message['notification']['title'];
+            body = message['notification']['body'];
+          } else {
+            title = message['aps']['alert']['title'];
+            body = message['aps']['alert']['body'];
+          }
           var snackbar = SnackBar(
             duration: Duration(minutes: 60),
             action: SnackBarAction(
@@ -104,7 +112,7 @@ class _PushNotificationHandlerState extends State<PushNotificationHandler> {
     });
   }
 
-  void _saveDeviceToken(String token) async {    
+  void _saveDeviceToken(String token) async {
     try {
       model.saveDeviceToken();
     } catch (error) {

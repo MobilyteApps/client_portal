@@ -93,7 +93,7 @@ class _CalendarViewState extends State<CalendarView> {
                 ? Text(
                     _currentMonth,
                     style: TextStyle(
-                      color: _backgroundColor() == Brand.primary
+                      color: _backgroundColor() == Colors.black12
                           ? Colors.white
                           : Colors.black.withOpacity(.54),
                       fontSize: 18,

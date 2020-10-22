@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/Brand.dart';
-import 'package:client_portal_app/src/controllers/AppController.dart';
-import 'package:client_portal_app/src/controllers/NewMessageController.dart';
 import 'package:client_portal_app/src/models/PersonModel.dart';
 import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
 import 'package:client_portal_app/src/utils/Config.dart';

@@ -28,7 +28,7 @@ class _LayoutState extends State<Layout> {
 
   RightDrawerModel rightDrawerModel;
 
-  MenuSecondary secondaryMenu = MenuSecondary();
+  MenuSecondary secondaryMenu;
 
   MenuPrimary menuPrimary;
 
@@ -40,6 +40,12 @@ class _LayoutState extends State<Layout> {
     menuPrimary = MenuPrimary(
       items: widget.model.primaryMenuItems(),
       onPressed: onPressPrimaryMenu,
+    );
+    secondaryMenu = MenuSecondary(
+      layoutModel: widget.model,
+      textStyle: TextStyle(
+        fontSize: 14,
+      ),
     );
   }
 

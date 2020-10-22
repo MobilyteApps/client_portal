@@ -1,4 +1,3 @@
-import 'package:client_portal_app/src/DefaultPageRoute.dart';
 import 'package:client_portal_app/src/controllers/AppController.dart';
 import 'package:client_portal_app/src/models/UserModel.dart';
 import 'package:client_portal_app/src/transitions/SlideLeftRoute.dart';
@@ -30,6 +29,9 @@ class _LoginControllerState extends State<LoginController> {
             onLoginPress: () {
               Navigator.of(context).pushReplacement(
                 SlideLeftRoute(
+                  settings: RouteSettings(
+                    arguments: {},
+                  ),
                   page: AppController(
                     controller: LoginController(showLogin: true),
                     requiresAuth: false,

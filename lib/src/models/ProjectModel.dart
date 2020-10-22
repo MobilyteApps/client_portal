@@ -15,12 +15,16 @@ class ProjectModel extends Model {
   @HiveField(1)
   String coverPhoto;
 
-  ProjectModel({this.title, this.coverPhoto});
+  @HiveField(2)
+  String id;
+
+  ProjectModel({this.title, this.coverPhoto, this.id});
 
   ProjectModel.fromJson(dynamic body) {
     dynamic j = json.decode(body);
     this.title = j['title'];
     this.coverPhoto = j['coverPhoto'];
+    this.id = j['id'];
   }
 
   static Future<ProjectModel> load(int userId) async {
@@ -28,7 +32,7 @@ class ProjectModel extends Model {
 
     ProjectModel project = Hive.box('project').get(userId);
 
-    if (project != null) {
+    if (project != null && project.id == null) {
       return project;
     }
 

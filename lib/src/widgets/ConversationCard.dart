@@ -1,7 +1,4 @@
-import 'package:client_portal_app/src/controllers/AppController.dart';
-import 'package:client_portal_app/src/controllers/ViewConversationController.dart';
 import 'package:client_portal_app/src/models/ConversationModel.dart';
-import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/models/PersonModel.dart';
 import 'package:client_portal_app/src/transitions/SlideLeftRoute.dart';
 import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
@@ -10,7 +7,6 @@ import 'package:client_portal_app/src/widgets/PanelBackButton.dart';
 import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
 import 'package:client_portal_app/src/widgets/PersonAvatar.dart';
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 class ConversationCard extends StatelessWidget {
   const ConversationCard({

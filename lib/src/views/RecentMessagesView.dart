@@ -2,10 +2,6 @@ import 'dart:convert';
 
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/Brand.dart';
-import 'package:client_portal_app/src/controllers/AboutController.dart';
-import 'package:client_portal_app/src/controllers/AllMessagesController.dart';
-import 'package:client_portal_app/src/controllers/AppController.dart';
-import 'package:client_portal_app/src/controllers/NewMessageController.dart';
 import 'package:client_portal_app/src/models/ConversationModel.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
@@ -15,7 +11,6 @@ import 'package:client_portal_app/src/views/NewMessageView.dart';
 import 'package:client_portal_app/src/widgets/ConversationCard.dart';
 import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 class RecentMessagesView extends StatefulWidget {
   const RecentMessagesView({Key key, @required this.layoutModel})

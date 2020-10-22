@@ -4,7 +4,6 @@ import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/models/InvoiceModel.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/widgets/BackButtonHeading.dart';
-import 'package:client_portal_app/src/widgets/InvoiceExpansionTile.dart';
 import 'package:client_portal_app/src/widgets/SubHeading.dart';
 import 'package:flutter/material.dart';
 
@@ -50,10 +49,10 @@ class InvoicesView extends StatelessWidget {
           SizedBox(width: 15),
           Text(invoiceModel.amountString),
           SizedBox(width: 15),
-          Chip(
+          /*Chip(
             label: Text(invoiceModel.status, style: TextStyle(fontSize: 12)),
             labelPadding: EdgeInsets.only(left: 5, right: 5),
-          ),
+          ),*/
         ],
       ),
     );

@@ -12,7 +12,9 @@ import 'package:client_portal_app/src/widgets/PanelBackButton.dart';
 import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
 import 'package:client_portal_app/src/widgets/TextHeading.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BillingAndPaymentsView extends StatelessWidget {
   BillingAndPaymentsView({Key key, this.layoutModel}) : super(key: key);
@@ -111,6 +113,7 @@ class BillingAndPaymentsView extends StatelessWidget {
       builder: (context, AsyncSnapshot<PaymentModel> snapshot) {
         String _title = '';
         String _amount = '';
+        bool makePayment = true;
 
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.data != null) {
@@ -119,6 +122,7 @@ class BillingAndPaymentsView extends StatelessWidget {
           } else {
             _title = 'No payment is due';
             _amount = '\$0.00';
+            makePayment = false;
           }
         }
 
@@ -149,18 +153,31 @@ class BillingAndPaymentsView extends StatelessWidget {
                 SizedBox(
                   height: 58,
                 ),
-                /*InkWell(
-                    child: Text(
-                      'Make a Payment',
-                      style: TextStyle(
-                        color: Color.fromRGBO(255, 255, 255, .87),
-                      ),
-                      textAlign: TextAlign.right,
-                    ),
-                    onTap: () {
-                      print('make a payment clicked');
-                    },
-                  ),*/
+                makePayment
+                    ? InkWell(
+                        child: Text(
+                          'Make a Payment',
+                          style: TextStyle(
+                            color: Color.fromRGBO(255, 255, 255, .87),
+                          ),
+                          textAlign: TextAlign.right,
+                        ),
+                        onTap: () {
+                          String projectId = layoutModel.project.id;
+                          String url =
+                              'http://pay.mosbybuildingarts.com/?project_id=$projectId';
+
+                          url = 'https://anvilinsights.com';
+
+                          print(url);
+
+                          canLaunch(url).then((value) {
+                            launch(url);
+                          });
+                          print('make a payment clicked');
+                        },
+                      )
+                    : SizedBox(),
               ],
             ),
           ),

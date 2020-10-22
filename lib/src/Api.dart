@@ -184,6 +184,48 @@ class Api {
     return response;
   }
 
+  Future<http.Response> paymentMethods() async {
+    var response = await http.get('$baseUrl/payment/methods',
+        headers: authorizationHeaders());
+
+    processResponse(response);
+
+    return response;
+  }
+
+  Future<http.Response> storedPaymentMethods() async {
+    var response = await http.get('$baseUrl/payment/stored-methods',
+        headers: authorizationHeaders());
+
+    processResponse(response);
+
+    return response;
+  }
+
+  Future<http.Response> updateCreditCard(details) async {
+    var response = await http.post(
+      '$baseUrl/payment/update-credit-card',
+      body: details,
+      headers: authorizationHeaders(),
+    );
+
+    processResponse(response);
+
+    return response;
+  }
+
+  Future<http.Response> updateACH(details) async {
+    var response = await http.post(
+      '$baseUrl/payment/update-ach',
+      body: details,
+      headers: authorizationHeaders(),
+    );
+
+    processResponse(response);
+
+    return response;
+  }
+
   void processResponse(http.Response response) {
     if (response.statusCode == 422) {
       throw Exception(response.reasonPhrase);

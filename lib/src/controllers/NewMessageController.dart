@@ -1,14 +1,8 @@
-import 'dart:convert';
-
-import 'package:client_portal_app/src/models/PersonModel.dart';
-import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/views/NewMessageView.dart';
 import 'package:client_portal_app/src/widgets/BackButtonHeading.dart';
 import 'package:flutter/material.dart';
 import 'package:client_portal_app/src/controllers/ResponsiveController.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
-
-import '../Api.dart';
 
 class NewMessageController extends ResponsiveController {
   NewMessageController()

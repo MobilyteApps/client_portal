@@ -21,8 +21,12 @@ class InvoiceModel {
       number: map['number'] != null ? map['number'] : '',
       date: map['date'] != null ? DateTime.tryParse(map['date']) : null,
       status: map['status'] != null ? map['status'] : '',
-      amount: map['amount'] != null ? map['amount'] : 0.00,
-      balance: map['balance'] != null ? map['balance'] : 0.00,
+      amount: map['amount'] != null
+          ? double.tryParse(map['amount'].toString())
+          : 0.00,
+      balance: map['balance'] != null
+          ? double.tryParse(map['balance'].toString())
+          : 0.00,
     );
   }
 

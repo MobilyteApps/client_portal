@@ -1,5 +1,6 @@
-import 'package:client_portal_app/src/views/ContentView.dart';
+import 'package:client_portal_app/src/controllers/BillingAndPaymentsController.dart';
 import 'package:client_portal_app/src/views/BillingAndPaymentsView.dart';
+import 'package:client_portal_app/src/views/ContentView.dart';
 import 'package:client_portal_app/src/views/TeamView.dart';
 import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
 import 'package:flutter/material.dart';
@@ -10,14 +11,16 @@ import 'package:scoped_model/scoped_model.dart';
 import 'Menu.dart';
 
 class MenuSecondary extends StatelessWidget {
-  final TextStyle textStyle = TextStyle(
-    fontSize: 14,
-  );
+  const MenuSecondary({this.layoutModel, this.textStyle});
+
+  final LayoutModel layoutModel;
+
+  final TextStyle textStyle;
 
   List<Widget> items(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return [
-      /*ListTile(
+      ListTile(
         title: Text(
           'Billing and Payments',
           style: textStyle,
@@ -33,13 +36,13 @@ class MenuSecondary extends StatelessWidget {
                 settings: RouteSettings(),
                 page: PanelScaffold(
                   title: 'Billing & Payments',
-                  body: BillingAndPaymentsView(),
+                  body: BillingAndPaymentsView(layoutModel: layoutModel),
                 ),
               ),
             );
           }
         },
-      ),*/
+      ),
       ListTile(
         title: Text(
           'Your Mosby Team',

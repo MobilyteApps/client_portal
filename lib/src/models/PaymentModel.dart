@@ -31,7 +31,9 @@ class PaymentModel {
           map['dueDate'] != null ? DateTime.tryParse(map['dueDate']) : null,
       paidDate:
           map['paidDate'] != null ? DateTime.tryParse(map['paidDate']) : null,
-      amount: map['amount'] != null ? map['amount'] : 0.00,
+      amount: map['amount'] != null
+          ? double.tryParse(map['amount'].toString())
+          : 0.00,
       method: map['method'] != null ? map['method'] : 'N/A',
       notes: map['notes'] != null ? map['notes'] : '',
     );

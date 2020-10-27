@@ -141,7 +141,8 @@ class Api {
   }
 
   Future<http.Response> getPageContent(String pageId) async {
-    var response = await http.post('$baseUrl/content/page?pageId=${pageId}');
+    var response = await http.post('$baseUrl/content/page?pageId=${pageId}',
+        headers: authorizationHeaders());
     processResponse(response);
     return response;
   }

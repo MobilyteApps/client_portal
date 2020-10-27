@@ -1,4 +1,9 @@
+import 'dart:convert';
+
+import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/controllers/BillingAndPaymentsController.dart';
+import 'package:client_portal_app/src/controllers/ContentController.dart';
+import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/views/BillingAndPaymentsView.dart';
 import 'package:client_portal_app/src/views/ContentView.dart';
 import 'package:client_portal_app/src/views/TeamView.dart';
@@ -11,11 +16,23 @@ import 'package:scoped_model/scoped_model.dart';
 import 'Menu.dart';
 
 class MenuSecondary extends StatelessWidget {
-  const MenuSecondary({this.layoutModel, this.textStyle});
+  MenuSecondary({this.layoutModel, this.textStyle});
 
   final LayoutModel layoutModel;
 
   final TextStyle textStyle;
+
+  final Api _api = Api(baseUrl: Config.apiBaseUrl);
+
+  Future<String> getPageContent(pageId) async {
+    try {
+      var response = await _api.getPageContent(pageId);
+      var _json = json.decode(response.body);
+      return _json['content'];
+    } catch (error) {
+      return '<p>error fetching page</p>';
+    }
+  }
 
   List<Widget> items(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -92,10 +109,25 @@ class MenuSecondary extends StatelessWidget {
               SlideUpRoute(
                 settings: RouteSettings(),
                 page: PanelScaffold(
-                    title: 'Help & Feedback',
-                    body: ContentView(
-                      html: '<p>todo</p>',
-                    )),
+                  title: 'Help & Feedback',
+                  body: FutureBuilder(
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        print(snapshot);
+                        return ContentView(
+                          html: snapshot.data,
+                        );
+                      } else {
+                        return Container(
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+                    },
+                    future: getPageContent('help'),
+                  ),
+                ),
               ),
             );
           }

@@ -113,7 +113,6 @@ class MenuSecondary extends StatelessWidget {
                   body: FutureBuilder(
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
-                        print(snapshot);
                         return ContentView(
                           html: snapshot.data,
                         );

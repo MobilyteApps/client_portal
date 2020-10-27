@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ContentView extends StatelessWidget {
   final String html;
@@ -28,12 +29,14 @@ class ContentView extends StatelessWidget {
       //Optional parameters:
       onLinkTap: (url) {
         // open url in a webview
-        print(url);
+        canLaunch(url).then((value) {
+          launch(url);
+        });
       },
       style: {"div": Style(), "p": Style()},
       onImageTap: (src) {
         // Display the image in large form.
-        print(src);
+        //print(src);
       },
     );
   }

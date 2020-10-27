@@ -167,14 +167,10 @@ class BillingAndPaymentsView extends StatelessWidget {
                           String url =
                               'http://pay.mosbybuildingarts.com/?project_id=$projectId';
 
-                          url = 'https://anvilinsights.com';
-
                           print(url);
-
                           canLaunch(url).then((value) {
                             launch(url);
                           });
-                          print('make a payment clicked');
                         },
                       )
                     : SizedBox(),

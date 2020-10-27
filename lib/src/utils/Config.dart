@@ -7,6 +7,8 @@ class Config {
   static String sentryDSN =
       'https://68ec41201fec49799d5097f5ce7ced52@o259570.ingest.sentry.io/5413881';
 
+  static String paymentUrl = 'http://pay.mosbybuildingarts.com';
+
   static void setIsProduction() {
     _isProduction = true;
   }

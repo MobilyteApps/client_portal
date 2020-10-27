@@ -164,10 +164,9 @@ class BillingAndPaymentsView extends StatelessWidget {
                         ),
                         onTap: () {
                           String projectId = layoutModel.project.id;
-                          String url =
-                              'http://pay.mosbybuildingarts.com/?project_id=$projectId';
+                          String baseUrl = Config.paymentUrl;
+                          String url = '$baseUrl/?project_id=$projectId';
 
-                          print(url);
                           canLaunch(url).then((value) {
                             launch(url);
                           });

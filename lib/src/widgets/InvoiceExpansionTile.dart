@@ -1,35 +1,27 @@
 import 'package:client_portal_app/src/models/InvoiceModel.dart';
+import 'package:client_portal_app/src/widgets/InvoiceDetail.dart';
+import 'package:client_portal_app/src/widgets/InvoiceRow.dart';
 import 'package:flutter/material.dart';
 
 class InvoiceExpansionTile extends StatelessWidget {
   const InvoiceExpansionTile(
-      {Key key, @required this.invoiceModel, this.expanded = false})
+      {Key key, @required this.title, this.detail, this.expanded = false})
       : super(key: key);
-  final InvoiceModel invoiceModel;
+  final InvoiceRow title;
   final bool expanded;
+  final InvoiceDetail detail;
 
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
       tilePadding: EdgeInsets.only(top: 0, bottom: 0),
-      children: [],
+      children: [
+        detail,
+      ],
       initiallyExpanded: expanded,
-      title: Row(
-        children: [
-          Text(
-            invoiceModel.number,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          SizedBox(width: 15),
-          Expanded(
-            child: Text(invoiceModel.dateString),
-          ),
-          SizedBox(width: 15),
-          Chip(label: Text(invoiceModel.status)),
-          SizedBox(width: 15),
-          Text(invoiceModel.amountString),
-        ],
-      ),
+      title: title,
+      expandedCrossAxisAlignment: CrossAxisAlignment.end,
+      trailing: SizedBox(),
     );
   }
 }

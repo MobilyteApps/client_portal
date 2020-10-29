@@ -44,4 +44,10 @@ class InvoiceModel {
     var fmt = DateFormat('MMMM d, y');
     return fmt.format(this.date);
   }
+
+  String get totalPaymentAmountString {
+    var amount = this.amount - this.balance;
+    FlutterMoneyFormatter fmf = FlutterMoneyFormatter(amount: amount);
+    return fmf.output.symbolOnLeft;
+  }
 }

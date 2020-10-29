@@ -9,11 +9,7 @@ class TextHeading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: TextStyle(
-        color: Colors.black,
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-      ),
+      style: Theme.of(context).textTheme.headline6,
     );
   }
 }

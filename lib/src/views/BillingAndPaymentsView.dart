@@ -55,7 +55,7 @@ class BillingAndPaymentsView extends StatelessWidget {
     return FutureBuilder(
       future: _billingInfoFuture(),
       builder: (context, AsyncSnapshot<BillingInfoModel> snapshot) {
-        String _title = '';
+        String _title = 'Current Balance Due';
         String _amount = '';
         bool makePayment = false;
 
@@ -65,15 +65,12 @@ class BillingAndPaymentsView extends StatelessWidget {
           }
           if (snapshot.data != null) {
             if (snapshot.data.nextPaymentDueDateString == null) {
-              _title = 'Payment due by: N/A';
               _amount = '\$ 0.00';
             } else {
-              _title =
-                  'Payment due by ${snapshot.data.nextPaymentDueDateString}';
               _amount = BillingInfoModel.money(snapshot.data.nextPaymentAmount);
             }
           } else {
-            _title = '';
+            _title = 'Current Balance Due';
             _amount = '\$ 0.00';
             makePayment = false;
           }

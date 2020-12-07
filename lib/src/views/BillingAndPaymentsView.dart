@@ -84,37 +84,48 @@ class BillingAndPaymentsView extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.all(15),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  Text(
-                    _title,
-                    style: TextStyle(
-                      color: Color.fromRGBO(255, 255, 255, .87),
+                  Container(
+                    width: double.infinity,
+                    child: Text(
+                      _title,
+                      style: TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, .87),
+                      ),
+                      textAlign: TextAlign.left,
                     ),
                   ),
                   SizedBox(
                     height: 15,
                   ),
-                  Text(
-                    _amount,
-                    style: TextStyle(
-                      color: Color.fromRGBO(255, 255, 255, .87),
-                      fontSize: 36,
+                  Container(
+                    width: double.infinity,
+                    child: Text(
+                      _amount,
+                      style: TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, .87),
+                        fontSize: 36,
+                      ),
                     ),
                   ),
                   SizedBox(
                     height: 58,
                   ),
                   makePayment
-                      ? InkWell(
+                      ? FlatButton(
+                          color: Color.fromRGBO(0, 169, 209, 1),
+                          padding: EdgeInsets.only(
+                              left: 30, top: 20, right: 30, bottom: 20),
                           child: Text(
                             'Make a Payment',
                             style: TextStyle(
-                              color: Color.fromRGBO(255, 255, 255, .87),
+                              color: Color.fromRGBO(255, 255, 255, 1),
+                              fontSize: 16,
                             ),
                             textAlign: TextAlign.right,
                           ),
-                          onTap: () {
+                          onPressed: () {
                             String projectId = layoutModel.project.id;
                             String baseUrl = Config.paymentUrl;
                             String url = '$baseUrl/?project_id=$projectId';

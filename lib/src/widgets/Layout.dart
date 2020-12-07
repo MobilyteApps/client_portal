@@ -1,8 +1,11 @@
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/models/RightDrawerModel.dart';
+import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
+import 'package:client_portal_app/src/views/BillingAndPaymentsView.dart';
 import 'package:client_portal_app/src/widgets/ButtonBarButton.dart';
 import 'package:client_portal_app/src/widgets/MenuPrimary.dart';
 import 'package:client_portal_app/src/widgets/MenuSecondary.dart';
+import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
 import 'package:client_portal_app/src/widgets/ProjectTitle.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -77,6 +80,24 @@ class _LayoutState extends State<Layout> {
         break;
       case 'Messages':
         Navigator.pushNamed(context, '/messages');
+        break;
+      case 'Billing and Payments':
+        print('billing');
+        var width = MediaQuery.of(context).size.width;
+        if (width >= 1024) {
+          Navigator.pushNamed(context, '/billing');
+        } else {
+          Navigator.push(
+            context,
+            SlideUpRoute(
+              settings: RouteSettings(),
+              page: PanelScaffold(
+                title: 'Billing & Payments',
+                body: BillingAndPaymentsView(layoutModel: widget.model),
+              ),
+            ),
+          );
+        }
         break;
     }
   }

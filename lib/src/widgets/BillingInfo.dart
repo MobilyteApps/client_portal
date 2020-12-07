@@ -50,7 +50,9 @@ class BillingInfo extends StatelessWidget {
         ),
         _billingRow(
           'Days Past Due',
-          billingInfoModel.paymentsPastDueDays.toString(),
+          billingInfoModel.paymentsPastDueDays > 0
+              ? billingInfoModel.paymentsPastDueDays.toString()
+              : '-',
         ),
         _spacer(),
         Text(

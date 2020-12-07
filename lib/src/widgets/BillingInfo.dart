@@ -26,7 +26,7 @@ class BillingInfo extends StatelessWidget {
         ),
         _spacer(),
         _billingRow(
-          'Financed Funds',
+          'Financed Funds (if applicable)',
           BillingInfoModel.money(billingInfoModel.financedAmount),
         ),
         _billingRow(

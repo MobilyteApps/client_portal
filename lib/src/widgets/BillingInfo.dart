@@ -1,5 +1,7 @@
 import 'package:client_portal_app/src/models/BillingInfoModel.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BillingInfo extends StatelessWidget {
   const BillingInfo({Key key, this.billingInfoModel}) : super(key: key);
@@ -55,8 +57,27 @@ class BillingInfo extends StatelessWidget {
               : '-',
         ),
         _spacer(),
-        Text(
-            'For a complete statement of payments, please email billings@callmosby.com'),
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                  text: 'For a complete statement of payments, please email',
+                  style: TextStyle(color: Colors.black)),
+              TextSpan(
+                  text: ' billings@callmosby.com',
+                  style: TextStyle(color: Colors.blue),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () async {
+                      var url = 'mailto:billings@callmosby.com';
+                      if (await canLaunch(url)) {
+                        await launch(url);
+                      } else {
+                        throw 'Could not launch $url';
+                      }
+                    }),
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -89,11 +110,13 @@ class BillingInfo extends StatelessWidget {
   }
 
   Widget _label(String text) {
-    return Text(
-      text,
-      style: TextStyle(
-        color: Colors.black,
-        fontSize: 14,
+    return Flexible(
+      child: Text(
+        text,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 14,
+        ),
       ),
     );
   }

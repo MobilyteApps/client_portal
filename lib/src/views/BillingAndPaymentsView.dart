@@ -1,19 +1,12 @@
 import 'dart:convert';
-import 'dart:js';
 
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/Brand.dart';
-import 'package:client_portal_app/src/models/InvoiceModel.dart';
+import 'package:client_portal_app/src/models/BillingInfoModel.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/models/PaymentModel.dart';
-import 'package:client_portal_app/src/transitions/SlideLeftRoute.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
-import 'package:client_portal_app/src/views/InvoicesView.dart';
-import 'package:client_portal_app/src/views/PaymentsView.dart';
-import 'package:client_portal_app/src/widgets/InvoiceDetail.dart';
-import 'package:client_portal_app/src/widgets/InvoiceRow.dart';
-import 'package:client_portal_app/src/widgets/PanelBackButton.dart';
-import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
+import 'package:client_portal_app/src/widgets/BillingInfo.dart';
 import 'package:client_portal_app/src/widgets/TextHeading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -27,140 +20,29 @@ class BillingAndPaymentsView extends StatelessWidget {
 
   final Api api = Api(baseUrl: Config.apiBaseUrl);
 
-  Widget _optionsListView(context) {
-    TextStyle listViewTitleStyle = TextStyle(
-      color: Color.fromRGBO(0, 0, 0, .7),
-    );
-    return ListView(
-      children: ListTile.divideTiles(
-        color: Colors.black,
-        context: context,
-        tiles: [
-          ListTile(
-            title: Text(
-              'More',
-              style: TextStyle(
-                fontSize: 14,
-                color: Color.fromRGBO(0, 0, 0, .54),
-              ),
-            ),
-          ),
-          ListTile(
-            leading: Icon(Icons.payment),
-            title: Text(
-              'View Payments',
-              style: listViewTitleStyle,
-            ),
-            trailing: Icon(Icons.chevron_right),
-            onTap: () {
-              if (MediaQuery.of(context).size.width < 1024) {
-                Navigator.push(
-                  context,
-                  SlideLeftRoute(
-                    settings: RouteSettings(
-                      arguments: {},
-                    ),
-                    page: PanelScaffold(
-                      centerTitle: false,
-                      leading: PanelBackButton(),
-                      title: 'Billing and Payments',
-                      body: PaymentsView(),
-                    ),
-                  ),
-                );
-              } else {
-                Navigator.of(context).pushNamed('/billing/payments');
-              }
-            },
-          ),
-          ListTile(
-            trailing: Icon(Icons.chevron_right),
-            leading: Icon(Icons.description),
-            title: Text(
-              'View Invoices',
-              style: listViewTitleStyle,
-            ),
-            onTap: () {
-              if (MediaQuery.of(context).size.width < 1024) {
-                Navigator.push(
-                  context,
-                  SlideLeftRoute(
-                    settings: RouteSettings(
-                      arguments: {},
-                    ),
-                    page: PanelScaffold(
-                      centerTitle: false,
-                      leading: PanelBackButton(),
-                      title: 'Billing and Payments',
-                      body: InvoicesView(),
-                    ),
-                  ),
-                );
-              } else {
-                Navigator.of(context).pushNamed('/billing/invoices');
-              }
-            },
-          ),
-        ],
-      ).toList(),
-    );
+  BillingInfoModel billingInfoModel;
+
+  Future<BillingInfoModel> _billingInfoFuture() async {
+    var response = await api.getBillingInfo();
+    billingInfoModel = BillingInfoModel.fromMap(json.decode(response.body));
+    return billingInfoModel;
   }
 
-  Future<PaymentModel> _nextPaymentFuture() async {
-    var response = await api.getNextPaymentDue();
-    return PaymentModel.fromMap(json.decode(response.body));
-  }
-
-  Future<List<Widget>> _invoicesFuture() async {
-    var response = await api.getInvoices();
-
-    List<Map<String, dynamic>> _json =
-        List<Map<String, dynamic>>.from(json.decode(response.body));
-    return _json.map((e) {
-      var model = InvoiceModel.fromMap(e);
-      var row = InvoiceRow(
-        padding: EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 10),
-        model: model,
-      );
-      var detail = InvoiceDetail(
-        padding: EdgeInsets.only(right: 20, bottom: 15),
-        model: model,
-      );
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Divider(
-            indent: 0,
-            endIndent: 15,
-          ),
-          row,
-          detail,
-        ],
-      );
-    }).toList();
-  }
-
-  Widget _invoiceList() {
+  Widget _billingInfo() {
     return FutureBuilder(
-      future: _invoicesFuture(),
-      builder: (context, AsyncSnapshot<List<Widget>> snapshot) {
+      future: _billingInfoFuture(),
+      builder: (context, AsyncSnapshot<BillingInfoModel> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          var padding = EdgeInsets.all(0);
-          if (MediaQuery.of(context).size.width >= 1024) {
-            padding = padding.copyWith(left: 30);
-          }
           return Container(
-            padding: padding,
-            child: Column(
-              children: snapshot.data,
+            padding: MediaQuery.of(context).size.width > 1024
+                ? EdgeInsets.only(left: 50, bottom: 15, right: 5)
+                : EdgeInsets.only(left: 20, right: 20, bottom: 15),
+            child: BillingInfo(
+              billingInfoModel: snapshot.data,
             ),
-          );
-        } else {
-          return Container(
-            child: Center(child: CircularProgressIndicator()),
           );
         }
+        return SizedBox();
       },
     );
   }
@@ -171,19 +53,25 @@ class BillingAndPaymentsView extends StatelessWidget {
       padding = EdgeInsets.only(top: 15, left: 15, right: 15);
     }
     return FutureBuilder(
-      future: _nextPaymentFuture(),
-      builder: (context, AsyncSnapshot<PaymentModel> snapshot) {
-        String _title = '';
+      future: _billingInfoFuture(),
+      builder: (context, AsyncSnapshot<BillingInfoModel> snapshot) {
+        String _title = 'Current Balance Due';
         String _amount = '';
-        bool makePayment = true;
+        bool makePayment = false;
 
         if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.data.isFinanced == false) {
+            makePayment = true;
+          }
           if (snapshot.data != null) {
-            _title = 'Payment due by ' + snapshot.data.dueDateString;
-            _amount = snapshot.data.amountDueString;
+            if (snapshot.data.nextPaymentDueDateString == null) {
+              _amount = '\$ 0.00';
+            } else {
+              _amount = BillingInfoModel.money(snapshot.data.nextPaymentAmount);
+            }
           } else {
-            _title = 'No payment is due';
-            _amount = '\$0.00';
+            _title = 'Current Balance Due';
+            _amount = '\$ 0.00';
             makePayment = false;
           }
         }
@@ -196,37 +84,48 @@ class BillingAndPaymentsView extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.all(15),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  Text(
-                    _title,
-                    style: TextStyle(
-                      color: Color.fromRGBO(255, 255, 255, .87),
+                  Container(
+                    width: double.infinity,
+                    child: Text(
+                      _title,
+                      style: TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, .87),
+                      ),
+                      textAlign: TextAlign.left,
                     ),
                   ),
                   SizedBox(
                     height: 15,
                   ),
-                  Text(
-                    _amount,
-                    style: TextStyle(
-                      color: Color.fromRGBO(255, 255, 255, .87),
-                      fontSize: 36,
+                  Container(
+                    width: double.infinity,
+                    child: Text(
+                      _amount,
+                      style: TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, .87),
+                        fontSize: 36,
+                      ),
                     ),
                   ),
                   SizedBox(
                     height: 58,
                   ),
                   makePayment
-                      ? InkWell(
+                      ? FlatButton(
+                          color: Color.fromRGBO(0, 169, 209, 1),
+                          padding: EdgeInsets.only(
+                              left: 30, top: 20, right: 30, bottom: 20),
                           child: Text(
                             'Make a Payment',
                             style: TextStyle(
-                              color: Color.fromRGBO(255, 255, 255, .87),
+                              color: Color.fromRGBO(255, 255, 255, 1),
+                              fontSize: 16,
                             ),
                             textAlign: TextAlign.right,
                           ),
-                          onTap: () {
+                          onPressed: () {
                             String projectId = layoutModel.project.id;
                             String baseUrl = Config.paymentUrl;
                             String url = '$baseUrl/?project_id=$projectId';
@@ -259,39 +158,19 @@ class BillingAndPaymentsView extends StatelessWidget {
     );
   }
 
-  Widget _invoiceHeading(BuildContext context) {
-    var padding = EdgeInsets.only(left: 20, right: 20);
-    if (MediaQuery.of(context).size.width >= 1024) {
-      padding = padding.copyWith(left: 50);
-    }
-    return Container(
-      padding: padding,
-      child: Text(
-        'Invoices',
-        style: TextStyle(
-          fontSize: 14,
-          color: Color.fromRGBO(0, 0, 0, .54),
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.topLeft,
       child: ListView(
         shrinkWrap: true,
-        //crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           _heading(context),
           _nextPaymentCard(context),
           SizedBox(
             height: 15,
           ),
-          _invoiceHeading(context),
-          _invoiceList()
+          _billingInfo(),
         ],
       ),
     );

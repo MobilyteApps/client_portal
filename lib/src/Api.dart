@@ -185,6 +185,13 @@ class Api {
     return response;
   }
 
+  Future<http.Response> getBillingInfo() async {
+    var response = await http.post('$baseUrl/project/billing',
+        headers: authorizationHeaders());
+    processResponse(response);
+    return response;
+  }
+
   Future<http.Response> paymentMethods() async {
     var response = await http.get('$baseUrl/payment/methods',
         headers: authorizationHeaders());

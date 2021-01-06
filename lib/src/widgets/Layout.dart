@@ -18,7 +18,7 @@ class Layout extends StatefulWidget {
 
   final Widget content;
 
-  final String version = '0.0.13';
+  final String version = '0.0.14';
 
   Layout({this.model, this.content});
 

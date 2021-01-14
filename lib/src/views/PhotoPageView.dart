@@ -125,6 +125,7 @@ class _PhotoPageViewState extends State<PhotoPageView> {
           width: 20.0,
           height: 20.0,
           child: CircularProgressIndicator(
+            strokeWidth: 2,
             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
             value: event == null
                 ? 0

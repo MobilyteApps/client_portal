@@ -7,11 +7,11 @@ import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/models/ProjectModel.dart';
 import 'package:client_portal_app/src/models/UserModel.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
+import 'package:client_portal_app/src/widgets/LoadingIndicator.dart';
 import "package:flutter/material.dart";
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:scoped_model/scoped_model.dart';
-
 
 class AppController extends StatefulWidget {
   final Widget controller;
@@ -24,7 +24,6 @@ class AppController extends StatefulWidget {
 }
 
 class _AppControllerState extends State<AppController> {
-  
   Future<LayoutModel> openBoxes() async {
     print('[AppController.dart] opening identity and project boxes');
     final Api api = Api(baseUrl: Config.apiBaseUrl);
@@ -34,27 +33,36 @@ class _AppControllerState extends State<AppController> {
 
     UserModel identity = Hive.box('identity').get(0);
 
+    // forces login screen if no identity is found in local storage
     if (identity == null) {
       print('[AppController.dart] identity not found');
       return LayoutModel();
     }
 
+    // determine if we need to verify the identity at the server
+    var _shouldVerifyLogin = await shouldVerifyLogin();
+
     // verify user is logged in
-    try {
-      var response = await api.me();
-      // if response.body.project,
-      var _body = json.decode(response.body);
-      if (_body['project'] != null) {
-        Hive.box('project').put(
-            identity.id, ProjectModel.fromJson(json.encode(_body['project'])));
+    if (_shouldVerifyLogin) {
+      try {
+        var response = await api.me();
+        // if response.body.project,
+        var _body = json.decode(response.body);
+        if (_body['project'] != null) {
+          Hive.box('project').put(identity.id,
+              ProjectModel.fromJson(json.encode(_body['project'])));
+        }
+        await Hive.openBox('bin');
+        Hive.box('bin').put('lastLoginVerify', DateTime.now());
+      } catch (e) {
+        print('[AppController.dart] identity error');
+        return LayoutModel();
       }
-    } catch (e) {
-      print('[AppController.dart] identity error');
-      return LayoutModel();
+    } else {
+      print('identity is fresh');
     }
 
-    // re-log in
-
+    // check for project
     ProjectModel project =
         Hive.box('project').get(identity != null ? identity.id : null);
 
@@ -74,6 +82,24 @@ class _AppControllerState extends State<AppController> {
     }
 
     return LayoutModel(project: project, identity: identity);
+  }
+
+  Future<bool> shouldVerifyLogin() async {
+    await Hive.openBox('bin');
+    DateTime lastLoginVerify = Hive.box('bin').get('lastLoginVerify');
+
+    if (lastLoginVerify == null) {
+      return true;
+    }
+
+    DateTime now = DateTime.now();
+
+    var diff = now.difference(lastLoginVerify);
+
+    print('identity is ' + diff.inSeconds.toString() + ' seconds old');
+
+    // 15 minutes
+    return diff.inSeconds > 900;
   }
 
   @override
@@ -102,7 +128,12 @@ class _AppControllerState extends State<AppController> {
           );
         }
 
-        return Container();
+        return Container(
+          color: Colors.white,
+          child: Center(
+            child: LoadingIndicator(),
+          ),
+        );
       },
     );
   }

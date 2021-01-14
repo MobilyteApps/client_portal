@@ -241,13 +241,9 @@ class Api {
   }
 
   Map<String, String> authorizationHeaders() {
-    print('[Api.dart] finding user identity');
     UserModel user = Hive.box('identity').get(0);
     if (user == null) {
-      print('[Api.dart] user identity not found');
       return null;
-    } else {
-      print('[Api.dart] user identity found ' + user.id.toString());
     }
 
     String token = user == null ? '' : user.accessToken;

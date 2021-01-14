@@ -161,6 +161,7 @@ class _NewMessageViewState extends State<NewMessageView> {
           Expanded(
             child: TextFormField(
               onSaved: (value) {
+                print('set state on subject field');
                 setState(() {
                   subject = value;
                 });

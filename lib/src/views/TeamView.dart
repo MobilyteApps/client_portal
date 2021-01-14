@@ -116,7 +116,9 @@ class TeamView extends StatelessWidget {
         }
 
         return Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+          ),
         );
       },
       future: _getTeam(),

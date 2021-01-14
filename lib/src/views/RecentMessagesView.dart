@@ -144,7 +144,11 @@ class _RecentMessagesViewState extends State<RecentMessagesView> {
       future: conversations(),
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
-          return Container();
+          return Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+            ),
+          );
         }
 
         if (snapshot.hasError) {

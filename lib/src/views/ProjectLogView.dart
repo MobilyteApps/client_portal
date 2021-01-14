@@ -179,7 +179,9 @@ class ProjectLogView extends StatelessWidget {
             }
 
             return Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+              ),
             );
           },
         );

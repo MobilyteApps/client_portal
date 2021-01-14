@@ -42,7 +42,11 @@ class _AllMessagesViewState extends State<AllMessagesView> {
       child: FutureBuilder(
         builder: (context, AsyncSnapshot<List<ConversationModel>> snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
-            return LoadingIndicator();
+            return Center(
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+              ),
+            );
           }
 
           if (snapshot.hasError) {

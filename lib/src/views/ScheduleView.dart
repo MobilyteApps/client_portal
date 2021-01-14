@@ -162,7 +162,9 @@ class _ScheduleViewState extends State<ScheduleView> {
             }
 
             return Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+              ),
             );
           },
         );

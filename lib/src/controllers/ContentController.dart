@@ -62,7 +62,9 @@ class ContentController extends ResponsiveController {
 
         return Container(
           child: Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+            ),
           ),
         );
       },

@@ -51,7 +51,9 @@ class CalendarController extends ResponsiveController {
         }
 
         return Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+          ),
         );
       },
     );

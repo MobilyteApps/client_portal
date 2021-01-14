@@ -59,6 +59,7 @@ void main() async {
     if (isProduction) {
       Config.setIsProduction();
     }
+
     print('-----' + Config.apiBaseUrl + '------');
     runApp(AppMain());
   }, (Object error, StackTrace stackTrace) {

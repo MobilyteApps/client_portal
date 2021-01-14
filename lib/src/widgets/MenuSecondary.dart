@@ -119,7 +119,9 @@ class MenuSecondary extends StatelessWidget {
                       } else {
                         return Container(
                           child: Center(
-                            child: CircularProgressIndicator(),
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                            ),
                           ),
                         );
                       }

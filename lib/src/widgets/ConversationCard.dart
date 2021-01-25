@@ -37,7 +37,7 @@ class ConversationCard extends StatelessWidget {
     EdgeInsets containerPadding = EdgeInsets.only(top: 15, bottom: 15);
     if (MediaQuery.of(context).size.width < 1024) {
       containerPadding =
-          EdgeInsets.only(top: 15, bottom: 15, left: 20, right: 20);
+          EdgeInsets.only(top: 15, bottom: 15, left: 0, right: 20);
     }
 
     PersonModel cardIdentity = conversation.identity(me);

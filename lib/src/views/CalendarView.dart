@@ -349,13 +349,16 @@ class _CalendarViewState extends State<CalendarView> {
                 _openEventDetailRight(element);
               } else {
                 Navigator.push(
-                    context,
-                    SlideLeftRoute(
-                        page: Material(
+                  context,
+                  SlideLeftRoute(
+                    settings: RouteSettings(),
+                    page: Material(
                       child: EventEntryDetailPanel(
                         eventEntryModel: element,
                       ),
-                    )));
+                    ),
+                  ),
+                );
               }
             },
           ),

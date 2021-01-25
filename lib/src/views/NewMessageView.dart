@@ -20,6 +20,7 @@ class _NewMessageViewState extends State<NewMessageView> {
   PersonModel toPerson = PersonModel();
   String subject;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  List<PersonModel> teamMembers = [];
 
   Future<ConversationModel> submitMessage(
       String subject, MessageModel messageModel, String to) async {
@@ -59,84 +60,71 @@ class _NewMessageViewState extends State<NewMessageView> {
         message = MessageModel();
       });
     });
+
+    () async {
+      var result = await _getTeam();
+      setState(() {
+        teamMembers = result;
+      });
+    }();
   }
 
-  Widget toField(value, List<PersonModel> teamMembers) {
+  Widget toField(value) {
     var margin = EdgeInsets.only(left: 20, right: 20);
     if (MediaQuery.of(context).size.width >= 1024) {
       margin = EdgeInsets.all(0);
     }
+
     return Container(
       margin: margin,
-      child: Row(
-        children: <Widget>[
-          Text(
-            'To:',
-            textAlign: TextAlign.right,
+      child: Container(
+        child: DropdownButtonFormField(
+          decoration: InputDecoration(
+            labelText: 'To',
+            floatingLabelBehavior: FloatingLabelBehavior.always,
           ),
-          SizedBox(width: 20),
-          Expanded(
-            child: Container(
-              child: DropdownButton(
-                underline: SizedBox(),
-                isExpanded: true,
-                hint: Align(
-                  child: Text('Select team member'),
-                  alignment: Alignment.centerLeft,
-                ),
-                value: value,
-                selectedItemBuilder: (context) {
-                  return teamMembers.map<Widget>((person) {
-                    return Align(
-                      child: Text(person != null ? person.name : ''),
-                      alignment: Alignment.centerLeft,
-                    );
-                  }).toList();
-                },
-                items: teamMembers.map(
-                  (person) {
-                    return DropdownMenuItem<String>(
-                      value: person.id,
-                      child: Container(
-                        child: Row(
-                          children: <Widget>[
-                            PersonAvatar(
-                              person: person,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(person != null ? person.name : ''),
-                                Text(person != null ? person.title : ''),
-                              ],
-                            )
-                          ],
-                        ),
+          hint: Text('Select team member'),
+          value: value,
+          selectedItemBuilder: (context) {
+            return teamMembers.map<Widget>((person) {
+              return Text(person != null ? person.name : '');
+            }).toList();
+          },
+          items: teamMembers.map(
+            (person) {
+              return DropdownMenuItem<String>(
+                value: person.id,
+                child: Container(
+                  child: Row(
+                    children: <Widget>[
+                      PersonAvatar(
+                        person: person,
                       ),
-                    );
-                  },
-                ).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    var to = teamMembers
-                        .firstWhere((element) => element.id == value);
-
-                    toPerson = to;
-                  });
-                },
-              ),
-            ),
-          ),
-        ],
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(person != null ? person.name : ''),
+                          Text(person != null ? person.title : ''),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
+          ).toList(),
+          onChanged: (value) {
+            setState(() {
+              var to = teamMembers.firstWhere((element) => element.id == value);
+              toPerson = to;
+            });
+          },
+        ),
       ),
-      decoration: BoxDecoration(
-          border: Border(
-              bottom:
-                  BorderSide(color: Colors.black.withOpacity(.12), width: 1))),
     );
   }
 
@@ -148,34 +136,23 @@ class _NewMessageViewState extends State<NewMessageView> {
 
     return Container(
       margin: margin,
-      decoration: BoxDecoration(
-          border:
-              Border(bottom: BorderSide(color: Colors.black.withOpacity(.12)))),
-      child: Row(
-        children: <Widget>[
-          Text(
-            'Subject:',
-            textAlign: TextAlign.right,
-          ),
-          SizedBox(width: 20),
-          Expanded(
-            child: TextFormField(
-              onSaved: (value) {
-                print('set state on subject field');
-                setState(() {
-                  subject = value;
-                });
-              },
-              decoration: InputDecoration(border: InputBorder.none),
-              validator: (value) {
-                if (value.length == 0) {
-                  return 'Subject is required';
-                }
-                return null;
-              },
-            ),
-          ),
-        ],
+      child: TextFormField(
+        autofocus: true,
+        onSaved: (value) {
+          print('set state on subject field');
+          setState(() {
+            subject = value;
+          });
+        },
+        decoration: InputDecoration(
+          labelText: 'Subject',
+        ),
+        validator: (value) {
+          if (value.length == 0) {
+            return 'Subject is required';
+          }
+          return null;
+        },
       ),
     );
   }
@@ -205,70 +182,54 @@ class _NewMessageViewState extends State<NewMessageView> {
       messageFieldPadding = null;
     }
 
-    return FutureBuilder(
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return Container(
-            padding: EdgeInsets.only(top: 40),
-            child: Form(
-              key: formKey,
-              child: Column(
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      toField(
-                          toPerson != null ? toPerson.id : null, snapshot.data),
-                      subjectField(),
-                    ],
-                  ),
-                  _spacer(),
-                  TextFormField(
-                    validator: (value) {
-                      if (value.length == 0) {
-                        return 'Message is required';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      setState(() {
-                        message = message.copyWith(message: value);
-                      });
-                    },
-                    onFieldSubmitted: (value) {
-                      setState(() {
-                        message = message.copyWith(message: value);
-                        _doSubmit();
-                      });
-                    },
-                    decoration: InputDecoration(
-                      contentPadding: messageFieldPadding,
-                      filled: true,
-                      fillColor: Color(0xFFEEEEEE),
-                      labelText: 'Message',
-                      border: InputBorder.none,
-                      suffixIcon: IconButton(
-                        icon: Icon(Icons.send),
-                        onPressed: () async {
-                          _doSubmit();
-                        },
-                      ),
-                    ),
-                  )
-                ],
-              ),
+    return Container(
+      padding: EdgeInsets.only(top: 40),
+      child: Form(
+        key: formKey,
+        child: Column(
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                toField(toPerson != null ? toPerson.id : null),
+                subjectField(),
+              ],
             ),
-          );
-        }
-
-        if (snapshot.hasError) {
-          return Center(
-            child: Text(snapshot.error.toString()),
-          );
-        }
-
-        return Container();
-      },
-      future: _getTeam(),
+            _spacer(),
+            TextFormField(
+              validator: (value) {
+                if (value.length == 0) {
+                  return 'Message is required';
+                }
+                return null;
+              },
+              onSaved: (value) {
+                setState(() {
+                  message = message.copyWith(message: value);
+                });
+              },
+              onFieldSubmitted: (value) {
+                setState(() {
+                  message = message.copyWith(message: value);
+                  _doSubmit();
+                });
+              },
+              decoration: InputDecoration(
+                contentPadding: messageFieldPadding,
+                filled: true,
+                fillColor: Color(0xFFEEEEEE),
+                labelText: 'Message',
+                border: InputBorder.none,
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.send),
+                  onPressed: () async {
+                    _doSubmit();
+                  },
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

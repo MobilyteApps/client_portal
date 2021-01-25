@@ -128,6 +128,13 @@ class _ViewConversationViewState extends State<ViewConversationView> {
 
     PersonModel personModel = conversationModel.identity(userId);
 
+    var messageFieldPadding =
+        EdgeInsets.only(top: 20, bottom: 50, left: 20, right: 20);
+
+    if (MediaQuery.of(context).size.width >= 1024) {
+      messageFieldPadding = null;
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -156,6 +163,8 @@ class _ViewConversationViewState extends State<ViewConversationView> {
           child: Form(
             key: _formKey,
             child: TextFormField(
+              maxLines: null,
+              autofocus: true,
               controller: _replyTextController,
               validator: (value) {
                 if (value.length == 0) {
@@ -167,6 +176,7 @@ class _ViewConversationViewState extends State<ViewConversationView> {
                 _submitReply();
               },
               decoration: InputDecoration(
+                contentPadding: messageFieldPadding,
                 border: InputBorder.none,
                 filled: true,
                 labelText: 'Reply',

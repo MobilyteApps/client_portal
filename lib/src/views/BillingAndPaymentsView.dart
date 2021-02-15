@@ -4,7 +4,6 @@ import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/Brand.dart';
 import 'package:client_portal_app/src/models/BillingInfoModel.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
-import 'package:client_portal_app/src/models/PaymentModel.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/widgets/BillingInfo.dart';
 import 'package:client_portal_app/src/widgets/TextHeading.dart';

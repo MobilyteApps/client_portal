@@ -28,16 +28,20 @@ class BillingInfo extends StatelessWidget {
         ),
         _spacer(),
         _billingRow(
-          'Financed Funds (if applicable)',
+          'Total Approved Financing (if applicable)',
           BillingInfoModel.money(billingInfoModel.financedAmount),
+          true,
+        ),
+        SizedBox(
+          height: 10,
         ),
         _billingRow(
-          'Finance Funds Applied to Project',
+          'Finance Applied to Project',
           BillingInfoModel.money(billingInfoModel.financedAmountApplied),
         ),
         _spacer(),
         _billingRow(
-          'Payments Received To Date',
+          'Non-Financed Payments Applied to Project',
           BillingInfoModel.money(billingInfoModel.paymentsReceivedAmount),
         ),
         _divider(),
@@ -99,13 +103,24 @@ class BillingInfo extends StatelessWidget {
     );
   }
 
-  Widget _billingRow(String label, String value) {
+  Widget _billingRow(String label, String value, [bool offset = false]) {
+    List<Widget> children = [];
+
+    children.add(_label(label));
+    children.add(Container(
+      child: _value(value),
+      padding: EdgeInsets.only(left: 10),
+    ));
+
+    if (offset) {
+      children.add(SizedBox(
+        width: 100,
+      ));
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _label(label),
-        _value(value),
-      ],
+      children: children,
     );
   }
 

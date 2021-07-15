@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -47,6 +48,8 @@ void main() async {
   };
   runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+
     if (kIsWeb == false) {
       final appDocumentDirectory =
           await pathProvider.getApplicationDocumentsDirectory();

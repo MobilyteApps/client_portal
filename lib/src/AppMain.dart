@@ -20,6 +20,7 @@ import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/views/NotFoundView.dart';
 import 'package:client_portal_app/src/views/ProjectLogView.dart';
 import 'package:client_portal_app/src/widgets/PushNotificationHandler.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -43,6 +44,7 @@ class _AppMainState extends State<AppMain> {
     super.initState();
     content = ProjectLogView();
   }
+
 
   Widget createController(Widget child, [bool requiresAuth = true]) {
     return AppController(
@@ -94,7 +96,7 @@ class _AppMainState extends State<AppMain> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Mosby Client Portal',
-        theme: ThemeData(
+        theme: ThemeData( 
           primarySwatch: Brand.primary,
           primaryColor: Color(Brand.primaryDark),
         ),

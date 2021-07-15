@@ -57,6 +57,7 @@ class _LoginFormState extends State<LoginForm> {
       ));
       try {
         http.Response response = await api.login(email, password, rememberMe);
+        print("-------$response");
 
         switch (response.statusCode) {
           case 200:
@@ -92,6 +93,7 @@ class _LoginFormState extends State<LoginForm> {
         }
       } catch (e) {
         // probably a CORS issue if the error is an XMLHttpRequest error
+        print("--------------${e.toString()}");
         Scaffold.of(context).showSnackBar(SnackBar(
           backgroundColor: Colors.red,
           content: Text(

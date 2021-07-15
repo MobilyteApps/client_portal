@@ -42,7 +42,7 @@ class CalendarController extends ResponsiveController {
           var reducer = EventEntryReducer(
               payload: List<Map<String, dynamic>>.from(snapshot.data));
 
-          reducer.reduce();
+          reducer.reduce();  
 
           return CalendarView(
             events: reducer.asSplayTreeMap(),

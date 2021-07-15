@@ -21,16 +21,16 @@ class ProjectLogHeader extends StatelessWidget {
 
   final String icon;
 
-  static const Map<String, IconData> iconMap = {
-    'fa-sun': FontAwesomeIcons.lightSun,
-    'fa-clouds-sun': FontAwesomeIcons.lightCloudsSun,
-    'fa-clouds': FontAwesomeIcons.lightClouds,
-    'fa-cloud-drizzle': FontAwesomeIcons.lightCloudDrizzle,
-    'fa-snowflake': FontAwesomeIcons.lightSnowflake,
-    'fa-cloud-sleet': FontAwesomeIcons.lightCloudSleet,
-    'fa-thunderstorm': FontAwesomeIcons.lightThunderstorm,
-    'fa-fog': FontAwesomeIcons.lightFog,
-    'fa-raindrops': FontAwesomeIcons.lightRaindrops,
+  static Map<String, IconData> iconMap = {
+    'fa-sun': FontAwesomeIcons.accusoft,        //lightSun,
+    'fa-clouds-sun': FontAwesomeIcons.lightbulb,        //lightCloudsSun,
+    'fa-clouds': FontAwesomeIcons.solidLightbulb ,              //lightClouds,
+    'fa-cloud-drizzle': FontAwesomeIcons.cloudRain,         //lightCloudDrizzle,
+    'fa-snowflake': FontAwesomeIcons.snowflake ,          //lightSnowflake,
+    'fa-cloud-sleet': FontAwesomeIcons.cloudscale ,      //lightCloudSleet,
+    'fa-thunderstorm': FontAwesomeIcons.pooStorm,      //lightThunderstorm,
+    'fa-fog': FontAwesomeIcons.fastBackward,    //lightFog,
+    'fa-raindrops': FontAwesomeIcons.flask     //lightRaindrops,
   };
 
   Widget _weatherIcon() {

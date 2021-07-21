@@ -28,73 +28,66 @@ class _PushNotificationHandlerState extends State<PushNotificationHandler> {
     model = ScopedModel.of<LayoutModel>(context);
     if (widget.platform == TargetPlatform.android ||
         widget.platform == TargetPlatform.iOS) {
-     _initPushNotificationSupport();
+      _initPushNotificationSupport();
     }
   }
 
   void _initPushNotificationSupport() {
     print('init firebase messaging');
 
-
     FirebaseMessaging.onMessage.listen((RemoteMessage remoteMsg) {
-      // RemoteNotification notification = message.notification;
-      // AndroidNotification android = message.notification?.android;
-      Map<String, dynamic> message   =  remoteMsg.data;
+      Map<String, dynamic> message = remoteMsg.data;
 
-        try {
-
-          print("onMessage: ${message}");
-          String title = '';
-          String body = '';
-          if (message['notification'] != null) {
-            title = message['notification']['title'];
-            body = message['notification']['body'];
-          } else {
-            title = message['aps']['alert']['title'];
-            body = message['aps']['alert']['body'];
-          }
-          var snackbar = SnackBar(
-            duration: Duration(minutes: 60),
-            action: SnackBarAction(
-              label: 'Dismiss',
-              onPressed: () {
-                model.scaffoldKey.currentState.hideCurrentSnackBar();
-              },
-            ),
-            backgroundColor: Colors.grey.shade200,
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                Text(
-                  body,
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                )
-              ],
-            ),
-          );
-          model.scaffoldKey.currentState.showSnackBar(snackbar);
-        } catch (error) {
-          print(error);
+      try {
+        print("onMessage: ${message}");
+        String title = '';
+        String body = '';
+        if (message['notification'] != null) {
+          title = message['notification']['title'];
+          body = message['notification']['body'];
+        } else {
+          title = message['aps']['alert']['title'];
+          body = message['aps']['alert']['body'];
         }
-
+        var snackbar = SnackBar(
+          duration: Duration(minutes: 60),
+          action: SnackBarAction(
+            label: 'Dismiss',
+            onPressed: () {
+              model.scaffoldKey.currentState.hideCurrentSnackBar();
+            },
+          ),
+          backgroundColor: Colors.grey.shade200,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                body,
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              )
+            ],
+          ),
+        );
+        model.scaffoldKey.currentState.showSnackBar(snackbar);
+      } catch (error) {
+        print(error);
+      }
     });
 
-
-
+// resume and pause notification
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-       // stub (not implemented)
-     
+      // stub (not implemented)
     });
     // model.firebaseMessaging.configure(
     //   onMessage: (Map<String, dynamic> message) async {
@@ -154,7 +147,7 @@ class _PushNotificationHandlerState extends State<PushNotificationHandler> {
     //   },
     // );
 
-      // model.firebaseMessaging.requestNotificationPermissions(
+    // model.firebaseMessaging.requestNotificationPermissions(
     //   const IosNotificationSettings(
     //     sound: true,
     //     badge: true,
@@ -163,12 +156,8 @@ class _PushNotificationHandlerState extends State<PushNotificationHandler> {
     //   ),
     // );
 
-      model.firebaseMessaging.requestPermission( sound: true,
-        badge: true,
-        alert: true,
-        provisional: true);
-
-  
+    model.firebaseMessaging.requestPermission(
+        sound: true, badge: true, alert: true, provisional: true);
 
     // model.firebaseMessaging.onIosSettingsRegistered
     //     .listen((IosNotificationSettings settings) async {

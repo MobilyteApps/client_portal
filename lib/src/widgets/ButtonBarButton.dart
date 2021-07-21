@@ -11,7 +11,7 @@ class ButtonBarButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
+    return TextButton(
       onPressed: onPressed,
       child: Column(
         children: <Widget>[

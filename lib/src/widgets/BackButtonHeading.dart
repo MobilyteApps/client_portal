@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class BackButtonHeading extends StatelessWidget {
   const BackButtonHeading({Key key}) : super(key: key);
-
+//common back button
   @override
   Widget build(BuildContext context) {
     return InkWell(

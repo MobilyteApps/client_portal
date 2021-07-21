@@ -33,7 +33,7 @@ class CalendarController extends ResponsiveController {
         if (snapshot.hasError) {
           return Center(
             child: Text(
-              snapshot.error.toString(),
+              snapshot?.error?.toString()??"",
             ),
           );
         }

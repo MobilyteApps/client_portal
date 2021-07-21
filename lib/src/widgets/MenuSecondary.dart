@@ -1,10 +1,6 @@
 import 'dart:convert';
-
 import 'package:client_portal_app/src/Api.dart';
-import 'package:client_portal_app/src/controllers/BillingAndPaymentsController.dart';
-import 'package:client_portal_app/src/controllers/ContentController.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
-import 'package:client_portal_app/src/views/BillingAndPaymentsView.dart';
 import 'package:client_portal_app/src/views/ContentView.dart';
 import 'package:client_portal_app/src/views/TeamView.dart';
 import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
@@ -12,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
 import 'package:scoped_model/scoped_model.dart';
-
 import 'Menu.dart';
 
 class MenuSecondary extends StatelessWidget {

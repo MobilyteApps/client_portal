@@ -21,16 +21,28 @@ class ProjectLogHeader extends StatelessWidget {
 
   final String icon;
 
-  static Map<String, IconData> iconMap = {
-    'fa-sun': FontAwesomeIcons.accusoft,        //lightSun,
-    'fa-clouds-sun': FontAwesomeIcons.lightbulb,        //lightCloudsSun,
-    'fa-clouds': FontAwesomeIcons.solidLightbulb ,              //lightClouds,
-    'fa-cloud-drizzle': FontAwesomeIcons.cloudRain,         //lightCloudDrizzle,
-    'fa-snowflake': FontAwesomeIcons.snowflake ,          //lightSnowflake,
-    'fa-cloud-sleet': FontAwesomeIcons.cloudscale ,      //lightCloudSleet,
-    'fa-thunderstorm': FontAwesomeIcons.pooStorm,      //lightThunderstorm,
-    'fa-fog': FontAwesomeIcons.fastBackward,    //lightFog,
-    'fa-raindrops': FontAwesomeIcons.flask     //lightRaindrops,
+  // static Map<String, IconData> iconMap = {
+  //   'fa-sun': FontAwesomeIcons.accusoft,        //lightSun,
+  //   'fa-clouds-sun': FontAwesomeIcons.lightbulb,        //lightCloudsSun,
+  //   'fa-clouds': FontAwesomeIcons.solidLightbulb ,              //lightClouds,
+  //   'fa-cloud-drizzle': FontAwesomeIcons.cloudRain,         //lightCloudDrizzle,
+  //   'fa-snowflake': FontAwesomeIcons.snowflake ,          //lightSnowflake,
+  //   'fa-cloud-sleet': FontAwesomeIcons.cloudscale ,      //lightCloudSleet,
+  //   'fa-thunderstorm': FontAwesomeIcons.pooStorm,      //lightThunderstorm,
+  //   'fa-fog': FontAwesomeIcons.fastBackward,    //lightFog,
+  //   'fa-raindrops': FontAwesomeIcons.flask     //lightRaindrops,
+  // };
+
+  static Map<String, String> iconMap = {
+    'fa-sun': 'images/logo.png', //lightSun,  '
+    'fa-clouds-sun': 'images/003-cloudy.png', //lightCloudsSun,
+    'fa-clouds': 'images/006-cloud.png', //lightClouds,
+    'fa-cloud-drizzle': 'images/004-storm.png', //lightCloudDrizzle,
+    'fa-snowflake': 'images/001-snowing.png', //lightSnowflake,
+    'fa-cloud-sleet': 'images/cloudsheet.png', //lightCloudSleet,
+    'fa-thunderstorm': 'images/004-storm.png', //lightThunderstorm,
+    'fa-fog': 'images/010-fog.png', //lightFog,
+    'fa-raindrops': 'images/005-raining.png' //lightRaindrops,
   };
 
   Widget _weatherIcon() {
@@ -40,11 +52,12 @@ class ProjectLogHeader extends StatelessWidget {
     if (iconMap.containsKey(icon)) {
       return SizedBox(
         width: 20,
-        child: FaIcon(
-          iconMap[icon],
-          size: 16,
-          color: Colors.black.withOpacity(.7),
-        ),
+        child: Image.asset(iconMap[icon],
+            height: 16, width: 16), // child: FaIcon(               //
+        //   iconMap[icon],
+        //   size: 16,
+        //   color: Colors.black.withOpacity(.7),
+        // ),
       );
     }
 

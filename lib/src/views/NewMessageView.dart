@@ -41,7 +41,7 @@ class _NewMessageViewState extends State<NewMessageView> {
       return PersonModel.fromMap(e);
     }).toList();
 
-    _list.removeWhere((element) => element.messagingOptIn == false);
+    _list.removeWhere((element) => element?.messagingOptIn == false);
 
     return _list;
   }

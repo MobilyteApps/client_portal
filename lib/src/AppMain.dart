@@ -20,7 +20,6 @@ import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/views/NotFoundView.dart';
 import 'package:client_portal_app/src/views/ProjectLogView.dart';
 import 'package:client_portal_app/src/widgets/PushNotificationHandler.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

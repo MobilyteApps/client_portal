@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ProjectLogHeader extends StatelessWidget {
   const ProjectLogHeader(
@@ -34,7 +33,7 @@ class ProjectLogHeader extends StatelessWidget {
   // };
 
   static Map<String, String> iconMap = {
-    'fa-sun': 'images/logo.png', //lightSun,  '
+    'fa-sun': 'images/009-sun.png', //lightSun,  '
     'fa-clouds-sun': 'images/003-cloudy.png', //lightCloudsSun,
     'fa-clouds': 'images/006-cloud.png', //lightClouds,
     'fa-cloud-drizzle': 'images/004-storm.png', //lightCloudDrizzle,
@@ -50,6 +49,7 @@ class ProjectLogHeader extends StatelessWidget {
       return SizedBox();
     }
     if (iconMap.containsKey(icon)) {
+   //   print("==========================${icon}");
       return SizedBox(
         width: 20,
         child: Image.asset(iconMap[icon],

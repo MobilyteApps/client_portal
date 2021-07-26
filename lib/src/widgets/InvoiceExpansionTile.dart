@@ -1,4 +1,4 @@
-import 'package:client_portal_app/src/models/InvoiceModel.dart';
+
 import 'package:client_portal_app/src/widgets/InvoiceDetail.dart';
 import 'package:client_portal_app/src/widgets/InvoiceRow.dart';
 import 'package:flutter/material.dart';

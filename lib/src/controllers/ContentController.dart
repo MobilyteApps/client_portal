@@ -4,7 +4,6 @@ import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/controllers/ResponsiveController.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/views/ContentView.dart';
-import 'package:client_portal_app/src/widgets/TextHeading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';

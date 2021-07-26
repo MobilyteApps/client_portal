@@ -312,7 +312,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                   ),
                   SizedBox(height: 5),
                   Text(
-                      'Enter your email address and we will send you a verification code.'),
+                      'Enter your verification code below'),
                   SizedBox(height: 15),
                   _inputControl(),
                 ],

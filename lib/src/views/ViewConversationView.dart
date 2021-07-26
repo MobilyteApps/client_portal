@@ -135,7 +135,7 @@ class _ViewConversationViewState extends State<ViewConversationView> {
       messageFieldPadding = null;
     }
 
-    return Column(
+    return  SingleChildScrollView(child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
@@ -151,16 +151,21 @@ class _ViewConversationViewState extends State<ViewConversationView> {
             person: personModel,
           ),
         ),
-        Expanded(
-          child: ListView(
+     //   Expanded(
+      //    child: 
+          ListView(
+            physics:ScrollPhysics() ,
             padding: EdgeInsets.only(left: 20, right: 20, top: 20),
             shrinkWrap: true,
             children: _cards(conversationModel.messages, userId),
           ),
-        ),
+      //  ),
+        
         Container(
           color: Color(0xFFEEEEEE),
-          child: Form(
+          child:
+          
+          Form(
             key: _formKey,
             child: TextFormField(
               maxLines: null,
@@ -188,9 +193,9 @@ class _ViewConversationViewState extends State<ViewConversationView> {
                 ),
               ),
             ),
-          ),
-        )
+          ),),
+       
       ],
-    );
+    ));
   }
 }

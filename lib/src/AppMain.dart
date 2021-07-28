@@ -95,7 +95,8 @@ class _AppMainState extends State<AppMain> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Mosby Client Portal',
-        theme: ThemeData( 
+        theme: ThemeData(
+          fontFamily: 'Sans Serif',
           primarySwatch: Brand.primary,
           primaryColor: Color(Brand.primaryDark),
         ),

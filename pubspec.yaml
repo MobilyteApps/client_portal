@@ -89,9 +89,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-      - family: Sans Serif
+      - family: Open Sans
         fonts:
-          - asset: fonts/SansSerifFLF-Demibold.otf
+          - asset: fonts/OpenSans-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

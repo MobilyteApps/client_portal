@@ -96,7 +96,7 @@ class _AppMainState extends State<AppMain> {
         debugShowCheckedModeBanner: false,
         title: 'Mosby Client Portal',
         theme: ThemeData(
-          fontFamily: 'Sans Serif',
+          fontFamily: 'Open Sans',
           primarySwatch: Brand.primary,
           primaryColor: Color(Brand.primaryDark),
         ),

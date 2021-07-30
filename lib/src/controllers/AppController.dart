@@ -108,11 +108,13 @@ class _AppControllerState extends State<AppController> {
       future: openBoxes(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          UserModel model = snapshot.data.identity;
+          UserModel model = snapshot?.data?.identity;
+
+        
           if (model == null && widget.requiresAuth) {
             return ScopedModel<LayoutModel>(
               child: LoginController(),
-              model: snapshot.data,
+              model: snapshot.data??LayoutModel(),
             );
           }
 

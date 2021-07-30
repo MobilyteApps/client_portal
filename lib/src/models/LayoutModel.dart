@@ -9,7 +9,7 @@ import 'package:scoped_model/scoped_model.dart';
 
 class LayoutModel extends Model {
   final UserModel identity;
-  final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
+  final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
   ProjectModel project;
 

@@ -157,7 +157,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                   ),
                 );
               } else {
-                return Text('api error: ' + response.reasonPhrase);
+                return Text('api error: ' + response?.reasonPhrase);
               }
             }
 

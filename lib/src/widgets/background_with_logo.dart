@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 
 class BackgroundWithLogo extends StatelessWidget {
+  // background with logo
   @override
   Widget build(BuildContext context) {
     return Container(

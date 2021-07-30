@@ -93,12 +93,12 @@ class TeamView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            Text(snapshot.data[index].name),
-                            Text(snapshot.data[index].title),
+                            Text(snapshot?.data[index]?.name),
+                            Text(snapshot?.data[index]?.title),
                           ],
                         ),
                       ),
-                      _messageButton(context, snapshot.data[index]),
+                      _messageButton(context, snapshot?.data[index]),
                     ],
                   ),
                 );

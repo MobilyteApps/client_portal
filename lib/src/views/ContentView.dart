@@ -27,14 +27,14 @@ class ContentView extends StatelessWidget {
         ${html}
       """,
       //Optional parameters:
-      onLinkTap: (url) {
+       onLinkTap: (url, _, __, ___) {
         // open url in a webview
         canLaunch(url).then((value) {
           launch(url);
         });
       },
       style: {"div": Style(), "p": Style()},
-      onImageTap: (src) {
+       onImageTap: (src, _, __, ___) {
         // Display the image in large form.
         //print(src);
       },

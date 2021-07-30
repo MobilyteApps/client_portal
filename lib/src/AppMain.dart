@@ -44,6 +44,7 @@ class _AppMainState extends State<AppMain> {
     content = ProjectLogView();
   }
 
+
   Widget createController(Widget child, [bool requiresAuth = true]) {
     return AppController(
       controller: PushNotificationHandler(
@@ -95,6 +96,7 @@ class _AppMainState extends State<AppMain> {
         debugShowCheckedModeBanner: false,
         title: 'Mosby Client Portal',
         theme: ThemeData(
+          fontFamily: 'Open Sans',
           primarySwatch: Brand.primary,
           primaryColor: Color(Brand.primaryDark),
         ),

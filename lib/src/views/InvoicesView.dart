@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/models/InvoiceModel.dart';
 import 'package:client_portal_app/src/utils/Config.dart';

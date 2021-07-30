@@ -91,14 +91,14 @@ class _CalendarViewState extends State<CalendarView> {
           Expanded(
             child: _currentMonth != null
                 ? Text(
-                    _currentMonth,
-                    style: TextStyle(
-                      color: _backgroundColor() == Colors.black12
-                          ? Colors.white
-                          : Colors.black.withOpacity(.54),
-                      fontSize: 18,
-                    ),
-                  )
+              _currentMonth,
+              style: TextStyle(
+                color: _backgroundColor() == Colors.black12
+                    ? Colors.white
+                    : Colors.black.withOpacity(.54),
+                fontSize: 18,
+              ),
+            )
                 : null,
           ),
           SizedBox(
@@ -201,7 +201,7 @@ class _CalendarViewState extends State<CalendarView> {
 
   Widget _calendar() {
     return TableCalendar(
-      onDaySelected: (dateTime, events) {
+      onDaySelected: (dateTime, events,h) {
         setState(() {
           if (events.length > 0) {
             _eventListModels = events;

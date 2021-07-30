@@ -22,15 +22,15 @@ class InvoiceDetail extends StatelessWidget {
         rows: [
           DataRow(cells: [
             DataCell(Text('Invoice Amount')),
-            DataCell(Text(model.amountString))
+            DataCell(Text(model?.amountString??""))
           ]),
           DataRow(cells: [
             DataCell(Text('Total Payments')),
-            DataCell(Text('- ${model.totalPaymentAmountString}'))
+            DataCell(Text('- ${model?.totalPaymentAmountString??""}'))
           ]),
           DataRow(cells: [
             DataCell(Text('Balance')),
-            DataCell(Text(model.balanceString))
+            DataCell(Text(model?.balanceString))
           ]),
         ],
       ),

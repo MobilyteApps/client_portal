@@ -4,7 +4,7 @@ class TextHeading extends StatelessWidget {
   const TextHeading({Key key, this.text}) : super(key: key);
 
   final String text;
-
+// common text
   @override
   Widget build(BuildContext context) {
     return Text(

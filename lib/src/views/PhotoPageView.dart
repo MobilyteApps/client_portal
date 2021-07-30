@@ -129,7 +129,7 @@ class _PhotoPageViewState extends State<PhotoPageView> {
             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
             value: event == null
                 ? 0
-                : event.cumulativeBytesLoaded / event.expectedTotalBytes,
+                : event.cumulativeBytesLoaded / event?.expectedTotalBytes,
           ),
         ),
       ),

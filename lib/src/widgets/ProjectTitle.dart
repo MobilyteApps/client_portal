@@ -25,7 +25,7 @@ class ProjectTitle extends StatelessWidget {
 
         columns.add(
           Text(
-            projectModel.title != null ? projectModel.title : '',
+            projectModel.title != null ? projectModel?.title : '',
             style: TextStyle(fontSize: 24, color: Colors.white),
           ),
         );
@@ -38,8 +38,8 @@ class ProjectTitle extends StatelessWidget {
               Opacity(
                 opacity: .99,
                 child: Image.network(
-                  projectModel.coverPhoto != null
-                      ? projectModel.coverPhoto
+                  projectModel?.coverPhoto != null
+                      ? projectModel?.coverPhoto
                       : '',
                   fit: BoxFit.cover,
                   colorBlendMode: BlendMode.dstATop,

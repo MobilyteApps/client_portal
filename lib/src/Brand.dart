@@ -4,7 +4,7 @@ class Brand {
   static const int primaryDark = 0xff003c64;
 
   static const int _mainPrimary = 0xff0064a8;
-
+// color codes
   static const MaterialColor primary = MaterialColor(
     _mainPrimary,
     <int, Color>{

@@ -16,6 +16,7 @@ class PersonAvatar extends StatelessWidget {
     } else {
       _child = Text(person.avatar.text != null ? person.avatar.text : '');
     }
+// profile image
 
     return CircleAvatar(
       child: _child,

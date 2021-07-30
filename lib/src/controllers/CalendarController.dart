@@ -33,7 +33,7 @@ class CalendarController extends ResponsiveController {
         if (snapshot.hasError) {
           return Center(
             child: Text(
-              snapshot.error.toString(),
+              snapshot?.error?.toString()??"",
             ),
           );
         }
@@ -42,7 +42,7 @@ class CalendarController extends ResponsiveController {
           var reducer = EventEntryReducer(
               payload: List<Map<String, dynamic>>.from(snapshot.data));
 
-          reducer.reduce();
+          reducer.reduce();  
 
           return CalendarView(
             events: reducer.asSplayTreeMap(),

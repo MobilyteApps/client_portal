@@ -45,6 +45,6 @@ class _LoginControllerState extends State<LoginController> {
 
   @override
   Widget build(BuildContext context) {
-    return content;
+    return Scaffold(body: content);
   }
 }

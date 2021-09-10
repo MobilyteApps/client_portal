@@ -92,54 +92,59 @@ class ConversationCard extends StatelessWidget {
               person: cardIdentity,
             ),
             SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            cardIdentity != null ? cardIdentity.name : '',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: conversation.read != true
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
+           Expanded(
+             child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              cardIdentity != null ? cardIdentity.name : '',
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: conversation.read != true
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                              ),
                             ),
-                          ),
-                          Text(
-                            conversation.subject,
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: conversation.read != true
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
+                            Text(
+                              conversation.subject,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: conversation.read != true
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                              ),
                             ),
+                          ],
+                        ),
+                        Flexible(
+                          child: Text(
+                            conversation.humanReadableTimestamp,
+                            style: Theme.of(context).textTheme.caption,
+                            textAlign: TextAlign.right,
+                            overflow: TextOverflow.ellipsis,
+
                           ),
-                        ],
-                      ),
-                      Text(
-                        conversation.humanReadableTimestamp,
-                        style: Theme.of(context).textTheme.caption,
-                      )
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(0),
-                    child: Text(
-                      truncateMessage(conversation.lastMessage.message, 48),
-                      style: TextStyle(fontSize: 12),
+                        )
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            )
+                    Padding(
+                      padding: EdgeInsets.all(0),
+                      child: Text(
+                        truncateMessage(conversation.lastMessage.message, 48),
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  ],
+                ),
+           ),
           ],
         ),
       ),

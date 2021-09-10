@@ -25,7 +25,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           ),
           Expanded(
             child: Container(
-              padding: EdgeInsets.only(top: 75),
+              padding: EdgeInsets.only(top: MediaQuery.of(context).size.width*.10),
               child: Column(
                 children: <Widget>[
                   Padding(

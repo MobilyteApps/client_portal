@@ -84,16 +84,16 @@ class _NewMessageViewState extends State<NewMessageView> {
             floatingLabelBehavior: FloatingLabelBehavior.always,
           ),
           hint: Text('Select team member'),
-          value: value,
-          selectedItemBuilder: (context) {
-            return teamMembers.map<Widget>((person) {
-              return Text(person != null ? person.name : '');
-            }).toList();
-          },
+         // value: value,
+          // selectedItemBuilder: (context) {
+          //   return teamMembers.map<Widget>((person) {
+          //     return Text(person != null ? person.name : '');
+          //   }).toList();
+          // },
           items: teamMembers.map(
             (person) {
               return DropdownMenuItem<String>(
-                value: person.id,
+                value: person.title,
                 child: Container(
                   child: Row(
                     children: <Widget>[
@@ -119,8 +119,9 @@ class _NewMessageViewState extends State<NewMessageView> {
           ).toList(),
           onChanged: (value) {
             setState(() {
-              var to = teamMembers.firstWhere((element) => element.id == value);
+              var to = teamMembers.firstWhere((element) => element.title == value);
               toPerson = to;
+             value= value;
             });
           },
         ),

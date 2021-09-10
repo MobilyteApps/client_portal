@@ -52,7 +52,7 @@ class _LoginFormState extends State<LoginForm> {
   void _doLogin(LayoutModel layoutModel) async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Logging in.  Please wait...'),
       ));
       try {
@@ -73,7 +73,7 @@ class _LoginFormState extends State<LoginForm> {
             Navigator.of(context).pushReplacementNamed('/');
             break;
           case 401:
-            Scaffold.of(context).showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: Colors.red,
               content: Text(
                 'Invalid email or password',
@@ -82,7 +82,7 @@ class _LoginFormState extends State<LoginForm> {
             ));
             break;
           case 422:
-            Scaffold.of(context).showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: Colors.red,
               content: Text(
                 'Invalid email or password',
@@ -94,7 +94,7 @@ class _LoginFormState extends State<LoginForm> {
       } catch (e) {
         // probably a CORS issue if the error is an XMLHttpRequest error
         print("--------------${e.toString()}");
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: Colors.red,
           content: Text(
             'Network error has occured - ' + e.toString(),
@@ -185,7 +185,7 @@ class _LoginFormState extends State<LoginForm> {
                       */
                       Align(
                         alignment: Alignment.centerRight,
-                        child: FlatButton(
+                        child: TextButton(
                           child: Text(
                             'Forgot password',
                             style: TextStyle(
@@ -197,7 +197,7 @@ class _LoginFormState extends State<LoginForm> {
                                 .pushNamed('/login/reset-password');
 
                             if (response == 'passwordChangeSuccess') {
-                              Scaffold.of(context).showSnackBar(
+                              ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   backgroundColor: Colors.green,
                                   content: Text(
@@ -218,11 +218,14 @@ class _LoginFormState extends State<LoginForm> {
                   padding: EdgeInsets.only(
                     top: 50,
                   ),
-                  child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      primary: Color.fromRGBO(0, 89, 146, 1),
+                      backgroundColor: Color.fromRGBO(0, 89, 146, 1),
                     ),
-                    color: Color.fromRGBO(0, 89, 146, 1),
                     child: Text(
                       'SIGN IN',
                       style: TextStyle(

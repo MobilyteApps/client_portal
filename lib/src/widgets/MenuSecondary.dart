@@ -2,11 +2,14 @@ import 'dart:convert';
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/views/ContentView.dart';
+import 'package:client_portal_app/src/views/DocumentView.dart';
 import 'package:client_portal_app/src/views/TeamView.dart';
+import 'package:client_portal_app/src/views/WhattoExpectView.dart';
 import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'Menu.dart';
 
@@ -82,13 +85,44 @@ class MenuSecondary extends StatelessWidget {
         ),
         leading: Icon(Icons.inbox),
       ),*/
-      /*ListTile(
+      ListTile(
         title: Text(
-          'Settings',
+          'What to Expect',
           style: textStyle,
         ),
-        leading: Icon(Icons.settings),
-      ),*/
+        leading: FaIcon(FontAwesomeIcons.key),
+        onTap: (){
+          if (width >= 1024) {
+          } else {
+            Navigator.push(
+              context,
+              SlideUpRoute(
+                settings: RouteSettings(),
+                page: PanelScaffold(title: 'What to Expect', body: WhattoExpectView()),
+              ),
+            );
+          }
+        },
+      ),
+      ListTile(
+        title: Text(
+          'Documents',
+          style: textStyle,
+        ),
+        leading: FaIcon(FontAwesomeIcons.file),
+        onTap: (){
+          if (width >= 1024) {
+          } else {
+            Navigator.push(
+              context,
+              SlideUpRoute(
+                settings: RouteSettings(),
+                page: PanelScaffold(title: 'Documents', body: DocumentView()),
+              ),
+            );
+          }
+        },
+      ),
       ListTile(
         title: Text(
           'Help & Feedback',

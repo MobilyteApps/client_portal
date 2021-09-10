@@ -102,6 +102,18 @@ class Api {
     return http.get('$baseUrl/team', headers: authorizationHeaders());
   }
 
+  Future<http.Response> document() {
+    return http.get('$baseUrl/content/', headers: authorizationHeaders());
+  }
+  Future<http.Response> whatExpect(){
+    return http.get('$baseUrl/content/page?pageId=what_to_expect', headers: authorizationHeaders());
+  }
+
+  Future<http.Response> slugContent(String pageId){
+    return http.get('$baseUrl/content/page?pageId=$pageId', headers: authorizationHeaders());
+  }
+
+
   Future<EventSource> conversationStream(String id) async {
     return await EventSource.connect(
         "$baseUrl/conversation/stream?id=$id&_format=text/event-stream",

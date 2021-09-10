@@ -28,13 +28,13 @@ class TeamView extends StatelessWidget {
       return SizedBox();
     }
 
-    return FlatButton(
-      color: Brand.primary,
+    return TextButton(
+      style: TextButton.styleFrom(backgroundColor:Brand.primary ,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),),
       child: Text(
         'Message'.toUpperCase(),
         style: TextStyle(color: Colors.white),
       ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+
       onPressed: () {
         if (MediaQuery.of(context).size.width >= 1024) {
           Navigator.pushNamed(context, '/new-message', arguments: person);

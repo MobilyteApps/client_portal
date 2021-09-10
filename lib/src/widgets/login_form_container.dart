@@ -54,22 +54,24 @@ class LoginFormContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 15),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          _logo(context),
-          SizedBox(
-            width: 330,
-            child: _welcomeText(context),
-          ),
-          SizedBox(
-            width: 360,
-            child: LoginForm(this.userModel),
-          ),
-        ],
+    return SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 15),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            _logo(context),
+            SizedBox(
+              width: 330,
+              child: _welcomeText(context),
+            ),
+            SizedBox(
+              width: 360,
+              child: LoginForm(this.userModel),
+            ),
+          ],
+        ),
       ),
     );
   }

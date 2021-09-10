@@ -1,35 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Mosby Connect</title>
+    <meta charset="UTF-8">
+    <title>Mosby Connect</title>
 </head>
 <body>
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-       navigator.serviceWorker.register("/firebase-messaging-sw.js");
-     });
-    }
-   </script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-messaging.js"></script>
-  <script>
+
+<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-messaging.js"></script>
+<script>
     var firebaseConfig = {
       apiKey: "AIzaSyCyRyZ_Ctef9TsDGh2b4MiTs5wbr5hU8es",
    //   authDomain: "https://mosby-client-portal.firebaseio.com",
       databaseURL: "https://mosby-client-portal.firebaseio.com",
-      projectId: "mosby-client-portal", 
-      storageBucket: "mosby-client-portal.appspot.com", 
-       messagingSenderId: "927404267954", 
-       appId: "1:927404267954:web:371a8280580b70a41f2cab", 
-     
+      projectId: "mosby-client-portal",
+      storageBucket: "mosby-client-portal.appspot.com",
+       messagingSenderId: "927404267954",
+       appId: "1:927404267954:web:371a8280580b70a41f2cab",
+
    };
    // Initialize Firebase
    firebase.initializeApp(firebaseConfig);
-  
-   </script>
-  <script src="main.dart.js?version=0.0.15.1" type="application/javascript"></script>
-  
+
+
+</script>
+<script src="main.dart.js?version=0.0.17.0" type="application/javascript"></script>
+<script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("/flutter_service_worker.js");
+        navigator.serviceWorker.register("/firebase-messaging-sw.js");
+      });
+    }
+  </script>
 </body>
 </html>

@@ -2,12 +2,11 @@ import 'dart:convert';
 
 
 class ContentModel {
-  final int icon;
   final String title;
-  final String slug;
+  final String file;
 
   ContentModel(
-      {this.title, this.icon, this.slug});
+      {this.title, this.file });
 
   factory ContentModel.fromJson(dynamic data) {
     var _json = json.decode(data);
@@ -16,9 +15,8 @@ class ContentModel {
 
   factory ContentModel.fromMap(Map<dynamic, dynamic> map) {
     return ContentModel(
-      icon: map['icon'],
       title: map['title'],
-      slug: map['slug'],
+      file: map['file'],
     );
   }
 }

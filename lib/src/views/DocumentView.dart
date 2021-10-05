@@ -7,7 +7,7 @@ import 'package:client_portal_app/src/models/PersonModel.dart';
 import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/views/NewMessageView.dart';
-import 'package:client_portal_app/src/views/SlugContentView.dart';
+import 'package:client_portal_app/src/views/PdfDataView.dart';
 import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
 import 'package:client_portal_app/src/widgets/PersonAvatar.dart';
 import 'package:flutter/material.dart';
@@ -56,12 +56,6 @@ class DocumentView extends StatelessWidget {
     );
   }
 
-  Widget _avatar(BuildContext context, PersonModel person) {
-    return PersonAvatar(
-      person: person,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -69,7 +63,8 @@ class DocumentView extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           var padding = EdgeInsets.only(top: 20);
 
-          return Padding(
+          return
+            Padding(
             child: ListView.builder(
               shrinkWrap: true,
               itemBuilder: (context, index) {
@@ -87,7 +82,7 @@ class DocumentView extends StatelessWidget {
                     child: Row(
                       children: <Widget>[
                       //  _avatar(context, snapshot.data[index]),//snapshot?.data[index]?.icon
-                        IconButton(onPressed: null, icon: FaIcon(IconDataSolid(snapshot?.data[index]?.icon))),
+                        IconButton(onPressed: null, icon: FaIcon(FontAwesomeIcons.file)),
                         SizedBox(
                           width: 10,
                         ),
@@ -115,8 +110,8 @@ class DocumentView extends StatelessWidget {
                         SlideUpRoute(
                           settings: RouteSettings(arguments: 'person'),
                           page: PanelScaffold(
-                            title: 'Slug Content',
-                            body: SlugContentView(slugValue:snapshot?.data[index]?.slug.toString()),
+                            title: snapshot?.data[index]?.file.toString(),
+                            body: PdfDataView(pdfName:snapshot?.data[index]?.file.toString()),
                           ),
                         ),
                       );

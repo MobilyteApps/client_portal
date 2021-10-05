@@ -13,11 +13,9 @@ class ContentView extends StatelessWidget {
     if (MediaQuery.of(context).size.width < 1024) {
       _padding = EdgeInsets.all(20);
     }
-    return Scrollbar(
-      child: SingleChildScrollView(
-        padding: _padding,
-        child: _html(),
-      ),
+    return SingleChildScrollView(
+      padding: _padding,
+      child: _html(),
     );
   }
 

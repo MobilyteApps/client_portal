@@ -26,16 +26,17 @@ dependencies:
   hive: ^2.0.4           
   hive_flutter: ^1.1.0
   path_provider: 2.0.2         
-  intl: ^0.17.0                        
-  eventsource: ^0.2.3
-  photo_view: ^0.11.1
+  intl: ^0.17.0
+  eventsource: ^0.3.0
+  photo_view: ^0.12.0
   font_awesome_flutter: ^9.1.0
   flutter_money_formatter: ^0.8.3    
   url_launcher: ^6.0.8
   firebase_core: 
   firebase_messaging_web: ^2.0.2
   firebase_core_web:
-
+  flutter_pdfview: ^1.2.1
+  native_pdf_view: ^4.2.0
 
   
   flutter:
@@ -53,8 +54,8 @@ dev_dependencies:
     sdk: flutter
 
 dependency_overrides:
-   intl: ^0.16.1  
-   http: ^0.12.0+4
+   intl: ^0.17.0
+   http: ^0.13.3
   # path: ^1.6.4
 #  analyzer: 0.39.14
   # font_awesome_flutter:

@@ -93,6 +93,7 @@ class MenuSecondary extends StatelessWidget {
         leading: FaIcon(FontAwesomeIcons.key),
         onTap: (){
           if (width >= 1024) {
+            Navigator.of(context).pushNamed('/what-to-expect');
           } else {
             Navigator.push(
               context,
@@ -112,6 +113,7 @@ class MenuSecondary extends StatelessWidget {
         leading: FaIcon(FontAwesomeIcons.file),
         onTap: (){
           if (width >= 1024) {
+            Navigator.of(context).pushNamed('/documents');
           } else {
             Navigator.push(
               context,

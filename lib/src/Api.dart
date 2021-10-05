@@ -17,7 +17,7 @@ class Api {
       'remember': rememberMe ? '1' : '0'
     };
    // print("${'$baseUrl/user/login'}==========$body");
-    return http.post('$baseUrl/user/login', body: body);
+    return http.post(Uri.parse('$baseUrl/user/login'), body: body);
   }
 
   Future<http.Response> pinLogin(String code, String pin) {
@@ -25,34 +25,34 @@ class Api {
       'username': code,
       'password': pin,
     };
-    return http.post('$baseUrl/user/pin', body: body);
+    return http.post(Uri.parse('$baseUrl/user/pin'), body: body);
   }
 
   Future<http.Response> project() {
     print('[Api.dart] requesting project');
-    return http.get('$baseUrl/project', headers: authorizationHeaders());
+    return http.get(Uri.parse('$baseUrl/project'), headers: authorizationHeaders());
   }
 
   Future<http.Response> projectLog() {
-    return http.get('$baseUrl/project/log', headers: authorizationHeaders());
+    return http.get(Uri.parse('$baseUrl/project/log'), headers: authorizationHeaders());
   }
 
   Future<http.Response> upNext() {
-    return http.get('$baseUrl/schedule', headers: authorizationHeaders());
+    return http.get(Uri.parse('$baseUrl/schedule'), headers: authorizationHeaders());
   }
 
   Future<http.Response> me() {
     print('[Api.dart] requesting identity');
-    return http.get('$baseUrl/user/me', headers: authorizationHeaders());
+    return http.get(Uri.parse('$baseUrl/user/me'), headers: authorizationHeaders());
   }
 
   Future<http.Response> schedule() {
-    return http.get('$baseUrl/schedule/events',
+    return http.get(Uri.parse('$baseUrl/schedule/events'),
         headers: authorizationHeaders());
   }
 
   Future<http.Response> recentConversations() {
-    return http.get('$baseUrl/conversation/recent',
+    return http.get(Uri.parse('$baseUrl/conversation/recent'),
         headers: authorizationHeaders());
   }
 
@@ -61,12 +61,12 @@ class Api {
     if (before != null) {
       url += '?before=$before';
     }
-    return http.get(url, headers: authorizationHeaders());
+    return http.get(Uri.parse(url), headers: authorizationHeaders());
   }
 
   Future<http.Response> getConversation(String id) {
     var url = '$baseUrl/conversation/view?id=$id';
-    return http.get(url, headers: authorizationHeaders());
+    return http.get(Uri.parse(url), headers: authorizationHeaders());
   }
 
   Future<http.Response> newConversation(
@@ -77,15 +77,15 @@ class Api {
       'to': to,
       'message': messageModel.message,
     };
-    return http.post(url, headers: authorizationHeaders(), body: body);
+    return http.post(Uri.parse(url), headers: authorizationHeaders(), body: body);
   }
 
   Future<http.Response> markConversationAsRead(String conversationId) {
     var body = {
       'conversationId': conversationId,
     };
-    return http.post(
-      '$baseUrl/conversation/mark-as-read',
+    return http.post(Uri.parse(
+      '$baseUrl/conversation/mark-as-read'),
       headers: authorizationHeaders(),
       body: body,
     );
@@ -94,23 +94,23 @@ class Api {
   Future<http.Response> replyToConversation(
       String conversationId, String reply) {
     var body = {'conversationId': conversationId, 'reply': reply};
-    return http.post('$baseUrl/conversation/reply',
+    return http.post(Uri.parse('$baseUrl/conversation/reply'),
         body: body, headers: authorizationHeaders());
   }
 
   Future<http.Response> team() {
-    return http.get('$baseUrl/team', headers: authorizationHeaders());
+    return http.get(Uri.parse('$baseUrl/team'), headers: authorizationHeaders());
   }
 
   Future<http.Response> document() {
-    return http.get('$baseUrl/content/', headers: authorizationHeaders());
+    return http.get(Uri.parse('$baseUrl/content/'), headers: authorizationHeaders());
   }
   Future<http.Response> whatExpect(){
-    return http.get('$baseUrl/content/page?pageId=what_to_expect', headers: authorizationHeaders());
+    return http.get(Uri.parse('$baseUrl/content/page?pageId=what_to_expect'), headers: authorizationHeaders());
   }
 
-  Future<http.Response> slugContent(String pageId){
-    return http.get('$baseUrl/content/page?pageId=$pageId', headers: authorizationHeaders());
+  Future<http.Response> fileContent(String fileName){
+    return http.get(Uri.parse('$baseUrl/content/page?pageId=files&file=$fileName'), headers: authorizationHeaders());
   }
 
 
@@ -121,13 +121,13 @@ class Api {
   }
 
   Future<http.Response> conversationPoll(String id, int last) async {
-    return await http.post('$baseUrl/conversation/poll?id=$id&after=$last',
+    return await http.post(Uri.parse('$baseUrl/conversation/poll?id=$id&after=$last'),
         headers: authorizationHeaders());
   }
 
   Future<http.Response> requestPasswordResetCode(String email) async {
     var response =
-        await http.post('$baseUrl/user/request-reset', body: {'email': email});
+        await http.post(Uri.parse('$baseUrl/user/request-reset'), body: {'email': email});
 
     processResponse(response);
 
@@ -135,7 +135,7 @@ class Api {
   }
 
   Future<http.Response> verifyResetCode(String email, String code) async {
-    var response = await http.post('$baseUrl/user/verify-reset-code',
+    var response = await http.post(Uri.parse('$baseUrl/user/verify-reset-code'),
         body: {'email': email, 'code': code});
 
     processResponse(response);
@@ -145,7 +145,7 @@ class Api {
 
   Future<http.Response> saveNewPassword(
       String challenge, String password) async {
-    var response = await http.post('$baseUrl/user/new-password',
+    var response = await http.post(Uri.parse('$baseUrl/user/new-password'),
         body: {'challenge': challenge, 'password': password});
 
     processResponse(response);
@@ -154,35 +154,35 @@ class Api {
   }
 
   Future<http.Response> getPageContent(String pageId) async {
-    var response = await http.post('$baseUrl/content/page?pageId=${pageId}',
+    var response = await http.post(Uri.parse('$baseUrl/content/page?pageId=${pageId}'),
         headers: authorizationHeaders());
     processResponse(response);
     return response;
   }
 
   Future<http.Response> getLastPayment() async {
-    var response = await http.post('$baseUrl/payment/last',
+    var response = await http.post(Uri.parse('$baseUrl/payment/last'),
         headers: authorizationHeaders());
     processResponse(response);
     return response;
   }
 
   Future<http.Response> getPreviousPayments() async {
-    var response = await http.post('$baseUrl/payment/previous',
+    var response = await http.post(Uri.parse('$baseUrl/payment/previous'),
         headers: authorizationHeaders());
     processResponse(response);
     return response;
   }
 
   Future<http.Response> getNextPaymentDue() async {
-    var response = await http.post('$baseUrl/payment/next',
+    var response = await http.post(Uri.parse('$baseUrl/payment/next'),
         headers: authorizationHeaders());
     processResponse(response);
     return response;
   }
 
   Future<http.Response> getInvoices() async {
-    var response = await http.post('$baseUrl/invoice/all',
+    var response = await http.post(Uri.parse('$baseUrl/invoice/all'),
         headers: authorizationHeaders());
     processResponse(response);
 
@@ -190,7 +190,7 @@ class Api {
   }
 
   Future<http.Response> saveDeviceToken(String token) async {
-    var response = await http.post('$baseUrl/user/device-token',
+    var response = await http.post(Uri.parse('$baseUrl/user/device-token'),
         body: {'token': token}, headers: authorizationHeaders());
 
     processResponse(response);
@@ -199,14 +199,14 @@ class Api {
   }
 
   Future<http.Response> getBillingInfo() async {
-    var response = await http.post('$baseUrl/project/billing',
+    var response = await http.post(Uri.parse('$baseUrl/project/billing'),
         headers: authorizationHeaders());
     processResponse(response);
     return response;
   }
 
   Future<http.Response> paymentMethods() async {
-    var response = await http.get('$baseUrl/payment/methods',
+    var response = await http.get(Uri.parse('$baseUrl/payment/methods'),
         headers: authorizationHeaders());
 
     processResponse(response);
@@ -215,7 +215,7 @@ class Api {
   }
 
   Future<http.Response> storedPaymentMethods() async {
-    var response = await http.get('$baseUrl/payment/stored-methods',
+    var response = await http.get(Uri.parse('$baseUrl/payment/stored-methods'),
         headers: authorizationHeaders());
 
     processResponse(response);
@@ -225,7 +225,7 @@ class Api {
 
   Future<http.Response> updateCreditCard(details) async {
     var response = await http.post(
-      '$baseUrl/payment/update-credit-card',
+      Uri.parse('$baseUrl/payment/update-credit-card'),
       body: details,
       headers: authorizationHeaders(),
     );
@@ -236,8 +236,8 @@ class Api {
   }
 
   Future<http.Response> updateACH(details) async {
-    var response = await http.post(
-      '$baseUrl/payment/update-ach',
+    var response = await http.post(Uri.parse(
+      '$baseUrl/payment/update-ach'),
       body: details,
       headers: authorizationHeaders(),
     );

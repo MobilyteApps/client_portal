@@ -6,6 +6,7 @@ import 'package:client_portal_app/src/controllers/AllMessagesController.dart';
 import 'package:client_portal_app/src/controllers/BillingAndPaymentsController.dart';
 import 'package:client_portal_app/src/controllers/CalendarController.dart';
 import 'package:client_portal_app/src/controllers/ContentController.dart';
+import 'package:client_portal_app/src/controllers/DocumentController.dart';
 import 'package:client_portal_app/src/controllers/GhostLoginController.dart';
 import 'package:client_portal_app/src/controllers/HomeController.dart';
 import 'package:client_portal_app/src/controllers/InvoicesController.dart';
@@ -14,9 +15,12 @@ import 'package:client_portal_app/src/controllers/MessagesController.dart';
 import 'package:client_portal_app/src/controllers/NewMessageController.dart';
 import 'package:client_portal_app/src/controllers/ResetPasswordController.dart';
 import 'package:client_portal_app/src/controllers/ScheduleController.dart';
+import 'package:client_portal_app/src/controllers/PDFContentController.dart';
 import 'package:client_portal_app/src/controllers/TeamController.dart';
 import 'package:client_portal_app/src/controllers/ViewConversationController.dart';
+import 'package:client_portal_app/src/controllers/WhattoexpectController.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
+import 'package:client_portal_app/src/views/DocumentView.dart';
 import 'package:client_portal_app/src/views/NotFoundView.dart';
 import 'package:client_portal_app/src/views/ProjectLogView.dart';
 import 'package:client_portal_app/src/widgets/PushNotificationHandler.dart';
@@ -43,7 +47,6 @@ class _AppMainState extends State<AppMain> {
     super.initState();
     content = ProjectLogView();
   }
-
 
   Widget createController(Widget child, [bool requiresAuth = true]) {
     return AppController(
@@ -197,6 +200,31 @@ class _AppMainState extends State<AppMain> {
                   panelLayoutTitle: 'Help & Feedback',
                 )),
               );
+              break;
+            case '/what-to-expect':
+              return DefaultPageRouteBuilder(
+                settings: settings,
+                builder: (context) => createController(WhattoexpectController(
+                  panelLayoutTitle: 'What to Expect',
+                )),
+              );
+              break;
+
+            case '/documents':
+              return DefaultPageRouteBuilder(
+                settings: settings,
+                builder: (context) => createController(DocumentController()),
+              );
+              break;
+
+            case '/pdf-content-view':
+              return DefaultPageRouteBuilder(
+                settings: settings,
+                builder: (context) => createController(PDFContentController(
+                  pdfFileName: settings.arguments,
+                )),
+              );
+              break;
 
             default:
               return DefaultPageRouteBuilder(

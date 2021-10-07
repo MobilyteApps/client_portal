@@ -1,11 +1,7 @@
-import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
-import 'package:client_portal_app/src/views/ContentView.dart';
 import 'package:client_portal_app/src/views/PDFContentView.dart';
 import 'package:client_portal_app/src/widgets/BackButtonHeading.dart';
 import 'package:flutter/material.dart';

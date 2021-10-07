@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/controllers/ResponsiveController.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
@@ -15,10 +14,9 @@ class WhattoexpectController extends ResponsiveController {
     bool panelCenterTitle = false,
     IconData appBarIcon,
   }) : super(
-      panelLayoutTitle: panelLayoutTitle,
-      panelCenterTitle: panelCenterTitle,
-      appBarIcon: appBarIcon);
-
+            panelLayoutTitle: panelLayoutTitle,
+            panelCenterTitle: panelCenterTitle,
+            appBarIcon: appBarIcon);
 
   final _api = Api(baseUrl: Config.apiBaseUrl);
 
@@ -33,13 +31,10 @@ class WhattoexpectController extends ResponsiveController {
     return FutureBuilder(
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          EdgeInsets titlePadding =
-          EdgeInsets.only(top: 30, left: 30, right: 30);
-
+          EdgeInsets titlePadding = EdgeInsets.only(top: 30, left: 30, right: 30);
           if (MediaQuery.of(context).size.width >= 1024) {
             titlePadding = titlePadding.copyWith(left: 70, right: 60, top: 50);
           }
-
           return ListView(
             children: [
               Container(
@@ -55,7 +50,6 @@ class WhattoexpectController extends ResponsiveController {
             ],
           );
         }
-
         return Container(
           child: Center(
             child: CircularProgressIndicator(

@@ -20,7 +20,6 @@ import 'package:client_portal_app/src/controllers/TeamController.dart';
 import 'package:client_portal_app/src/controllers/ViewConversationController.dart';
 import 'package:client_portal_app/src/controllers/WhattoexpectController.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
-import 'package:client_portal_app/src/views/DocumentView.dart';
 import 'package:client_portal_app/src/views/NotFoundView.dart';
 import 'package:client_portal_app/src/views/ProjectLogView.dart';
 import 'package:client_portal_app/src/widgets/PushNotificationHandler.dart';
@@ -209,14 +208,12 @@ class _AppMainState extends State<AppMain> {
                 )),
               );
               break;
-
             case '/documents':
               return DefaultPageRouteBuilder(
                 settings: settings,
                 builder: (context) => createController(DocumentController()),
               );
               break;
-
             case '/pdf-content-view':
               return DefaultPageRouteBuilder(
                 settings: settings,
@@ -225,7 +222,6 @@ class _AppMainState extends State<AppMain> {
                 )),
               );
               break;
-
             default:
               return DefaultPageRouteBuilder(
                   settings: settings,

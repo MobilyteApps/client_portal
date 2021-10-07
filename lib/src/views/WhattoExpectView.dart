@@ -1,13 +1,6 @@
 import 'dart:convert';
-
 import 'package:client_portal_app/src/Api.dart';
-import 'package:client_portal_app/src/Brand.dart';
-import 'package:client_portal_app/src/models/PersonModel.dart';
-import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
-import 'package:client_portal_app/src/views/NewMessageView.dart';
-import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
-import 'package:client_portal_app/src/widgets/PersonAvatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 

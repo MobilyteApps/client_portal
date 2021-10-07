@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
@@ -23,9 +22,11 @@ class PDFContentView extends StatelessWidget {
   }
 
   Widget _pdfView() {
-    return PdfView(scrollDirection: Axis.vertical,
-        pageSnapping: true,
-        controller: PdfController(document: PdfDocument.openData(this.pdfData),
-            initialPage: 0),);
+    return PdfView(
+      scrollDirection: Axis.vertical,
+      pageSnapping: true,
+      controller: PdfController(
+          document: PdfDocument.openData(this.pdfData), initialPage: 0),
+    );
   }
 }

@@ -27,25 +27,28 @@ class PDFContentController extends ResponsiveController {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           EdgeInsets titlePadding =
-          EdgeInsets.only(top: 30, left: 30, right: 30);
+          EdgeInsets.only(top: 20, left: 30, right: 0);
 
-          return  Padding(
-            padding: EdgeInsets.only(left: 40, top: 30, right: 0),
-            child: ListView(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 25),
-                  child: BackButtonHeading(),
-                ),
-                Container(
-                  child: Text(
-                    this.pdfFileName,
-                    style: Theme.of(context).textTheme.headline6,
+          return  Container(
+            color: Colors.white,
+            child: Padding(
+              padding: EdgeInsets.only(left: 40, top: 30, right: 0),
+              child: ListView(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 25),
+                    child: BackButtonHeading(),
                   ),
-                  padding: titlePadding,
-                ),
-                 PDFContentView(pdfData: snapshot.data,)
-              ],
+                  Container(
+                    child: Text(
+                      this.pdfFileName,
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                    padding: titlePadding,
+                  ),
+                   PDFContentView(pdfData: snapshot.data,)
+                ],
+              ),
             ),
           );
         }

@@ -5,7 +5,6 @@ import 'package:client_portal_app/src/models/ConversationModel.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/widgets/ConversationCard.dart';
-import 'package:client_portal_app/src/widgets/LoadingIndicator.dart';
 import 'package:flutter/material.dart';
 
 class AllMessagesView extends StatefulWidget {

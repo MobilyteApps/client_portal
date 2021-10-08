@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter_money_formatter/flutter_money_formatter.dart';
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:intl/intl.dart';
 
 class BillingInfoModel {
@@ -86,12 +86,13 @@ class BillingInfoModel {
   }
 
   static money(double amount) {
-    FlutterMoneyFormatter fmf = FlutterMoneyFormatter(amount: amount);
+    CurrencyTextInputFormatter _formatter= CurrencyTextInputFormatter(symbol: '\$' );
+    _formatter.format(amount.toString());
     if (amount == 0.00) {
-      return fmf.settings.symbol + '          -';
+      return _formatter.format(amount.toString()) + '          -';
     }
 
-    return fmf.output.symbolOnLeft;
+    return _formatter.format(amount.toString());
   }
 
   bool get isFinanced {

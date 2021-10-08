@@ -1,5 +1,4 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
-import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:intl/intl.dart';
 
 class PaymentModel {
@@ -46,8 +45,7 @@ class PaymentModel {
   }
 
   String get amountDueString {
-    FlutterMoneyFormatter fmf = FlutterMoneyFormatter(amount: this.amount);
-
-    return fmf.output.symbolOnLeft;
+    CurrencyTextInputFormatter _formatter= CurrencyTextInputFormatter(symbol: '\$');
+    return  _formatter.format(amount.toString());
   }
 }

@@ -310,9 +310,9 @@ class _LayoutState extends State<Layout> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  constraints: BoxConstraints(maxWidth: 580),
+                  constraints: BoxConstraints(maxWidth: 710),
                   child: widget.content,
-                  width: 580,
+                  width: 710,
                 ),
                 Expanded(
                   child: backgroundColumn(),
@@ -348,7 +348,7 @@ class _LayoutState extends State<Layout> {
               Colors.white.withOpacity(0),
             ], stops: [
               0,
-              .54,
+              .48,
               1
             ]),
           ),

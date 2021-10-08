@@ -1,4 +1,4 @@
-import 'package:flutter_money_formatter/flutter_money_formatter.dart';
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:intl/intl.dart';
 
 class InvoiceModel {
@@ -31,13 +31,13 @@ class InvoiceModel {
   }
 
   String get balanceString {
-    FlutterMoneyFormatter fmf = FlutterMoneyFormatter(amount: this.balance);
-    return fmf.output.symbolOnLeft;
+    CurrencyTextInputFormatter _formatter= CurrencyTextInputFormatter(symbol: '\$');
+    return  _formatter.format(amount.toString());
   }
 
   String get amountString {
-    FlutterMoneyFormatter fmf = FlutterMoneyFormatter(amount: this.amount);
-    return fmf.output.symbolOnLeft;
+    CurrencyTextInputFormatter _formatter= CurrencyTextInputFormatter(symbol: '\$');
+    return  _formatter.format(amount.toString());
   }
 
   String get dateString {
@@ -47,7 +47,7 @@ class InvoiceModel {
 
   String get totalPaymentAmountString {
     var amount = this.amount - this.balance;
-    FlutterMoneyFormatter fmf = FlutterMoneyFormatter(amount: amount);
-    return fmf.output.symbolOnLeft;
+    CurrencyTextInputFormatter _formatter= CurrencyTextInputFormatter(symbol: '\$');
+    return  _formatter.format(amount.toString());
   }
 }

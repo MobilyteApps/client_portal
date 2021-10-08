@@ -6,21 +6,19 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PdfDataView extends StatelessWidget {
   String pdfName;
 
   PdfDataView({Key key, String this.pdfName}) : super(key: key);
 
-  Future<String> _getConetnt() async {
+  Future<Uint8List> _getConetnt() async {
     final filename = this.pdfName;
     var api = Api(baseUrl: Config.apiBaseUrl);
     var response = await api.fileContent(this.pdfName);
     Uint8List object = response.bodyBytes;
-    var dir = await getApplicationDocumentsDirectory();
-    File file = File("${dir.path}/$filename");
-    await file.writeAsBytes(object, flush: true);
-    return file.path;
+    return object;
   }
 
   @override
@@ -33,12 +31,15 @@ class PdfDataView extends StatelessWidget {
           return Container(
               child: Padding(
                   padding: EdgeInsets.all(10),
-                  child: PDFView(
-                    filePath: snapshot.data,
-                    preventLinkNavigation: true,
-                    fitEachPage: true,
-                    fitPolicy: FitPolicy.HEIGHT,
-                  )));
+                  child: SfPdfViewer.memory(
+                    snapshot.data,
+                    initialZoomLevel: 1.1,
+                    enableDoubleTapZooming: true,
+                    canShowScrollStatus: true,
+                    canShowScrollHead: true,
+                    scrollDirection: PdfScrollDirection.vertical,
+                    interactionMode: PdfInteractionMode.pan,
+                  ),));
         }
         if (snapshot.hasError) {
           return Center(

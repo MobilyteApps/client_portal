@@ -108,7 +108,9 @@ class Api {
   Future<http.Response> whatExpect(){
     return http.get(Uri.parse('$baseUrl/content/page?pageId=what_to_expect'), headers: authorizationHeaders());
   }
-
+  Future<http.Response> workScope(){
+    return http.get(Uri.parse('$baseUrl/content/page?pageId=work_scope'), headers: authorizationHeaders());
+  }
   Future<http.Response> fileContent(String fileName){
     return http.get(Uri.parse('$baseUrl/content/page?pageId=files&file=$fileName'), headers: authorizationHeaders());
   }

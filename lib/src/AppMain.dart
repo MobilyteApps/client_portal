@@ -19,6 +19,7 @@ import 'package:client_portal_app/src/controllers/PDFContentController.dart';
 import 'package:client_portal_app/src/controllers/TeamController.dart';
 import 'package:client_portal_app/src/controllers/ViewConversationController.dart';
 import 'package:client_portal_app/src/controllers/WhattoexpectController.dart';
+import 'package:client_portal_app/src/controllers/WorkScopeController.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/views/NotFoundView.dart';
 import 'package:client_portal_app/src/views/ProjectLogView.dart';
@@ -222,7 +223,14 @@ class _AppMainState extends State<AppMain> {
                 )),
               );
               break;
-            default:
+            case '/work-scope':
+              return DefaultPageRouteBuilder(
+                settings: settings,
+                builder: (context) => createController(WorkScopeController(
+                )),
+              );
+              break;
+              default:
               return DefaultPageRouteBuilder(
                   settings: settings,
                   builder: (context) =>

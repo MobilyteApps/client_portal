@@ -5,6 +5,7 @@ import 'package:client_portal_app/src/views/ContentView.dart';
 import 'package:client_portal_app/src/views/DocumentView.dart';
 import 'package:client_portal_app/src/views/TeamView.dart';
 import 'package:client_portal_app/src/views/WhattoExpectView.dart';
+import 'package:client_portal_app/src/views/WorkScopeView.dart';
 import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
@@ -100,6 +101,26 @@ class MenuSecondary extends StatelessWidget {
               SlideUpRoute(
                 settings: RouteSettings(),
                 page: PanelScaffold(title: 'What to Expect', body: WhattoExpectView()),
+              ),
+            );
+          }
+        },
+      ),
+      ListTile(
+        title: Text(
+          'Work Scope',
+          style: textStyle,
+        ),
+        leading: FaIcon(FontAwesomeIcons.tasks),
+        onTap: (){
+          if (width >= 1024) {
+            Navigator.of(context).pushNamed('/work-scope');
+          } else {
+            Navigator.push(
+              context,
+              SlideUpRoute(
+                settings: RouteSettings(),
+                page: PanelScaffold(title: 'Work Scope', body: WorkScopeView()),
               ),
             );
           }

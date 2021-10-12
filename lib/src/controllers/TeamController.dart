@@ -5,7 +5,7 @@ import 'package:client_portal_app/src/models/LayoutModel.dart';
 
 class TeamController extends ResponsiveController {
   TeamController()
-      : super(panelLayoutTitle: 'Your Mosby Team', panelCenterTitle: true);
+      : super(panelLayoutTitle: 'My Mosby Team', panelCenterTitle: true);
 
   @override
   Widget buildContent(LayoutModel layoutModel, BuildContext context) {
@@ -13,7 +13,7 @@ class TeamController extends ResponsiveController {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[        
-          Text('Your Mosby Team', style: Theme.of(context).textTheme.headline6,),
+          Text('My Mosby Team', style: Theme.of(context).textTheme.headline6,),
           TeamView(),
         ],
       ),

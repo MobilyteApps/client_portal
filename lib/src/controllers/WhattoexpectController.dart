@@ -39,7 +39,7 @@ class WhattoexpectController extends ResponsiveController {
             children: [
               Container(
                 child: Text(
-                  'What to Expect',
+                  'What To Expect',
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 padding: titlePadding,

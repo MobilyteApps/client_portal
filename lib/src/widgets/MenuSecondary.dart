@@ -61,7 +61,27 @@ class MenuSecondary extends StatelessWidget {
       ),*/
       ListTile(
         title: Text(
-          'Your Mosby Team',
+          'My Project Work',
+          style: textStyle,
+        ),
+        leading: FaIcon(FontAwesomeIcons.tasks),
+        onTap: (){
+          if (width >= 1024) {
+            Navigator.of(context).pushNamed('/work-scope');
+          } else {
+            Navigator.push(
+              context,
+              SlideUpRoute(
+                settings: RouteSettings(),
+                page: PanelScaffold(title: 'My Project Work', body: WorkScopeView()),
+              ),
+            );
+          }
+        },
+      ),
+      ListTile(
+        title: Text(
+          'My Mosby Team',
           style: textStyle,
         ),
         leading: Icon(Icons.group),
@@ -73,7 +93,7 @@ class MenuSecondary extends StatelessWidget {
               context,
               SlideUpRoute(
                 settings: RouteSettings(),
-                page: PanelScaffold(title: 'Your Mosby Team', body: TeamView()),
+                page: PanelScaffold(title: 'My Mosby Team', body: TeamView()),
               ),
             );
           }
@@ -88,7 +108,7 @@ class MenuSecondary extends StatelessWidget {
       ),*/
       ListTile(
         title: Text(
-          'What to Expect',
+          'What To Expect',
           style: textStyle,
         ),
         leading: FaIcon(FontAwesomeIcons.key),
@@ -100,27 +120,7 @@ class MenuSecondary extends StatelessWidget {
               context,
               SlideUpRoute(
                 settings: RouteSettings(),
-                page: PanelScaffold(title: 'What to Expect', body: WhattoExpectView()),
-              ),
-            );
-          }
-        },
-      ),
-      ListTile(
-        title: Text(
-          'Work Scope',
-          style: textStyle,
-        ),
-        leading: FaIcon(FontAwesomeIcons.tasks),
-        onTap: (){
-          if (width >= 1024) {
-            Navigator.of(context).pushNamed('/work-scope');
-          } else {
-            Navigator.push(
-              context,
-              SlideUpRoute(
-                settings: RouteSettings(),
-                page: PanelScaffold(title: 'Work Scope', body: WorkScopeView()),
+                page: PanelScaffold(title: 'What To Expect', body: WhattoExpectView()),
               ),
             );
           }

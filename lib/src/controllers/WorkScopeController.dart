@@ -39,7 +39,7 @@ class WorkScopeController extends ResponsiveController {
             children: [
               Container(
                 child: Text(
-                  'Work Scope',
+                  'My Project Work',
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 padding: titlePadding,

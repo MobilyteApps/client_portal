@@ -4,6 +4,8 @@ import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
+import 'ContentView.dart';
+
 class WorkScopeView extends StatelessWidget {
   const WorkScopeView({Key key}) : super(key: key);
 
@@ -22,10 +24,12 @@ class WorkScopeView extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           var padding = EdgeInsets.fromLTRB(5, 10, 5, 10);
 
-          return SingleChildScrollView(child:Padding(
-            child: Html(data:snapshot.data),
-            padding: padding,
-          ));
+          return  Container(
+            child: ContentView(
+              html: snapshot.data,
+            ),
+            color: Colors.white,
+          );
         }
 
         if (snapshot.hasError) {

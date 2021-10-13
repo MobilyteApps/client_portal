@@ -97,7 +97,7 @@ class DocumentController extends ResponsiveController {
                       ),
                       onTap: (){
                         if (MediaQuery.of(context).size.width >= 1024) {
-                          Navigator.pushNamed(context, '/pdf-content-view', arguments: snapshot?.data[index]?.file.toString());
+                          Navigator.pushNamed(context, '/pdf-content-view', arguments: snapshot?.data[index]?.file.toString().replaceAll("+", " "));
                         } else {
                           Navigator.push(
                             context,

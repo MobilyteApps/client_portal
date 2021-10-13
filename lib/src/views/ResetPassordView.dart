@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/Brand.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
@@ -7,6 +6,7 @@ import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/validators/EmptyValidator.dart';
 import 'package:client_portal_app/src/widgets/TextHeading.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ResetPasswordView extends StatefulWidget {
@@ -35,7 +35,6 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
     _emailTextController = TextEditingController();
     _passwordTextController = TextEditingController();
     _confirmPasswordTextController = TextEditingController();
-
     _verificationNodes = [FocusNode(), FocusNode(), FocusNode()];
     _verificationTextControllers = [
       TextEditingController(),
@@ -54,7 +53,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
   }
 
   void _handleError(error) {
-    Scaffold.of(context).showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Colors.red,
         content: Text(
@@ -70,10 +69,8 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
     var one = _verificationTextControllers[0].value.text;
     var two = _verificationTextControllers[1].value.text;
     var three = _verificationTextControllers[2].value.text;
-
     var code = '${one}${two}${three}';
     var email = _emailTextController.value.text;
-
     try {
       var response = await _api.verifyResetCode(email, code);
       var body = json.decode(response.body);
@@ -141,7 +138,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
             focusNode: _verificationNodes[2],
             textAlign: TextAlign.center,
             maxLength: 3,
-            maxLengthEnforced: true,
+            maxLengthEnforcement: MaxLengthEnforcement.enforced,
             onFieldSubmitted: (_) {
               _handleVerificationControlSubmit();
             },
@@ -153,10 +150,11 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
           ),
         ),
         SizedBox(width: 10),
-        RaisedButton(
-          color: Brand.primary,
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              primary: Brand.primary,
+              padding: EdgeInsets.only(top: 14, bottom: 13)),
           onPressed: _handleVerificationControlSubmit,
-          padding: EdgeInsets.only(top: 14, bottom: 13),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -267,9 +265,10 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
         ),
         SizedBox(height: 20),
         Container(
-          child: RaisedButton(
-            padding: EdgeInsets.only(top: 15, bottom: 15),
-            color: Brand.primary,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                primary: Brand.primary,
+                padding: EdgeInsets.only(top: 15, bottom: 15)),
             child: Text(
               'Save Password',
               style: TextStyle(color: Colors.white),
@@ -311,8 +310,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                     text: 'Password Reset',
                   ),
                   SizedBox(height: 5),
-                  Text(
-                      'Enter your verification code below'),
+                  Text('Enter your verification code below'),
                   SizedBox(height: 15),
                   _inputControl(),
                 ],

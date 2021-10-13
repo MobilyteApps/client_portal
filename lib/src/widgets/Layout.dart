@@ -18,7 +18,7 @@ class Layout extends StatefulWidget {
 
   final Widget content;
 
-  final String version = '0.0.17.0';
+  final String version = '0.0.19.0';
 
   Layout({this.model, this.content});
 
@@ -165,14 +165,13 @@ class _LayoutState extends State<Layout> {
             right: 0,
             top: 0,
             width: 45,
-            child: FlatButton(
-              padding: EdgeInsets.all(0),
+            child: TextButton(
+              style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
               child: Icon(
                 Icons.menu,
                 color: Colors.white,
               ),
               onPressed: () {
-                //_scaffoldKey.currentState.openDrawer();
                 _scaffoldKey.currentState.showBottomSheet(
                   (context) => Container(
                     width: double.infinity,

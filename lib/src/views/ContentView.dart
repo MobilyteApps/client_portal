@@ -9,7 +9,7 @@ class ContentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _padding = EdgeInsets.only(top: 30, left: 60, right: 60);
+    var _padding = EdgeInsets.only(top: 30, left: 60, right: 30);
     if (MediaQuery.of(context).size.width < 1024) {
       _padding = EdgeInsets.all(20);
     }
@@ -31,7 +31,7 @@ class ContentView extends StatelessWidget {
           launch(url);
         });
       },
-      style: {"div": Style(), "p": Style()},
+      style: {"div": Style(), "p": Style(), "ul":Style(textDecorationColor: Colors.white,backgroundColor: Colors.white)},
        onImageTap: (src, _, __, ___) {
         // Display the image in large form.
         //print(src);

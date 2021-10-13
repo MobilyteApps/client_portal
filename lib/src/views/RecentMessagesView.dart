@@ -91,7 +91,7 @@ class _RecentMessagesViewState extends State<RecentMessagesView> {
   Widget button(context) {
     return Align(
       alignment: Alignment.centerRight,
-      child: FlatButton(
+      child: TextButton(
         child: Text(
           'View all messages'.toUpperCase(),
           style: TextStyle(color: Brand.primary),

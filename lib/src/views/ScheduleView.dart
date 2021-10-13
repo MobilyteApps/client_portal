@@ -100,9 +100,10 @@ class _ScheduleViewState extends State<ScheduleView> {
                 var _entries = entries(body, context);
                 Widget _viewFullSchedule = Container(
                   alignment: Alignment.centerRight,
-                  child: FlatButton(
-                    hoverColor: Colors.transparent,
-                    padding: EdgeInsets.all(0),
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                        padding: EdgeInsets.all(0),
+                        onSurface: Colors.transparent),
                     onPressed: () {
                       Navigator.of(context).pushNamed('/calendar');
                     },

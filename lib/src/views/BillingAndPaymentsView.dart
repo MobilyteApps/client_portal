@@ -112,10 +112,9 @@ class BillingAndPaymentsView extends StatelessWidget {
                     height: 58,
                   ),
                   makePayment
-                      ? FlatButton(
-                          color: Color.fromRGBO(0, 169, 209, 1),
-                          padding: EdgeInsets.only(
-                              left: 30, top: 20, right: 30, bottom: 20),
+                      ? TextButton(
+                          style: TextButton.styleFrom(padding: EdgeInsets.only(
+                              left: 30, top: 20, right: 30, bottom: 20),primary: Color.fromRGBO(0, 169, 209, 1) ),
                           child: Text(
                             'Make a Payment',
                             style: TextStyle(

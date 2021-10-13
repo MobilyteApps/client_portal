@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:native_pdf_view/native_pdf_view.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PDFContentView extends StatelessWidget {
@@ -22,7 +21,6 @@ class PDFContentView extends StatelessWidget {
       child: _pdfView(),
     );
   }
-
   Widget _pdfView() {
     return SfPdfViewer.memory(
       this.pdfData ,
@@ -32,23 +30,7 @@ class PDFContentView extends StatelessWidget {
       canShowScrollHead: true,
        scrollDirection: PdfScrollDirection.vertical,
       interactionMode: PdfInteractionMode.pan,
-
-
     );
 
-    //   PdfView(renderer: (PdfPage page) => page.render(
-    //   width: page.width ,
-    //   height: page.height ,
-    //   backgroundColor: '#FFFFFF',
-    //   format: PdfPageFormat.JPEG,
-    // ),
-    //
-    //   scrollDirection: Axis.vertical,
-    //   pageSnapping: true,
-    //   controller: PdfController(
-    //       document: PdfDocument.openData(this.pdfData), initialPage: 0,
-    //
-    //   ),
-    // );
   }
 }

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 
 class Menu extends StatelessWidget {
   final List<Widget> items;
-
   final Color backgroundColor;
-
   Menu({this.items, this.backgroundColor});
 
   @override

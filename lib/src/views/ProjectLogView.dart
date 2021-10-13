@@ -7,7 +7,6 @@ import 'package:client_portal_app/src/views/PhotoPageView.dart';
 import 'package:client_portal_app/src/widgets/Note.dart';
 import 'package:client_portal_app/src/widgets/ProjectLogHeader.dart';
 import 'package:http/http.dart' as http;
-
 import "package:flutter/material.dart";
 import 'package:scoped_model/scoped_model.dart';
 
@@ -146,7 +145,6 @@ class ProjectLogView extends StatelessWidget {
                         ),
                       ),
                     );
-
                     items.add(
                       Container(
                         height: mediaQueryWidth >= 1024 ? null : 130,
@@ -161,7 +159,6 @@ class ProjectLogView extends StatelessWidget {
                   }
                 });
               }
-
               EdgeInsets padding = EdgeInsets.only(
                 top: 60,
                 left: 60,
@@ -171,13 +168,11 @@ class ProjectLogView extends StatelessWidget {
               if (mediaQueryWidth < 1024) {
                 padding = EdgeInsets.all(0);
               }
-
               return Container(
                 child: listViewContent(items),
                 padding: padding,
               );
             }
-
             return Center(
               child: CircularProgressIndicator(
                 strokeWidth: 2,

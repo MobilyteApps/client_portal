@@ -110,8 +110,8 @@ class DocumentView extends StatelessWidget {
                         SlideUpRoute(
                           settings: RouteSettings(arguments: 'person'),
                           page: PanelScaffold(
-                            title: snapshot?.data[index]?.file.toString().replaceAll("+", " "),
-                            body: PdfDataView(pdfName:snapshot?.data[index]?.file.toString()),
+                            title: snapshot?.data[index]?.title.toString(),
+                            body: PdfDataView(pdfName:snapshot?.data[index]?.title.toString()),
                           ),
                         ),
                       );

@@ -97,7 +97,7 @@ class DocumentController extends ResponsiveController {
                       ),
                       onTap: (){
                         if (MediaQuery.of(context).size.width >= 1024) {
-                          Navigator.pushNamed(context, '/pdf-content-view', arguments: snapshot?.data[index]?.file.toString().replaceAll("+", " "));
+                          Navigator.pushNamed(context, '/pdf-content-view', arguments: snapshot?.data[index]?.title.toString());
                         } else {
                           Navigator.push(
                             context,
@@ -105,7 +105,7 @@ class DocumentController extends ResponsiveController {
                               settings: RouteSettings(arguments: 'person'),
                               page: PanelScaffold(
                                 title: 'Document',
-                                body: PdfDataView(pdfName:snapshot?.data[index]?.file.toString()),
+                                body: PdfDataView(pdfName:snapshot?.data[index]?.title.toString()),
                               ),
                             ),
                           );

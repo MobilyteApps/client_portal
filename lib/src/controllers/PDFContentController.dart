@@ -9,10 +9,10 @@ import 'ResponsiveController.dart';
 
 
 class PDFContentController extends ResponsiveController {
- String title;
- String filename;
+ final String title;
+ final String filename;
 
-  PDFContentController({Key key, String this.title, String this.filename}) : super(key: key);
+  const PDFContentController({Key key, String this.title, String this.filename}) : super(key: key);
 
 
   Future<Uint8List> _getConetnt() async {

@@ -9,14 +9,15 @@ import 'ResponsiveController.dart';
 
 
 class PDFContentController extends ResponsiveController {
-  String pdfFileName;
+ String title;
+ String filename;
 
-  PDFContentController({Key key, String this.pdfFileName}) : super(key: key);
+  PDFContentController({Key key, String this.title, String this.filename}) : super(key: key);
 
 
   Future<Uint8List> _getConetnt() async {
     var api = Api(baseUrl: Config.apiBaseUrl);
-    var response = await api.fileContent(this.pdfFileName);
+    var response = await api.fileContent(this.filename);
     Uint8List object = response.bodyBytes;
     return object;
   }
@@ -41,7 +42,7 @@ class PDFContentController extends ResponsiveController {
                   ),
                   Container(
                     child: Text(
-                      this.pdfFileName,
+                      this.title,
                       style: Theme.of(context).textTheme.headline6,
                     ),
                     padding: titlePadding,

@@ -111,7 +111,7 @@ class DocumentView extends StatelessWidget {
                           settings: RouteSettings(arguments: 'person'),
                           page: PanelScaffold(
                             title: snapshot?.data[index]?.title.toString(),
-                            body: PdfDataView(pdfName:snapshot?.data[index]?.title.toString()),
+                            body: PdfDataView(pdfName:snapshot?.data[index]?.file.toString()),
                           ),
                         ),
                       );

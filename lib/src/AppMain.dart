@@ -216,10 +216,13 @@ class _AppMainState extends State<AppMain> {
               );
               break;
             case '/pdf-content-view':
+              List<dynamic> args = settings.arguments;;
               return DefaultPageRouteBuilder(
                 settings: settings,
                 builder: (context) => createController(PDFContentController(
-                  pdfFileName: settings.arguments,
+                  title: args[0],
+                  filename:args[1]
+
                 )),
               );
               break;

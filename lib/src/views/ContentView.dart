@@ -9,7 +9,7 @@ class ContentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _padding = EdgeInsets.only(top: 30, left: 60, right: 30);
+    var _padding = EdgeInsets.only(top: 10, left: 60, right: 30);
     if (MediaQuery.of(context).size.width < 1024) {
       _padding = EdgeInsets.all(20);
     }

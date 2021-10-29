@@ -12,6 +12,7 @@ import 'package:client_portal_app/src/controllers/HomeController.dart';
 import 'package:client_portal_app/src/controllers/InvoicesController.dart';
 import 'package:client_portal_app/src/controllers/LoginController.dart';
 import 'package:client_portal_app/src/controllers/MessagesController.dart';
+import 'package:client_portal_app/src/controllers/MyProjectWorkController.dart';
 import 'package:client_portal_app/src/controllers/NewMessageController.dart';
 import 'package:client_portal_app/src/controllers/ResetPasswordController.dart';
 import 'package:client_portal_app/src/controllers/ScheduleController.dart';
@@ -229,8 +230,7 @@ class _AppMainState extends State<AppMain> {
             case '/work-scope':
               return DefaultPageRouteBuilder(
                 settings: settings,
-                builder: (context) => createController(WorkScopeController(
-                )),
+                builder: (context) => createController(MyProjectWorkController()),
               );
               break;
               default:

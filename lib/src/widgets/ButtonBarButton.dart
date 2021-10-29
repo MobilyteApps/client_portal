@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ButtonBarButton extends StatelessWidget {
@@ -13,20 +14,27 @@ class ButtonBarButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: onPressed,
-      child: Column(
-        children: <Widget>[
-          Icon(
-            icon,
-            color: color,
-          ),
-          Text(
-            label,
-            style: TextStyle(
+      child: Container(
+        width: MediaQuery.of(context).size.width*0.175,
+        height: 52,
+        child: Column(
+          children: <Widget>[
+            Icon(
+              icon,
               color: color,
-              fontSize: 10,
             ),
-          ),
-        ],
+            Flexible(
+              child: Text(
+                label,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: color,
+                  fontSize: 10,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

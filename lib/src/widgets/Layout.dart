@@ -2,6 +2,7 @@ import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/models/RightDrawerModel.dart';
 import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
 import 'package:client_portal_app/src/views/BillingAndPaymentsView.dart';
+import 'package:client_portal_app/src/views/WorkScopeView.dart';
 import 'package:client_portal_app/src/widgets/ButtonBarButton.dart';
 import 'package:client_portal_app/src/widgets/MenuPrimary.dart';
 import 'package:client_portal_app/src/widgets/MenuSecondary.dart';
@@ -81,6 +82,9 @@ class _LayoutState extends State<Layout> {
       case 'Messages':
         Navigator.pushNamed(context, '/messages');
         break;
+      case 'My Project Work':
+          Navigator.pushNamed(context, '/work-scope');
+        break;
       case 'Billing and Payments':
         print('billing');
         var width = MediaQuery.of(context).size.width;
@@ -110,6 +114,7 @@ class _LayoutState extends State<Layout> {
       Text title = Text(item.label);
       buttons.add(
         ButtonBarButton(
+
           icon: icon.icon,
           label: title.data,
           onPressed: () {
@@ -269,6 +274,7 @@ class _LayoutState extends State<Layout> {
 
   Widget portrait() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         mobileHeader(),
         mobilePrimaryNav(),

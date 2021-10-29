@@ -12,9 +12,22 @@ class WorkScopeView extends StatelessWidget {
   Future<String> _getConetnt() async {
     var api = Api(baseUrl: Config.apiBaseUrl);
     var response = await api.workScope();
-    Map<String, dynamic> object= json.decode(response.body);
-    String content= object['content'];
+    Map<String, dynamic> object = json.decode(response.body);
+    String content = object['content'];
     return content;
+  }
+
+  Widget heading(context) {
+    return Row(
+      children: <Widget>[
+        Container(
+          child: Text(
+            'My Project Work',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+        ),
+      ],
+    );
   }
 
   @override
@@ -22,13 +35,23 @@ class WorkScopeView extends StatelessWidget {
     return FutureBuilder(
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          var padding = EdgeInsets.fromLTRB(5, 10, 5, 10);
+          EdgeInsets padding = EdgeInsets.only(top: 10, left: 15, right: 15);
+          if (MediaQuery.of(context).size.width >= 1024) {
+            padding = padding.copyWith(left: 60, right: 60,bottom: 0,top: 40);
+          }
 
-          return  Container(
-            child: ContentView(
-              html: snapshot.data,
-            ),
-            color: Colors.white,
+          return ListView(
+            children: [
+              Padding(
+                  padding: padding,
+                  child: heading(context)),
+              Container(
+                child: ContentView(
+                  html: snapshot.data,
+                ),
+                color: Colors.white,
+              ),
+            ],
           );
         }
 

@@ -1,5 +1,6 @@
 import 'package:client_portal_app/src/models/MenuItem.dart';
 import "package:flutter/material.dart";
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'Menu.dart';
 
@@ -22,7 +23,7 @@ class MenuPrimary extends StatelessWidget {
     items.forEach((item) {
       tiles.add(
         ListTile(
-          leading: Icon(
+          leading:item.label== "My Project Work"? FaIcon(item.icon,color: Colors.white,):Icon(
             item.icon,
             color: Colors.white,
           ),

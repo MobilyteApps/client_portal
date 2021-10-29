@@ -41,8 +41,8 @@ abstract class ResponsiveController extends StatelessWidget {
       actions: [],
       elevation: 0,
       backgroundColor: Color(Brand.primaryDark),
-      centerTitle: panelCenterTitle,
-      title: Text(panelLayoutTitle),
+      centerTitle: panelCenterTitle??"",
+      title: Text(panelLayoutTitle??''),
       leading: IconButton(
         icon: Icon(appBarIcon == null ? Icons.close : appBarIcon),
         onPressed: () {

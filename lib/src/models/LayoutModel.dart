@@ -5,6 +5,7 @@ import 'package:client_portal_app/src/models/UserModel.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class LayoutModel extends Model {
@@ -24,7 +25,8 @@ class LayoutModel extends Model {
       MenuItem(icon: Icons.library_books, label: 'Project Log'),
       MenuItem(icon: Icons.event_note, label: 'Schedule'),
       MenuItem(icon: Icons.message, label: 'Messages'),
-      MenuItem(icon: Icons.payment, label: 'Billing and Payments'),
+      MenuItem(icon:FontAwesomeIcons.tasks, label: 'My Project Work'),
+     // MenuItem(icon: Icons.payment, label: 'Billing and Payments'),
       // MenuItem(icon: Icons.notifications, label: 'Notifications')
     ];
   }

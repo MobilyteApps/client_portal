@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
+import 'package:client_portal_app/src/views/BillingAndPaymentsView.dart';
 import 'package:client_portal_app/src/views/ContentView.dart';
 import 'package:client_portal_app/src/views/DocumentView.dart';
 import 'package:client_portal_app/src/views/TeamView.dart';
@@ -61,19 +62,19 @@ class MenuSecondary extends StatelessWidget {
       ),*/
       ListTile(
         title: Text(
-          'My Project Work',
+          'Billing and Payments',
           style: textStyle,
         ),
-        leading: FaIcon(FontAwesomeIcons.tasks),
+        leading: Icon(Icons.payment),
         onTap: (){
           if (width >= 1024) {
-            Navigator.of(context).pushNamed('/work-scope');
+            Navigator.of(context).pushNamed('/billing');
           } else {
             Navigator.push(
               context,
               SlideUpRoute(
                 settings: RouteSettings(),
-                page: PanelScaffold(title: 'My Project Work', body: WorkScopeView()),
+                page: PanelScaffold(title: 'Billing and Payments', body: BillingAndPaymentsView(layoutModel:layoutModel)),
               ),
             );
           }

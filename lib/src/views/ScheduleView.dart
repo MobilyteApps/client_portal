@@ -31,8 +31,7 @@ class _ScheduleViewState extends State<ScheduleView> {
 
     List<Widget> entries = [];
 
-    var reducer =
-        EventEntryReducer(payload: List<Map<String, dynamic>>.from(jsonBody));
+    var reducer = EventEntryReducer(payload: List<Map<String, dynamic>>.from(jsonBody));
 
     reducer.reduce();
 

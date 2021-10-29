@@ -165,7 +165,7 @@ class _RecentMessagesViewState extends State<RecentMessagesView> {
         EdgeInsets padding = EdgeInsets.only(top: 30, left: 15, right: 15);
 
         if (MediaQuery.of(context).size.width >= 1024) {
-          padding = padding.copyWith(left: 60, right: 60);
+          padding = padding.copyWith(left: 60, right: 60,bottom: 10);
         }
 
         return Container(

@@ -15,8 +15,8 @@ class ButtonBarButton extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       child: Container(
-        width: MediaQuery.of(context).size.width*0.175,
-        height: 52,
+        width: MediaQuery.of(context).size.width*0.16000,
+        height: 55,
         child: Column(
           children: <Widget>[
             Icon(

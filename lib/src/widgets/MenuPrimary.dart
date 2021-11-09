@@ -9,7 +9,7 @@ class MenuPrimary extends StatelessWidget {
 
   final TextStyle textStyle = TextStyle(
     color: Colors.white,
-    fontSize: 14,
+    fontSize: 16,
   );
 
   final void Function(String) onPressed;
@@ -23,14 +23,16 @@ class MenuPrimary extends StatelessWidget {
     items.forEach((item) {
       tiles.add(
         ListTile(
-          leading:item.label== "My Project Work"? FaIcon(item.icon,color: Colors.white,):Icon(
+          leading:item.label== "My Project Work"? FaIcon(item.icon,color: Colors.white,size: 22,):Icon(
             item.icon,
             color: Colors.white,
+            size: 25,
           ),
           title: Text(
             item.label,
             style: TextStyle(
               color: Colors.white,
+              fontSize:item.label== "My Project Work"? 15.36:16,
             ),
           ),
           onTap: () {

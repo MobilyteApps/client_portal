@@ -417,7 +417,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 0.0.20;
+				MARKETING_VERSION = 0.0.24;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mosbybuildingarts.clientportal;
 				PRODUCT_NAME = "Mosby Connect";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -553,7 +553,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 0.0.20;
+				MARKETING_VERSION = 0.0.24;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mosbybuildingarts.clientportal;
 				PRODUCT_NAME = "Mosby Connect";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -584,7 +584,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 0.0.20;
+				MARKETING_VERSION = 0.0.24;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mosbybuildingarts.clientportal;
 				PRODUCT_NAME = "Mosby Connect";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";

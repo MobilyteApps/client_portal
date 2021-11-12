@@ -78,7 +78,8 @@ class BillingInfoModel {
   }
 
   double get totalContractAmount {
-    return this.changeOrderAmount + this.originalContractAmount;
+    double totalAmount=this.changeOrderAmount + this.originalContractAmount;
+    return double.parse(totalAmount.toStringAsFixed(2));
   }
 
   double get remainingUnpaidAmount {
@@ -87,12 +88,12 @@ class BillingInfoModel {
 
   static money(double amount) {
     CurrencyTextInputFormatter _formatter= CurrencyTextInputFormatter(symbol: '\$' );
-    _formatter.format(amount.toString());
+    
     if (amount == 0.00) {
       return _formatter.format(amount.toString()) + '          -';
     }
 
-    return _formatter.format(amount.toString());
+    return _formatter.format(amount.toStringAsFixed(2));
   }
 
   bool get isFinanced {

@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:ui';
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/controllers/ResponsiveController.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/views/ContentView.dart';
+import 'package:client_portal_app/src/widgets/MyCustomScrollBehaviour.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
@@ -35,7 +37,9 @@ class WhattoexpectController extends ResponsiveController {
           if (MediaQuery.of(context).size.width >= 1024) {
             titlePadding = titlePadding.copyWith(left: 70, right: 60, top: 50);
           }
-          return ListView(
+          // ScrollBehavior can be set for a specific widget.
+          final ScrollController controller = ScrollController();
+          return ScrollConfiguration(behavior: MyCustomScrollBehaviour(), child: ListView(
             children: [
               Container(
                 child: Text(
@@ -48,7 +52,7 @@ class WhattoexpectController extends ResponsiveController {
                 html: snapshot.data,
               )
             ],
-          );
+          ));
         }
         return Container(
           child: Center(
@@ -62,3 +66,5 @@ class WhattoexpectController extends ResponsiveController {
     );
   }
 }
+
+

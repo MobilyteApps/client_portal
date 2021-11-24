@@ -70,6 +70,7 @@ class TeamView extends StatelessWidget {
           return Padding(
             child: ListView.builder(
               shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 var padding = EdgeInsets.all(15);
                 if (MediaQuery.of(context).size.width >= 1024) {

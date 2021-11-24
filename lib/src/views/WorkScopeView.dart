@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
+import 'package:client_portal_app/src/widgets/MyCustomScrollBehaviour.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
@@ -37,22 +38,23 @@ class WorkScopeView extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           EdgeInsets padding = EdgeInsets.only(top: 10, left: 15, right: 15);
           if (MediaQuery.of(context).size.width >= 1024) {
-            padding = padding.copyWith(left: 60, right: 60,bottom: 0,top: 40);
+            padding = padding.copyWith(left: 60, right: 60, bottom: 0, top: 40);
           }
-
-          return ListView(
-            children: [
-              Padding(
-                  padding: padding,
-                  child: heading(context)),
-              Container(
-                child: ContentView(
-                  html: snapshot.data,
-                ),
-                color: Colors.white,
-              ),
-            ],
-          );
+          ScrollController _scrollController = ScrollController();
+          return ScrollConfiguration(
+              behavior: MyCustomScrollBehaviour(),
+              child: ListView(
+                controller: _scrollController,
+                children: [
+                  Padding(padding: padding, child: heading(context)),
+                  Container(
+                    child: ContentView(
+                      html: snapshot.data,
+                    ),
+                    color: Colors.white,
+                  ),
+                ],
+              ));
         }
 
         if (snapshot.hasError) {

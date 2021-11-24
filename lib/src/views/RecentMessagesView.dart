@@ -9,6 +9,7 @@ import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/views/AllMessagesView.dart';
 import 'package:client_portal_app/src/views/NewMessageView.dart';
 import 'package:client_portal_app/src/widgets/ConversationCard.dart';
+import 'package:client_portal_app/src/widgets/MyCustomScrollBehaviour.dart';
 import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
 import 'package:flutter/material.dart';
 
@@ -165,23 +166,27 @@ class _RecentMessagesViewState extends State<RecentMessagesView> {
         EdgeInsets padding = EdgeInsets.only(top: 30, left: 15, right: 15);
 
         if (MediaQuery.of(context).size.width >= 1024) {
-          padding = padding.copyWith(left: 60, right: 60,bottom: 10);
+          padding = padding.copyWith(left: 60, right: 60, bottom: 10);
         }
+        ScrollController _scrollController = ScrollController();
 
-        return Container(
-          padding: padding,
-          child: Column(
-            children: [
-              heading(context),
-              Expanded(
-                child: ListView(
-                  shrinkWrap: true,
-                  children: _columns,
-                ),
+        return ScrollConfiguration(
+            behavior: MyCustomScrollBehaviour(),
+            child: Container(
+              padding: padding,
+              child: Column(
+                children: [
+                  heading(context),
+                  Expanded(
+                    child: ListView(
+                      controller: _scrollController,
+                      shrinkWrap: true,
+                      children: _columns,
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        );
+            ));
       },
     );
   }

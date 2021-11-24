@@ -3,6 +3,7 @@ import 'package:client_portal_app/src/controllers/NewMessageController.dart';
 import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
 import 'package:client_portal_app/src/views/AllMessagesView.dart';
 import 'package:client_portal_app/src/widgets/BackButtonHeading.dart';
+import 'package:client_portal_app/src/widgets/MyCustomScrollBehaviour.dart';
 import 'package:flutter/material.dart';
 import 'package:client_portal_app/src/controllers/ResponsiveController.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
@@ -50,10 +51,11 @@ class AllMessagesController extends ResponsiveController {
 
   @override
   Widget buildContent(LayoutModel layoutModel, BuildContext context) {
-    return Padding(
+    ScrollController _scrollController= ScrollController();
+    return ScrollConfiguration(behavior: MyCustomScrollBehaviour(), child:  Padding(
       padding: EdgeInsets.only(top: 50, left: 60, right: 60),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
+        controller: _scrollController,
         children: <Widget>[
           BackButtonHeading(),
           SizedBox(
@@ -70,6 +72,7 @@ class AllMessagesController extends ResponsiveController {
           ),
         ],
       ),
-    );
+    ));
+
   }
 }

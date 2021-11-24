@@ -6,6 +6,7 @@ import 'package:client_portal_app/src/models/ContentModel.dart';
 import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/views/PdfDataView.dart';
+import 'package:client_portal_app/src/widgets/MyCustomScrollBehaviour.dart';
 import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -47,9 +48,12 @@ class DocumentController extends ResponsiveController {
 
           if (MediaQuery.of(context).size.width >= 1024) {
             titlePadding = titlePadding.copyWith(left: 60, right: 60, top: 50);
+            padding= padding.copyWith(bottom: 60);
           }
-
-          return ListView(
+          //Scroll Behaviour for a specific widget
+          ScrollController _scrollController= ScrollController();
+          return ScrollConfiguration(behavior: MyCustomScrollBehaviour(), child: ListView(
+            controller: _scrollController,
             children: [
               Container(
                 child: Text(
@@ -61,6 +65,7 @@ class DocumentController extends ResponsiveController {
               Padding(
                 child: ListView.builder(
                   shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     var padding = EdgeInsets.all(15);
                     if (MediaQuery.of(context).size.width >= 1024) {
@@ -75,7 +80,6 @@ class DocumentController extends ResponsiveController {
                                     color: Colors.black.withOpacity(.12)))),
                         child: Row(
                           children: <Widget>[
-                            //  _avatar(context, snapshot.data[index]),//snapshot?.data[index]?.icon
                             IconButton(onPressed: null, icon: FaIcon(FontAwesomeIcons.file)),
                             SizedBox(
                               width: 10,
@@ -118,7 +122,7 @@ class DocumentController extends ResponsiveController {
                 padding: padding,
               )
             ],
-          );
+          ));
         }
 
         return Container(

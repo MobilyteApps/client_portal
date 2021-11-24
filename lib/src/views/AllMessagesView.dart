@@ -63,6 +63,7 @@ class _AllMessagesViewState extends State<AllMessagesView> {
           }).toList();
 
           return ListView(
+            physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             children: _cards,
           );

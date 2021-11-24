@@ -39,7 +39,7 @@ class _LayoutState extends State<Layout> {
   @override
   void initState() {
     super.initState();
-    _scaffoldKey = widget.model.scaffoldKey;
+    _scaffoldKey = widget.model.scaffoldKey as GlobalKey<ScaffoldState>;
     rightDrawerModel = RightDrawerModel();
     menuPrimary = MenuPrimary(
       items: widget.model.primaryMenuItems(),

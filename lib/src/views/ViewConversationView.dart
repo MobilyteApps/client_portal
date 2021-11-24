@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:client_portal_app/src/widgets/BackButtonHeading.dart';
+import 'package:client_portal_app/src/widgets/MyCustomScrollBehaviour.dart';
 import 'package:flutter/material.dart';
 
 import 'package:client_portal_app/src/Api.dart';
@@ -112,7 +114,7 @@ class _ViewConversationViewState extends State<ViewConversationView> {
 
         _replyTextController.clear();
       } catch (e) {
-        Scaffold.of(context)
+        ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(e.toString())));
       }
     }
@@ -134,68 +136,81 @@ class _ViewConversationViewState extends State<ViewConversationView> {
     if (MediaQuery.of(context).size.width >= 1024) {
       messageFieldPadding = null;
     }
-
-    return  SingleChildScrollView(child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(top: 35, left: 20, right: 20),
-          child: Text(
-            conversationModel.subject,
-            style: Theme.of(context).textTheme.headline6,
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 20, right: 20, top: 25, bottom: 10),
-          child: PersonCard(
-            person: personModel,
-          ),
-        ),
-     //   Expanded(
-      //    child: 
-          ListView(
-            physics:ScrollPhysics() ,
-            padding: EdgeInsets.only(left: 20, right: 20, top: 20),
-            shrinkWrap: true,
-            children: _cards(conversationModel.messages, userId),
-          ),
-      //  ),
-        
-        Container(
-          color: Color(0xFFEEEEEE),
-          child:
-          
-          Form(
-            key: _formKey,
-            child: TextFormField(
-              maxLines: null,
-              autofocus: true,
-              controller: _replyTextController,
-              validator: (value) {
-                if (value.length == 0) {
-                  return 'Please enter a message';
-                }
-                return null;
-              },
-              onFieldSubmitted: (value) {
-                _submitReply();
-              },
-              decoration: InputDecoration(
-                contentPadding: messageFieldPadding,
-                border: InputBorder.none,
-                filled: true,
-                labelText: 'Reply',
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: () async {
-                    _submitReply();
-                  },
+    ScrollController _scrollController = ScrollController();
+    return ScrollConfiguration(
+        behavior: MyCustomScrollBehaviour(),
+        child: SingleChildScrollView(
+            controller: _scrollController,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                //added back button for the action
+                Padding(
+                    padding: EdgeInsets.only(top: 35, left: 20, right: 20),
+                    child: BackButtonHeading()),
+                Padding(
+                  padding: EdgeInsets.only(top: 35, left: 20, right: 20),
+                  child: Text(
+                    conversationModel.subject,
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
                 ),
-              ),
-            ),
-          ),),
-       
-      ],
-    ));
+                Padding(
+                  padding:
+                      EdgeInsets.only(left: 20, right: 20, top: 25, bottom: 10),
+                  child: PersonCard(
+                    person: personModel,
+                  ),
+                ),
+                //   Expanded(
+                //    child:
+                ListView(
+                  physics: NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+                  shrinkWrap: true,
+                  children: _cards(conversationModel.messages, userId),
+                ),
+                //  ),
+                Padding(
+                    padding: EdgeInsets.fromLTRB(
+                      20,
+                      0,
+                      0,
+                      0,
+                    ),
+                    child: Container(
+                      color: Color(0xFFEEEEEE),
+                      child: Form(
+                        key: _formKey,
+                        child: TextFormField(
+                          maxLines: null,
+                          autofocus: true,
+                          controller: _replyTextController,
+                          validator: (value) {
+                            if (value.length == 0) {
+                              return 'Please enter a message';
+                            }
+                            return null;
+                          },
+                          onFieldSubmitted: (value) {
+                            _submitReply();
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: messageFieldPadding,
+                            border: InputBorder.none,
+                            filled: true,
+                            labelText: 'Reply',
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.send),
+                              onPressed: () async {
+                                _submitReply();
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    )),
+              ],
+            )));
   }
 }

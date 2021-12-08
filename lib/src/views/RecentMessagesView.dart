@@ -158,35 +158,34 @@ class _RecentMessagesViewState extends State<RecentMessagesView> {
           );
         }
 
-        List<Widget> _columns =
-            List<Widget>.from(conversationCards(snapshot.data));
-
-        _columns.add(button(context));
+        // List<Widget> _columns =
+        //     List<Widget>.from(conversationCards(snapshot.data));
+        //
+        // _columns.add(button(context));
 
         EdgeInsets padding = EdgeInsets.only(top: 30, left: 15, right: 15);
 
         if (MediaQuery.of(context).size.width >= 1024) {
           padding = padding.copyWith(left: 60, right: 60, bottom: 10);
         }
-        ScrollController _scrollController = ScrollController();
 
-        return ScrollConfiguration(
-            behavior: MyCustomScrollBehaviour(),
-            child: Container(
-              padding: padding,
-              child: Column(
-                children: [
-                  heading(context),
-                  Expanded(
-                    child: ListView(
-                      controller: _scrollController,
-                      shrinkWrap: true,
-                      children: _columns,
-                    ),
-                  ),
-                ],
-              ),
-            ));
+        return Container(
+          padding: padding,
+          child: Column(
+            children: [
+              heading(context),
+              ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (context, index){
+                    ConversationModel conversations= snapshot.data[index];
+                return ConversationCard(me: widget.layoutModel!=null? widget.layoutModel.identity.id.toString():"",conversation: conversations);
+
+              }),
+            ],
+          ),
+        );
       },
     );
   }

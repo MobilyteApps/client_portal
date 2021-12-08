@@ -26,7 +26,6 @@ class _ViewConversationViewState extends State<ViewConversationView> {
   var api = Api(baseUrl: Config.apiBaseUrl);
 
   ConversationModel conversationModel;
-
   EventSource eventSource;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -109,9 +108,7 @@ class _ViewConversationViewState extends State<ViewConversationView> {
         final Api api = Api(baseUrl: Config.apiBaseUrl);
         await api.replyToConversation(
             conversationModel.id, _replyTextController.value.text);
-
         refreshConversation();
-
         _replyTextController.clear();
       } catch (e) {
         ScaffoldMessenger.of(context)
@@ -129,7 +126,6 @@ class _ViewConversationViewState extends State<ViewConversationView> {
     }
 
     PersonModel personModel = conversationModel.identity(userId);
-
     var messageFieldPadding =
         EdgeInsets.only(top: 20, bottom: 50, left: 20, right: 20);
 

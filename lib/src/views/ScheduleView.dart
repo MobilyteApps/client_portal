@@ -141,17 +141,11 @@ class _ScheduleViewState extends State<ScheduleView> {
                         child: _header,
                         margin: EdgeInsets.only(bottom: 25),
                       ),
-                      Expanded(
-                        child: Scrollbar(
-                          controller: _scrollController,
-                          isAlwaysShown: true,
-                          child: ListView(
-                            padding: EdgeInsets.only(right: 15, bottom: 15),
-                            controller: _scrollController,
-                            shrinkWrap: true,
-                            children: _entries,
-                          ),
-                        ),
+                      ListView(
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.only(right: 15, bottom: 15),
+                        shrinkWrap: true,
+                        children: _entries,
                       ),
                     ],
                   ),

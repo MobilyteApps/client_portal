@@ -1,6 +1,7 @@
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/models/RightDrawerModel.dart';
 import 'package:client_portal_app/src/transitions/SlideUpRoute.dart';
+import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/views/BillingAndPaymentsView.dart';
 import 'package:client_portal_app/src/views/WorkScopeView.dart';
 import 'package:client_portal_app/src/widgets/ButtonBarButton.dart';
@@ -35,6 +36,7 @@ class _LayoutState extends State<Layout> {
   MenuSecondary secondaryMenu;
 
   MenuPrimary menuPrimary;
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -83,7 +85,7 @@ class _LayoutState extends State<Layout> {
         Navigator.pushNamed(context, '/messages');
         break;
       case 'My Project Work':
-          Navigator.pushNamed(context, '/work-scope');
+        Navigator.pushNamed(context, '/work-scope');
         break;
       case 'Billing and Payments':
         print('billing');
@@ -114,7 +116,6 @@ class _LayoutState extends State<Layout> {
       Text title = Text(item.label);
       buttons.add(
         ButtonBarButton(
-
           icon: icon.icon,
           label: title.data,
           onPressed: () {
@@ -288,46 +289,71 @@ class _LayoutState extends State<Layout> {
   }
 
   Widget landscape() {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      children: <Widget>[
-        ScopedModel(
-          child: Material(
-            child: leftSidebar(),
-          ),
-          model: widget.model.project,
-        ),
-        VerticalDivider(
-          width: 1,
-          color: Colors.black54,
-        ),
-        Expanded(
-          flex: 2,
-          child: Scaffold(
-            endDrawer: endDrawer(),
-            drawerScrimColor: Color.fromRGBO(50, 50, 50, 0.5),
-            backgroundColor: Colors.white,
-            appBar: PreferredSize(
-              child: desktopHeader(),
-              preferredSize: Size.fromHeight(130),
-            ),
-            body: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  constraints: BoxConstraints(maxWidth: 710),
-                  child: widget.content,
-                  width: 710,
-                ),
-                Expanded(
-                  child: backgroundColumn(),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
+    return LayoutBuilder(builder: (context, constraint) {
+      return ScrollConfiguration(
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            controller: _scrollController,
+            child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraint.maxHeight),
+                child: IntrinsicHeight(
+                    child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    ScopedModel(
+                      child: Material(
+                        child: leftSidebar(),
+                      ),
+                      model: widget.model.project,
+                    ),
+                    VerticalDivider(
+                      width: 1,
+                      color: Colors.black54,
+                    ),
+                    Flexible(
+                        child: Scaffold(
+                          endDrawer: endDrawer(),
+                          drawerScrimColor: Color.fromRGBO(50, 50, 50, 0.5),
+                          backgroundColor: Colors.white,
+                          appBar: PreferredSize(
+                            child: desktopHeader(),
+                            preferredSize: Size.fromHeight(130),
+                          ),
+                          body: Stack(
+                            fit: StackFit.expand,
+                            children: <Widget>[
+                              Padding(
+                                padding:  EdgeInsets.only(left: MediaQuery.of(context).size.width*.485),
+                                child: Container(
+                                  child: backgroundColumn(),
+                                ),
+                              ),
+                             ListView(children: [
+                               Padding(
+                                 padding: EdgeInsets.only(right: MediaQuery.of(context).size.width*.34),
+                                 child: Container(
+                                 constraints: BoxConstraints(maxWidth: 750),
+                                 child: widget.content,
+                                 width: 750,
+                             ),
+                               ),],),
+
+
+                              // Padding(
+                              //   padding: const EdgeInsets.only(left: 800),
+                              //   child: Flexible(
+                              //     child: backgroundColumn(),
+                              //   ),
+                              //),
+                            ],
+                          ),
+                        )),
+                  ],
+                ))),
+          ));
+    });
   }
 
   Widget backgroundColumn() {

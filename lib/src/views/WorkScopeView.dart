@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
-import 'package:client_portal_app/src/widgets/MyCustomScrollBehaviour.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
@@ -41,20 +40,17 @@ class WorkScopeView extends StatelessWidget {
             padding = padding.copyWith(left: 60, right: 60, bottom: 0, top: 40);
           }
           ScrollController _scrollController = ScrollController();
-          return ScrollConfiguration(
-              behavior: MyCustomScrollBehaviour(),
-              child: ListView(
-                controller: _scrollController,
-                children: [
-                  Padding(padding: padding, child: heading(context)),
-                  Container(
-                    child: ContentView(
-                      html: snapshot.data,
-                    ),
-                    color: Colors.white,
-                  ),
-                ],
-              ));
+          return Column(
+            children: [
+              Padding(padding: padding, child: heading(context)),
+              Container(
+                child: ContentView(
+                  html: snapshot.data,
+                ),
+                color: Colors.white,
+              ),
+            ],
+          );
         }
 
         if (snapshot.hasError) {

@@ -10,17 +10,16 @@ class TeamController extends ResponsiveController {
 
   @override
   Widget buildContent(LayoutModel layoutModel, BuildContext context) {
-    ScrollController _scrollController= ScrollController();
-    return ScrollConfiguration(behavior:  MyCustomScrollBehaviour(), child: Padding(
-      child: ListView(
-        controller: _scrollController,
+    return Padding(
+      child:
+      Column(
         children: <Widget>[
           Text('My Mosby Team', style: Theme.of(context).textTheme.headline6,),
           TeamView(),
         ],
       ),
       padding: EdgeInsets.only(top: 50, left: 60, right: 60),
-    ));
+    );
 
   }
 

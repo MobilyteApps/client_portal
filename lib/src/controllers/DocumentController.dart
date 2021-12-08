@@ -50,10 +50,7 @@ class DocumentController extends ResponsiveController {
             titlePadding = titlePadding.copyWith(left: 60, right: 60, top: 50);
             padding= padding.copyWith(bottom: 60);
           }
-          //Scroll Behaviour for a specific widget
-          ScrollController _scrollController= ScrollController();
-          return ScrollConfiguration(behavior: MyCustomScrollBehaviour(), child: ListView(
-            controller: _scrollController,
+          return Column(
             children: [
               Container(
                 child: Text(
@@ -63,7 +60,8 @@ class DocumentController extends ResponsiveController {
                 padding: titlePadding,
               ),
               Padding(
-                child: ListView.builder(
+                child:
+                ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
@@ -122,7 +120,7 @@ class DocumentController extends ResponsiveController {
                 padding: padding,
               )
             ],
-          ));
+          );
         }
 
         return Container(

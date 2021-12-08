@@ -35,7 +35,7 @@ class WorkScopeController extends ResponsiveController {
           if (MediaQuery.of(context).size.width >= 1024) {
             titlePadding = titlePadding.copyWith(left: 70, right: 60, top: 50);
           }
-          return ListView(
+          return Column(
             children: [
               Container(
                 child: Text(

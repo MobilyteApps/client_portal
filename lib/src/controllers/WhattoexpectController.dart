@@ -37,9 +37,7 @@ class WhattoexpectController extends ResponsiveController {
           if (MediaQuery.of(context).size.width >= 1024) {
             titlePadding = titlePadding.copyWith(left: 70, right: 60, top: 50);
           }
-          // ScrollBehavior can be set for a specific widget.
-          final ScrollController controller = ScrollController();
-          return ScrollConfiguration(behavior: MyCustomScrollBehaviour(), child: ListView(
+          return Column(
             children: [
               Container(
                 child: Text(
@@ -52,7 +50,7 @@ class WhattoexpectController extends ResponsiveController {
                 html: snapshot.data,
               )
             ],
-          ));
+          );
         }
         return Container(
           child: Center(

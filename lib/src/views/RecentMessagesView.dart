@@ -11,6 +11,7 @@ import 'package:client_portal_app/src/views/NewMessageView.dart';
 import 'package:client_portal_app/src/widgets/ConversationCard.dart';
 import 'package:client_portal_app/src/widgets/MyCustomScrollBehaviour.dart';
 import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 class RecentMessagesView extends StatefulWidget {
@@ -158,10 +159,10 @@ class _RecentMessagesViewState extends State<RecentMessagesView> {
           );
         }
 
-        // List<Widget> _columns =
-        //     List<Widget>.from(conversationCards(snapshot.data));
-        //
-        // _columns.add(button(context));
+        List<Widget> _columns =
+            List<Widget>.from(conversationCards(snapshot.data));
+
+        _columns.add(button(context));
 
         EdgeInsets padding = EdgeInsets.only(top: 30, left: 15, right: 15);
 
@@ -169,14 +170,15 @@ class _RecentMessagesViewState extends State<RecentMessagesView> {
           padding = padding.copyWith(left: 60, right: 60, bottom: 10);
         }
 
-        return Container(
+        return kIsWeb?Container(
           padding: padding,
           child: Column(
             children: [
               heading(context),
+
               ListView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics:NeverScrollableScrollPhysics(),
                   itemCount: snapshot.data.length,
                   itemBuilder: (context, index){
                     ConversationModel conversations= snapshot.data[index];
@@ -185,7 +187,20 @@ class _RecentMessagesViewState extends State<RecentMessagesView> {
               }),
             ],
           ),
-        );
+        ): Container(
+          padding: padding,
+          child: Column(
+            children: [
+              heading(context),
+              Expanded(
+                child: ListView(
+                  shrinkWrap: true,
+                  children: _columns,
+                ),
+              ),
+            ],
+          ),
+        );;
       },
     );
   }

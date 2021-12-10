@@ -80,6 +80,7 @@ class _NewMessageViewState extends State<NewMessageView> {
       child: Container(
         child: DropdownButtonFormField(
           decoration: InputDecoration(
+            hintMaxLines: 2,
             labelText: 'To',
             floatingLabelBehavior: FloatingLabelBehavior.always,
           ),
@@ -93,6 +94,7 @@ class _NewMessageViewState extends State<NewMessageView> {
           items: teamMembers.map(
             (person) {
               return DropdownMenuItem<String>(
+                alignment: Alignment.center,
                 value: person.title,
                 child: Container(
                   child: Row(
@@ -107,8 +109,8 @@ class _NewMessageViewState extends State<NewMessageView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text(person != null ? person.name : ''),
-                          Text(person != null ? person.title : ''),
+                          Text(person != null ? person.name : '',style: TextStyle(fontSize: 6),),
+                          Text(person != null ? person.title : '',style: TextStyle(fontSize: 6)),
                         ],
                       )
                     ],

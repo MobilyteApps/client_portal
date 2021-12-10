@@ -8,6 +8,7 @@ import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/widgets/EventEntry.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -141,11 +142,22 @@ class _ScheduleViewState extends State<ScheduleView> {
                         child: _header,
                         margin: EdgeInsets.only(bottom: 25),
                       ),
+                      kIsWeb?
                       ListView(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: NeverScrollableScrollPhysics() ,
                         padding: EdgeInsets.only(right: 15, bottom: 15),
                         shrinkWrap: true,
                         children: _entries,
+                      ):Expanded(
+                        child: Scrollbar(
+                          isAlwaysShown: true,
+                          child: ListView(
+                            padding: EdgeInsets.only(right: 15, bottom: 15),
+                            controller: _scrollController,
+                            shrinkWrap: true,
+                            children: _entries,
+                          ),
+                        ),
                       ),
                     ],
                   ),

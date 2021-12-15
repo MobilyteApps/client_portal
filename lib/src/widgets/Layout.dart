@@ -290,101 +290,104 @@ class _LayoutState extends State<Layout> {
 
   Widget landscape() {
     return LayoutBuilder(builder: (context, constraint) {
-      return ScrollConfiguration(
-          child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            controller: _scrollController,
-            child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraint.maxHeight),
-                child: IntrinsicHeight(
-                    child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    ScopedModel(
-                      child: Material(
-                        child: leftSidebar(),
+      return SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        controller: _scrollController,
+        child: ConstrainedBox(
+        constraints: BoxConstraints(minHeight: constraint.maxHeight),
+        child: IntrinsicHeight(
+            child: Row(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            ScopedModel(
+              child: Material(
+                child: leftSidebar(),
+              ),
+              model: widget.model.project,
+            ),
+            VerticalDivider(
+              width: 1,
+              color: Colors.black54,
+            ),
+            Expanded(
+                child: Scaffold(
+              endDrawer: endDrawer(),
+              drawerScrimColor: Color.fromRGBO(50, 50, 50, 0.5),
+              backgroundColor: Colors.white,
+              appBar: PreferredSize(
+                child: desktopHeader(),
+                preferredSize: Size.fromHeight(130),
+              ),
+              body: Stack(
+                fit: StackFit.expand,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * .455),
+                    child: Container(
+                        child: backgroundColumn()),
+
+                  ),
+                  ListView(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            right: MediaQuery.of(context).size.width *.36),
+                        child: Container(
+                          constraints: BoxConstraints(maxWidth: 750),
+                          child: widget.content,
+                          width: 745,
+                        ),
                       ),
-                      model: widget.model.project,
-                    ),
-                    VerticalDivider(
-                      width: 1,
-                      color: Colors.black54,
-                    ),
-                    Flexible(
-                        child: Scaffold(
-                          endDrawer: endDrawer(),
-                          drawerScrimColor: Color.fromRGBO(50, 50, 50, 0.5),
-                          backgroundColor: Colors.white,
-                          appBar: PreferredSize(
-                            child: desktopHeader(),
-                            preferredSize: Size.fromHeight(130),
-                          ),
-                          body: Stack(
-                            fit: StackFit.expand,
-                            children: <Widget>[
-                              Padding(
-                                padding:  EdgeInsets.only(left: MediaQuery.of(context).size.width*.485),
-                                child: Container(
-                                  child: backgroundColumn(),
-                                ),
-                              ),
-                             ListView(children: [
-                               Padding(
-                                 padding: EdgeInsets.only(right: MediaQuery.of(context).size.width*.34),
-                                 child: Container(
-                                 constraints: BoxConstraints(maxWidth: 750),
-                                 child: widget.content,
-                                 width: 750,
-                             ),
-                               ),],),
-
-
-                              // Padding(
-                              //   padding: const EdgeInsets.only(left: 800),
-                              //   child: Flexible(
-                              //     child: backgroundColumn(),
-                              //   ),
-                              //),
-                            ],
-                          ),
-                        )),
-                  ],
-                ))),
-          ));
+                    ],
+                  ),
+                ],
+              ),
+            )),
+          ],
+        ))),
+      );
     });
   }
 
   Widget backgroundColumn() {
     return Stack(
       fit: StackFit.expand,
+      clipBehavior:Clip.none ,
       alignment: Alignment.centerRight,
       children: <Widget>[
-        Opacity(
-          opacity: .99,
-          child: Image.asset(
-            'images/login-bg_compressed.jpg',
-            fit: BoxFit.cover,
-            colorBlendMode: BlendMode.dstATop,
+        Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: Opacity(
+            opacity: .99,
+            child: Image.asset(
+              'images/login-bg_compressed.jpg',
+              fit: BoxFit.cover,
+              colorBlendMode: BlendMode.modulate,
+              filterQuality: FilterQuality.high,
+            ),
           ),
         ),
-        Container(
-          height: double.infinity,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [
-              Colors.white,
-              Colors.white.withOpacity(.73),
-              Colors.white.withOpacity(0),
-            ], stops: [
-              0,
-              .48,
-              1
-            ]),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [
+                Colors.white,
+                Colors.white.withOpacity(.73),
+                Colors.white.withOpacity(0),
+              ], stops: [
+                0,
+                .48,
+                1
+              ]),
+            ),
           ),
         ),
-        Text(''),
+        Text('')
+
+
       ],
     );
   }

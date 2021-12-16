@@ -20,7 +20,6 @@ class ScheduleView extends StatefulWidget {
 }
 
 class _ScheduleViewState extends State<ScheduleView> {
-  ScrollController _scrollController = ScrollController();
 
   Future<http.Response> upNext() {
     Api api = Api(baseUrl: Config.apiBaseUrl);
@@ -79,7 +78,7 @@ class _ScheduleViewState extends State<ScheduleView> {
   Widget build(BuildContext context) {
     var _padding = EdgeInsets.only(top: 60, left: 60, right: 60);
     if (MediaQuery.of(context).size.width < 1024) {
-      _padding = EdgeInsets.only(top: 40, left: 30, right: 15);
+      _padding = EdgeInsets.only(top: 15, left: 15, right: 15);
     }
     return ScopedModelDescendant<LayoutModel>(
       builder: (context, widget, layoutModel) {
@@ -142,7 +141,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                         child: _header,
                         margin: EdgeInsets.only(bottom: 25),
                       ),
-                      kIsWeb?
+                      kIsWeb && MediaQuery.of(context).size.width >= 1024?
                       ListView(
                         physics: NeverScrollableScrollPhysics() ,
                         padding: EdgeInsets.only(right: 15, bottom: 15),
@@ -153,7 +152,6 @@ class _ScheduleViewState extends State<ScheduleView> {
                           isAlwaysShown: true,
                           child: ListView(
                             padding: EdgeInsets.only(right: 15, bottom: 15),
-                            controller: _scrollController,
                             shrinkWrap: true,
                             children: _entries,
                           ),

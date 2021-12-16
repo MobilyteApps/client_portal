@@ -5,6 +5,7 @@ import 'package:client_portal_app/src/models/ConversationModel.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/widgets/ConversationCard.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class AllMessagesView extends StatefulWidget {
@@ -62,10 +63,13 @@ class _AllMessagesViewState extends State<AllMessagesView> {
             );
           }).toList();
 
-          return ListView(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            children: _cards,
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 30),
+            child: ListView(
+              physics: kIsWeb && MediaQuery.of(context).size.width >= 1024?NeverScrollableScrollPhysics():AlwaysScrollableScrollPhysics(),
+              shrinkWrap: true,
+              children: _cards,
+            ),
           );
         },
         future: conversations(),

@@ -290,63 +290,66 @@ class _LayoutState extends State<Layout> {
 
   Widget landscape() {
     return LayoutBuilder(builder: (context, constraint) {
-      return SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        controller: _scrollController,
-        child: ConstrainedBox(
-        constraints: BoxConstraints(minHeight: constraint.maxHeight),
-        child: IntrinsicHeight(
-            child: Row(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            ScopedModel(
-              child: Material(
-                child: leftSidebar(),
+      return ScrollConfiguration(
+        behavior: null,
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          controller: _scrollController,
+          child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: constraint.maxHeight),
+          child: IntrinsicHeight(
+              child: Row(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              ScopedModel(
+                child: Material(
+                  child: leftSidebar(),
+                ),
+                model: widget.model.project,
               ),
-              model: widget.model.project,
-            ),
-            VerticalDivider(
-              width: 1,
-              color: Colors.black54,
-            ),
-            Expanded(
-                child: Scaffold(
-              endDrawer: endDrawer(),
-              drawerScrimColor: Color.fromRGBO(50, 50, 50, 0.5),
-              backgroundColor: Colors.white,
-              appBar: PreferredSize(
-                child: desktopHeader(),
-                preferredSize: Size.fromHeight(130),
+              VerticalDivider(
+                width: 1,
+                color: Colors.black54,
               ),
-              body: Stack(
-                fit: StackFit.expand,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * .455),
-                    child: Container(
-                        child: backgroundColumn()),
+              Expanded(
+                  child: Scaffold(
+                endDrawer: endDrawer(),
+                drawerScrimColor: Color.fromRGBO(50, 50, 50, 0.5),
+                backgroundColor: Colors.white,
+                appBar: PreferredSize(
+                  child: desktopHeader(),
+                  preferredSize: Size.fromHeight(130),
+                ),
+                body: Stack(
+                  fit: StackFit.expand,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * .455),
+                      child: Container(
+                          child: backgroundColumn()),
 
-                  ),
-                  ListView(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                            right: MediaQuery.of(context).size.width *.36),
-                        child: Container(
-                          constraints: BoxConstraints(maxWidth: 750),
-                          child: widget.content,
-                          width: 745,
+                    ),
+                    ListView(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                              right: MediaQuery.of(context).size.width *.36),
+                          child: Container(
+                            constraints: BoxConstraints(maxWidth: 750),
+                            child: widget.content,
+                            width: 745,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            )),
-          ],
-        ))),
+                      ],
+                    ),
+                  ],
+                ),
+              )),
+            ],
+          ))),
+        ),
       );
     });
   }

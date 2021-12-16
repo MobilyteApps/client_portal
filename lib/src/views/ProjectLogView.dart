@@ -23,11 +23,9 @@ class ProjectLogView extends StatelessWidget {
       left: 0,
       right: 0,
     );
-    final ScrollController _scrollController = ScrollController();
     return ScrollConfiguration(
         behavior: MyCustomScrollBehaviour(),
         child: ListView(
-          controller: _scrollController,
           padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
           scrollDirection: Axis.vertical,
           shrinkWrap: true,

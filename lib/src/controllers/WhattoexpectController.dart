@@ -35,9 +35,10 @@ class WhattoexpectController extends ResponsiveController {
         if (snapshot.connectionState == ConnectionState.done) {
           EdgeInsets titlePadding = EdgeInsets.only(top: 30, left: 30, right: 30);
           if (MediaQuery.of(context).size.width >= 1024) {
-            titlePadding = titlePadding.copyWith(left: 70, right: 60, top: 50);
+            titlePadding = titlePadding.copyWith(left: 60, right: 60, top: 20);
           }
           return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 child: Text(

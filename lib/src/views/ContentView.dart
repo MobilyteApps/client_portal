@@ -1,6 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html/style.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ContentView extends StatelessWidget {
@@ -9,7 +9,7 @@ class ContentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _padding = EdgeInsets.only(top: 10, left: 60, right: 30);
+    var _padding = EdgeInsets.only(top: 10, left: 60, right: 60);
     if (MediaQuery.of(context).size.width < 1024) {
       _padding = EdgeInsets.all(20);
     }
@@ -31,7 +31,7 @@ class ContentView extends StatelessWidget {
           launch(url);
         });
       },
-      style: {"div": Style(), "p": Style(), "ul":Style(textDecorationColor: Colors.white,backgroundColor: Colors.white)},
+      style: {"div": Style(), "p": Style(), "ul":Style(textDecorationColor: Colors.white,backgroundColor:kIsWeb?Colors.transparent: Colors.white)},
        onImageTap: (src, _, __, ___) {
         // Display the image in large form.
         //print(src);

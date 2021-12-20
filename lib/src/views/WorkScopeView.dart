@@ -36,9 +36,9 @@ class WorkScopeView extends StatelessWidget {
     return FutureBuilder(
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          EdgeInsets padding = EdgeInsets.only(top: 4, left: 15, right: 15);
+          EdgeInsets padding = EdgeInsets.only(top: 4, left: 10, right: 15);
           if (MediaQuery.of(context).size.width >= 1024) {
-            padding = padding.copyWith(left: 60, right: 60, bottom: 0, top: 40);
+            padding = padding.copyWith(left: 60, right: 60, bottom: 0, top: 20);
           }
           return kIsWeb &&MediaQuery.of(context).size.width >= 1024 ?Column(
             children: [

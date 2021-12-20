@@ -337,9 +337,9 @@ class _LayoutState extends State<Layout> {
                           padding: EdgeInsets.only(
                               right: MediaQuery.of(context).size.width *.36),
                           child: Container(
-                            constraints: BoxConstraints(maxWidth: 750),
+                            constraints: BoxConstraints(maxWidth: 740),
                             child: widget.content,
-                            width: 745,
+                            width: 740,
                           ),
                         ),
                       ],
@@ -357,7 +357,6 @@ class _LayoutState extends State<Layout> {
   Widget backgroundColumn() {
     return Stack(
       fit: StackFit.expand,
-      clipBehavior:Clip.none ,
       alignment: Alignment.centerRight,
       children: <Widget>[
         Padding(
@@ -367,8 +366,7 @@ class _LayoutState extends State<Layout> {
             child: Image.asset(
               'images/login-bg_compressed.jpg',
               fit: BoxFit.cover,
-              colorBlendMode: BlendMode.modulate,
-              filterQuality: FilterQuality.high,
+              colorBlendMode: BlendMode.dstATop,
             ),
           ),
         ),

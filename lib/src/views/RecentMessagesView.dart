@@ -164,10 +164,10 @@ class _RecentMessagesViewState extends State<RecentMessagesView> {
 
         _columns.add(button(context));
 
-        EdgeInsets padding = EdgeInsets.only(top: 15, left: 15, right: 15);
+        EdgeInsets padding = EdgeInsets.only(top: 20, left: 10, right: kIsWeb? 60:0);
 
         if (MediaQuery.of(context).size.width >= 1024) {
-          padding = padding.copyWith(left: 60, right: 60, bottom: 10);
+          padding = padding.copyWith(left: 60, right:60, bottom: 10);
         }
 
         return  kIsWeb && MediaQuery.of(context).size.width >= 1024 ? Container(

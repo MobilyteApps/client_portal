@@ -13,12 +13,13 @@ class TeamController extends ResponsiveController {
     return Padding(
       child:
       Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('My Mosby Team', style: Theme.of(context).textTheme.headline6,),
+          Text('My Mosby Team', style: Theme.of(context).textTheme.headline6,textAlign: TextAlign.left,),
           TeamView(),
         ],
       ),
-      padding: EdgeInsets.only(top: 50, left: 60, right: 60),
+      padding: EdgeInsets.only(top: 20, left: 60, right: 60),
     );
 
   }

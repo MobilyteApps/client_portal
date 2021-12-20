@@ -34,7 +34,7 @@ class BillingAndPaymentsView extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           return Container(
             padding: MediaQuery.of(context).size.width > 1024
-                ? EdgeInsets.only(left: 50, bottom: 15, right: 5)
+                ? EdgeInsets.only(left: 60, bottom: 15, right: 5)
                 : EdgeInsets.only(left: 20, right: 20, bottom: 15),
             child: BillingInfo(
               billingInfoModel: snapshot.data,
@@ -47,9 +47,9 @@ class BillingAndPaymentsView extends StatelessWidget {
   }
 
   Widget _nextPaymentCard(BuildContext context) {
-    EdgeInsets padding = EdgeInsets.only(top: 0, left: 45);
+    EdgeInsets padding = EdgeInsets.only(top: 0, left: 60);
     if (MediaQuery.of(context).size.width < 1024) {
-      padding = EdgeInsets.only(top: 15, left: 15, right: 15);
+      padding = EdgeInsets.only(top: 15, left: 10, right: 15);
     }
     return FutureBuilder(
       future: _billingInfoFuture(),
@@ -149,7 +149,7 @@ class BillingAndPaymentsView extends StatelessWidget {
     }
 
     return Padding(
-      padding: EdgeInsets.only(left: 50, bottom: 30, top: 50),
+      padding: EdgeInsets.only(left: 60, bottom: 30, top: 20),
       child: TextHeading(
         text: 'Billing and Payments',
       ),

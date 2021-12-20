@@ -8,8 +8,8 @@ import 'package:client_portal_app/src/views/CalendarView.dart';
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
 
-class CalendarController extends ResponsiveController {
-  CalendarController() : super(panelLayoutTitle: 'Calendar');
+class CalendarController1 extends ResponsiveController {
+  CalendarController1() : super(panelLayoutTitle: 'Calendar');
 
   Widget buildContent(LayoutModel layoutModel, BuildContext context) {
     return createView(layoutModel);

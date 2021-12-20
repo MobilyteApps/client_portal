@@ -76,7 +76,7 @@ class _ScheduleViewState extends State<ScheduleView> {
 
   @override
   Widget build(BuildContext context) {
-    var _padding = EdgeInsets.only(top: 60, left: 60, right: 60);
+    var _padding = EdgeInsets.only(top: 20, left: 60, right: 60);
     if (MediaQuery.of(context).size.width < 1024) {
       _padding = EdgeInsets.only(top: 15, left: 15, right: 15);
     }
@@ -144,7 +144,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                       kIsWeb && MediaQuery.of(context).size.width >= 1024?
                       ListView(
                         physics: NeverScrollableScrollPhysics() ,
-                        padding: EdgeInsets.only(right: 15, bottom: 15),
+                        padding: EdgeInsets.only(right: 0, bottom: 15),
                         shrinkWrap: true,
                         children: _entries,
                       ):Expanded(

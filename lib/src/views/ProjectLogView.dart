@@ -7,6 +7,7 @@ import 'package:client_portal_app/src/views/PhotoPageView.dart';
 import 'package:client_portal_app/src/widgets/MyCustomScrollBehaviour.dart';
 import 'package:client_portal_app/src/widgets/Note.dart';
 import 'package:client_portal_app/src/widgets/ProjectLogHeader.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import "package:flutter/material.dart";
 import 'package:scoped_model/scoped_model.dart';
@@ -20,13 +21,13 @@ class ProjectLogView extends StatelessWidget {
   Widget listViewContent(items) {
     EdgeInsets padding = EdgeInsets.only(
       top: 0,
-      left: 0,
+      left: 10,
       right: 0,
     );
     return ScrollConfiguration(
         behavior: MyCustomScrollBehaviour(),
         child: ListView(
-          padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+          padding: EdgeInsets.only(left: kIsWeb?60:0,right: kIsWeb?20:0),
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           children: items,
@@ -34,7 +35,7 @@ class ProjectLogView extends StatelessWidget {
   }
 
   double rightPadding(BuildContext context) {
-    double padding = MediaQuery.of(context).size.width - ((600 + 300));
+    double padding = MediaQuery.of(context).size.width - ((600 + 800));
     return padding > 0 ? padding : 0;
   }
 
@@ -162,9 +163,9 @@ class ProjectLogView extends StatelessWidget {
                 });
               }
               EdgeInsets padding = EdgeInsets.only(
-                top: 0,
+                top: 20,
                 left: 0,
-                right: 0,
+                right: 60,
               );
 
               if (mediaQueryWidth < 1024) {

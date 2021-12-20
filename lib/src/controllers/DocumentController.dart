@@ -43,14 +43,15 @@ class DocumentController extends ResponsiveController {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           EdgeInsets titlePadding =
-          EdgeInsets.only(top: 30, left: 30, right: 30);
-          var padding = EdgeInsets.all(20);
+          EdgeInsets.only(top: 30, left: 60, right: 30);
+          var padding = EdgeInsets.only(left: 30);
 
           if (MediaQuery.of(context).size.width >= 1024) {
-            titlePadding = titlePadding.copyWith(left: 60, right: 60, top: 50);
+            titlePadding = titlePadding.copyWith(left: 60, right: 60, top: 20);
             padding= padding.copyWith(bottom: 60);
           }
           return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 child: Text(
@@ -65,7 +66,7 @@ class DocumentController extends ResponsiveController {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    var padding = EdgeInsets.all(15);
+                    var padding = EdgeInsets.only(left: 60,right: 0,top: 15,bottom: 15);
                     if (MediaQuery.of(context).size.width >= 1024) {
                       padding = padding.copyWith(left: 30, right: 0);
                     }

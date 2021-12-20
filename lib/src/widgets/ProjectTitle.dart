@@ -14,18 +14,18 @@ class ProjectTitle extends StatelessWidget {
 
     return ScopedModelDescendant<ProjectModel>(
       builder: (context, widget, projectModel) {
-        if (this.beforeTitle != null) {
-          columns.add(
-            Text(
-              this.beforeTitle,
-              style: TextStyle(fontSize: 18, color: Colors.white),
-            ),
-          );
-        }
+        // if (this.beforeTitle != null) {
+        //   columns.add(
+        //     Text(
+        //       this.beforeTitle,
+        //       style: TextStyle(fontSize: 18, color: Colors.white),
+        //     ),
+        //   );
+        // }
 
         columns.add(
           Text(
-            projectModel.title != null ? projectModel?.title : '',
+            projectModel.title != null ? "My Mosby Project" : '',
             style: TextStyle(fontSize: 24, color: Colors.white),
           ),
         );

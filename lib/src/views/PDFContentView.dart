@@ -10,7 +10,7 @@ class PDFContentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _padding = EdgeInsets.only(top: 0, left: 0, right: 0);
+    var _padding = EdgeInsets.only(top: 0, left: 30, right: 30);
     if (MediaQuery.of(context).size.width < 1024) {
       _padding = EdgeInsets.all(0);
     }
@@ -24,7 +24,7 @@ class PDFContentView extends StatelessWidget {
   Widget _pdfView() {
     return SfPdfViewer.memory(
       this.pdfData ,
-      initialZoomLevel: 1.15,
+      initialZoomLevel: 1.20,
       enableDoubleTapZooming: true,
       canShowScrollStatus: true,
       canShowScrollHead: true,

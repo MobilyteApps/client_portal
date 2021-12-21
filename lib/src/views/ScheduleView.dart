@@ -78,7 +78,7 @@ class _ScheduleViewState extends State<ScheduleView> {
   Widget build(BuildContext context) {
     var _padding = EdgeInsets.only(top: 20, left: 60, right: 60);
     if (MediaQuery.of(context).size.width < 1024) {
-      _padding = EdgeInsets.only(top: 15, left: 15, right: 15);
+      _padding = EdgeInsets.only(top: 15, left: 15, right: 10);
     }
     return ScopedModelDescendant<LayoutModel>(
       builder: (context, widget, layoutModel) {
@@ -151,7 +151,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                         child: Scrollbar(
                           isAlwaysShown: true,
                           child: ListView(
-                            padding: EdgeInsets.only(right: 15, bottom: 15),
+                            padding: EdgeInsets.only(right: 10, bottom: 15),
                             shrinkWrap: true,
                             children: _entries,
                           ),

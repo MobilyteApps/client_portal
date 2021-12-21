@@ -47,17 +47,16 @@ class WorkScopeView extends StatelessWidget {
                 child: ContentView(
                   html: snapshot.data,
                 ),
-                color: Colors.white,
               ),
             ],
           ):ListView(
             children: [
               Padding(padding: padding, child: heading(context)),
               Container(
+                color: Colors.white,
                 child: ContentView(
                   html: snapshot.data,
                 ),
-                color: Colors.white,
               ),
             ],
           );;

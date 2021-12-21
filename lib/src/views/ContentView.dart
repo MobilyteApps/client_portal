@@ -15,11 +15,11 @@ class ContentView extends StatelessWidget {
     }
     return SingleChildScrollView(
       padding: _padding,
-      child: _html(),
+      child: _html(context),
     );
   }
 
-  Widget _html() {
+  Widget _html(context) {
     return Html(
       data: """
         ${html}
@@ -31,7 +31,7 @@ class ContentView extends StatelessWidget {
           launch(url);
         });
       },
-      style: {"div": Style(), "p": Style(), "ul":Style(textDecorationColor: Colors.white,backgroundColor:kIsWeb?Colors.transparent: Colors.white)},
+      style: {"div": Style(), "p": Style(), "ul":Style(textDecorationColor: Colors.white,backgroundColor:kIsWeb&& MediaQuery.of(context).size.width >= 1024?Colors.transparent: Colors.white)},
        onImageTap: (src, _, __, ___) {
         // Display the image in large form.
         //print(src);

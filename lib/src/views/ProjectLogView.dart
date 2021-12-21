@@ -18,7 +18,7 @@ class ProjectLogView extends StatelessWidget {
     return api.projectLog();
   }
 
-  Widget listViewContent(items) {
+  Widget listViewContent(items,context) {
     EdgeInsets padding = EdgeInsets.only(
       top: 0,
       left: 10,
@@ -27,7 +27,7 @@ class ProjectLogView extends StatelessWidget {
     return ScrollConfiguration(
         behavior: MyCustomScrollBehaviour(),
         child: ListView(
-          padding: EdgeInsets.only(left: kIsWeb?60:0,right: kIsWeb?20:0),
+          padding: EdgeInsets.only(left: kIsWeb && MediaQuery.of(context).size.width >= 1024?60:0,right: kIsWeb&& MediaQuery.of(context).size.width >= 1024?20:0),
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           children: items,
@@ -172,7 +172,7 @@ class ProjectLogView extends StatelessWidget {
                 padding = EdgeInsets.all(0);
               }
               return Container(
-                child: listViewContent(items),
+                child: listViewContent(items,context),
                 padding: padding,
               );
             }

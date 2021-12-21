@@ -4,6 +4,7 @@ import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/views/PDFContentView.dart';
 import 'package:client_portal_app/src/widgets/BackButtonHeading.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'ResponsiveController.dart';
 
@@ -33,8 +34,25 @@ class PDFContentController extends ResponsiveController {
           return  Container(
             color: Colors.white,
             child: Padding(
-              padding: EdgeInsets.only(left: 40, top: 30, right: 0),
-              child: ListView(
+              padding: EdgeInsets.only(left: 30, top: 30, right: 0),
+              child: kIsWeb?Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 30),
+                    child: BackButtonHeading(),
+                  ),
+                  Container(
+                    child: Text(
+                      this.title,
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                    padding: titlePadding,
+                  ),
+                  PDFContentView(pdfData: snapshot.data,)
+                ],
+              ):ListView(
+                physics: NeverScrollableScrollPhysics(),
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 25),

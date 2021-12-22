@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:client_portal_app/src/Brand.dart';
+import 'package:client_portal_app/src/controllers/LocalCalendarController.dart';
 import 'package:client_portal_app/src/models/EventEntryModel.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/models/RightDrawerModel.dart';
@@ -25,7 +26,7 @@ class CalendarView extends StatefulWidget {
 }
 
 class _CalendarViewState extends State<CalendarView> {
-  CalendarController _calendarController;
+  LocalCalendarController _calendarController;
   Map<DateTime, List<EventEntryModel>> _events;
   List<EventEntryModel> _eventListModels = [];
   DateTime _initialSelectedDay = DateTime.now();
@@ -42,7 +43,7 @@ class _CalendarViewState extends State<CalendarView> {
     } else {
       _currentDate = DateFormat('MMMM, y').format(_initialSelectedDay);
     }
-    _calendarController = CalendarController();
+    _calendarController = LocalCalendarController();
 
     _events = {};
     DateTime today = DateTime.now().copyWithHMS(0, 0, 0);
@@ -56,7 +57,7 @@ class _CalendarViewState extends State<CalendarView> {
 
   @override
   void dispose() {
-    _calendarController.dispose();
+    //_calendarController.;
     super.dispose();
   }
 
@@ -201,10 +202,10 @@ class _CalendarViewState extends State<CalendarView> {
 
   Widget _calendar() {
     return TableCalendar(
-      onDaySelected: (dateTime, events,h) {
+      onDaySelected: (dateTime, events) {
         setState(() {
-          if (events.length > 0) {
-            _eventListModels = events;
+          if (widget.events.length > 0) {
+            _eventListModels = events as List<EventEntryModel>;
           } else {
             _eventListModels = [];
           }
@@ -212,13 +213,13 @@ class _CalendarViewState extends State<CalendarView> {
           _currentDate = DateFormat('MMMM d, y').format(dateTime);
         });
       },
-      initialSelectedDay: _initialSelectedDay,
+      firstDay: _initialSelectedDay,
       headerVisible: false,
       availableCalendarFormats: {
         CalendarFormat.month: 'Month',
       },
-      builders: CalendarBuilders(
-        todayDayBuilder: (context, dateTime, event) {
+      calendarBuilders: CalendarBuilders(
+        todayBuilder: (context, dateTime, event) {
           return Container(
             margin: EdgeInsets.all(12),
             alignment: Alignment.center,
@@ -243,7 +244,7 @@ class _CalendarViewState extends State<CalendarView> {
             ),
           );
         },
-        selectedDayBuilder: (context, dateTime, list) {
+        selectedBuilder: (context, dateTime, list) {
           return Container(
             margin: EdgeInsets.all(12),
             alignment: Alignment.center,
@@ -256,12 +257,12 @@ class _CalendarViewState extends State<CalendarView> {
             ),
           );
         },
-        dowWeekdayBuilder: (context, s) {
+        dowBuilder: (context, s) {
           return Container(
             alignment: Alignment.center,
             padding: EdgeInsets.only(bottom: 15),
             child: Text(
-              s,
+              s.toString(),
               style: TextStyle(
                 color: Color.fromRGBO(0, 100, 168, .5),
               ),
@@ -270,7 +271,7 @@ class _CalendarViewState extends State<CalendarView> {
         },
       ),
       daysOfWeekStyle: DaysOfWeekStyle(
-        dowTextBuilder: (DateTime dateTime, locale) {
+        dowTextFormatter: (DateTime dateTime, locale) {
           return DateFormat.E(locale).format(dateTime).substring(0, 1);
         },
         weekdayStyle: TextStyle(
@@ -285,45 +286,45 @@ class _CalendarViewState extends State<CalendarView> {
       headerStyle: HeaderStyle(
         leftChevronMargin: EdgeInsets.all(0),
         leftChevronPadding: EdgeInsets.all(0),
-        centerHeaderTitle: MediaQuery.of(context).size.width >= 1024,
+        titleCentered: MediaQuery.of(context).size.width >= 1024,
         headerMargin: EdgeInsets.only(left: 15, right: 15, bottom: 15),
         titleTextStyle: TextStyle(
           fontSize: 18,
         ),
       ),
       calendarStyle: CalendarStyle(
-        outsideStyle: TextStyle(
+        outsideTextStyle: TextStyle(
           color: _backgroundColor() == Brand.primary
               ? Colors.white.withOpacity(.5)
               : Brand.primary.withOpacity(.5),
         ),
-        outsideWeekendStyle: TextStyle(
-          color: _backgroundColor() == Brand.primary
-              ? Colors.white.withOpacity(.5)
-              : Brand.primary.withOpacity(.5),
-        ),
-        markersPositionBottom: 0,
-        weekendStyle: TextStyle(
+        // outsideWeekendStyle: TextStyle(
+        //   color: _backgroundColor() == Brand.primary
+        //       ? Colors.white.withOpacity(.5)
+        //       : Brand.primary.withOpacity(.5),
+        // ),
+        markersAnchor: 0,
+        weekendTextStyle: TextStyle(
           color: _backgroundColor() == Brand.primary
               ? Colors.white
               : Brand.primary,
         ),
-        weekdayStyle: TextStyle(
-            color: _backgroundColor() == Brand.primary
-                ? Colors.white
-                : Brand.primary),
-        selectedColor: Color.fromRGBO(0, 0, 0, .2),
-        selectedStyle: TextStyle(
+        // weekdayStyle: TextStyle(
+        //     color: _backgroundColor() == Brand.primary
+        //         ? Colors.white
+        //         : Brand.primary),
+        selectedDecoration: Decoration., //Color.fromRGBO(0, 0, 0, .2),
+        selectedTextStyle: TextStyle(
           color: Colors.white,
         ),
-        todayColor: Colors.white,
-        todayStyle: TextStyle(
+        todayDecoration: BoxDecoration(color: Colors.white),
+        todayTextStyle: TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,
         ),
       ),
       rowHeight: 55,
-      events: _events,
+      eventLoader: _events,
       calendarController: _calendarController,
     );
   }

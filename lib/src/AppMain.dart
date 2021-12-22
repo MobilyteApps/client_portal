@@ -4,7 +4,7 @@ import 'package:client_portal_app/src/DefaultPageRoute.dart';
 import 'package:client_portal_app/src/RoutePath.dart';
 import 'package:client_portal_app/src/controllers/AllMessagesController.dart';
 import 'package:client_portal_app/src/controllers/BillingAndPaymentsController.dart';
-import 'package:client_portal_app/src/controllers/CalendarController.dart';
+import 'package:client_portal_app/src/controllers/LocalCalendarController.dart';
 import 'package:client_portal_app/src/controllers/ContentController.dart';
 import 'package:client_portal_app/src/controllers/DocumentController.dart';
 import 'package:client_portal_app/src/controllers/GhostLoginController.dart';
@@ -141,7 +141,7 @@ class _AppMainState extends State<AppMain> {
             case '/calendar':
               return DefaultPageRouteBuilder(
                 settings: settings,
-                builder: (context) => createController(CalendarController1()),
+                builder: (context) => createController(LocalCalendarController()),
               );
             case '/billing':
               return DefaultPageRouteBuilder(

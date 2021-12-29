@@ -225,7 +225,7 @@ class _CalendarViewState extends State<CalendarView> {
       onDaySelected: (dateTime, events) {
         setState(() {
           if (widget.events.length > 0) {
-            _eventListModels= widget.events.entries.first.value;
+            _eventListModels= widget.events.entries.map<EventEntryModel>((e) => _eventListModels[].add(e.value)).toList();
           } else {
             _eventListModels = [];
           }

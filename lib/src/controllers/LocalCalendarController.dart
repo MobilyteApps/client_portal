@@ -44,9 +44,12 @@ class LocalCalendarController extends ResponsiveController {
 
           reducer.reduce();  
 
-          return CalendarView(
-            events: reducer.asSplayTreeMap(),
-            layoutModel: layoutModel,
+          return Container(
+            height: 600,
+            child: CalendarView(
+              events: reducer.asSplayTreeMap(),
+              layoutModel: layoutModel,
+            ),
           );
         }
 

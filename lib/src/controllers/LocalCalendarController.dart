@@ -61,4 +61,5 @@ class LocalCalendarController extends ResponsiveController {
       },
     );
   }
+
 }

@@ -15,12 +15,7 @@ import 'package:intl/intl.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:client_portal_app/src/utils/DateExtension.dart';
-DateTime kToday = DateTime.now();
-final kFirstDay = DateTime(kToday.year, kToday.month - 100, kToday.day);
-final kLastDay = DateTime(kToday.year, kToday.month + 100, kToday.day);
-int getHashCode(DateTime key) {
-  return key.day * 1000000 + key.month * 10000 + key.year;
-}
+
 class CalendarView extends StatefulWidget {
   const CalendarView({Key key, this.layoutModel, this.events})
       : super(key: key);
@@ -31,14 +26,12 @@ class CalendarView extends StatefulWidget {
 }
 
 class _CalendarViewState extends State<CalendarView> {
-
-  PageController _calendarController;
+  TableCalendar _calendarController;
   Map<DateTime, List<EventEntryModel>> _events;
   List<EventEntryModel> _eventListModels = [];
   DateTime _initialSelectedDay = DateTime.now();
   String _currentMonth;
   String _currentDate;
-  DateTime _focused= DateTime.now();
   @override
   void initState() {
     super.initState();
@@ -50,7 +43,7 @@ class _CalendarViewState extends State<CalendarView> {
     } else {
       _currentDate = DateFormat('MMMM, y').format(_initialSelectedDay);
     }
-    //_calendarController = LocalCalendarController();
+    _calendarController = TableCalendar();
 
     _events = {};
     DateTime today = DateTime.now().copyWithHMS(0, 0, 0);
@@ -64,7 +57,7 @@ class _CalendarViewState extends State<CalendarView> {
 
   @override
   void dispose() {
-    //_calendarController.;
+    _calendarController.;
     super.dispose();
   }
 
@@ -148,30 +141,27 @@ class _CalendarViewState extends State<CalendarView> {
     );
   }
 
-   void _navigateCalendar(ScrollDirection direction) {
-    
-    _calendarController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeOut);
-  //   var lastDayOfPrevMonth = DateTime(_calendarController.selectedDay.year,
-  //       _calendarController.selectedDay.month, 0);
-  //
-  //   var firstDayOfNextMonth = DateTime(_calendarController.selectedDay.year,
-  //       _calendarController.selectedDay.month + 1, 1);
-  //
-  //   var newDate = direction == ScrollDirection.forward
-  //       ? firstDayOfNextMonth
-  //       : lastDayOfPrevMonth;
-  //
-  //   if (DateTime.now().isSameMonthAs(newDate)) {
-  //     newDate = DateTime.now();
-  //   }
-  //
-  //   _calendarController.setSelectedDay(
-  //     newDate,
-  //     isProgrammatic: true,
-  //     animate: true,
-  //     runCallback: true,
-  //   );
+  void _navigateCalendar(ScrollDirection direction) {
+    var lastDayOfPrevMonth = DateTime(_calendarController.selectedDay.year,
+        _calendarController.selectedDay.month, 0);
 
+    var firstDayOfNextMonth = DateTime(_calendarController.selectedDay.year,
+        _calendarController.selectedDay.month + 1, 1);
+
+    var newDate = direction == ScrollDirection.forward
+        ? firstDayOfNextMonth
+        : lastDayOfPrevMonth;
+
+    if (DateTime.now().isSameMonthAs(newDate)) {
+      newDate = DateTime.now();
+    }
+
+    _calendarController.setSelectedDay(
+      newDate,
+      isProgrammatic: true,
+      animate: true,
+      runCallback: true,
+    );
   }
 
   Widget _eventListHeader() {
@@ -187,12 +177,6 @@ class _CalendarViewState extends State<CalendarView> {
       ),
     );
   }
-
-  // final kEvents = LinkedHashMap<DateTime, List<EventEntryModel>>(
-  //   equals: isSameDay,
-  //   hashCode: getHashCode,
-  // )..addAll();
-
 
   Widget content() {
     return Column(
@@ -218,25 +202,22 @@ class _CalendarViewState extends State<CalendarView> {
 
   Widget _calendar() {
     return TableCalendar(
-      onPageChanged: (focusedDay){
-        _focused= focusedDay;
-      },
-      onCalendarCreated: (controller) => _calendarController = controller,
-      onDaySelected: (dateTime, events) {
+      onDaySelected: (dateTime, focusedDay) {
         setState(() {
           if (widget.events.length > 0) {
-            _eventListModels= widget.events.entries.map<EventEntryModel>((e) => _eventListModels[].add(e.value)).toList();
+            //_eventListModels
+            final _kEventSource = Map.fromIterable(List.generate(widget.events.length, (index) => index),
+                key: (item) => item,
+              value: (item) => _eventListModels.add(item)
+            );
           } else {
             _eventListModels = [];
           }
-          _currentMonth = DateFormat('MMMM yyyy').format(dateTime);
-          _currentDate = DateFormat('MMMM d, yyyy').format(dateTime);
+          _currentMonth = DateFormat('MMMM y').format(dateTime);
+          _currentDate = DateFormat('MMMM d, y').format(dateTime);
         });
       },
-      firstDay: _initialSelectedDay,
-      lastDay: kLastDay,
-      focusedDay: DateTime.now(),
-      calendarFormat: CalendarFormat.month,
+      focusedDay: _initialSelectedDay,
       headerVisible: false,
       availableCalendarFormats: {
         CalendarFormat.month: 'Month',
@@ -256,7 +237,7 @@ class _CalendarViewState extends State<CalendarView> {
           );
         },
         singleMarkerBuilder: (context, datetime, event) {
-          Color eventColor = Colors.black;
+          Color eventColor = Color(event.backgroundColor);
           return Container(
             width: 7,
             height: 7,
@@ -332,26 +313,23 @@ class _CalendarViewState extends State<CalendarView> {
               ? Colors.white
               : Brand.primary,
         ),
-        // weekdayStyle: TextStyle(
-        //     color: _backgroundColor() == Brand.primary
-        //         ? Colors.white
-        //         : Brand.primary),
-        selectedDecoration: BoxDecoration(color: Colors.red), //Color.fromRGBO(0, 0, 0, .2),
+        defaultTextStyle: TextStyle(
+            color: _backgroundColor() == Brand.primary
+                ? Colors.white
+                : Brand.primary),
+       // selectedColor: Color.fromRGBO(0, 0, 0, .2),
         selectedTextStyle: TextStyle(
           color: Colors.white,
         ),
-        todayDecoration: BoxDecoration(color: Colors.white),
+       // todayColor: Colors.white,
         todayTextStyle: TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,
         ),
       ),
       rowHeight: 55,
-      eventLoader: (day){
-        return widget.events.values.toList();
-
-      },
-    //  calendarController: _calendarController,
+      eventLoader: _events,
+     // calendarController: _calendarController,
     );
   }
 

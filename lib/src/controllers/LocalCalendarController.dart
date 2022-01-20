@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:client_portal_app/src/views/TestingCalendarView.dart';
 import 'package:flutter/material.dart';
 
 import 'package:client_portal_app/src/controllers/ResponsiveController.dart';
@@ -46,10 +47,17 @@ class LocalCalendarController extends ResponsiveController {
 
           return Container(
             height: 600,
-            child: CalendarView(
+            child:
+
+            TestingCalendarView(
+              layoutModel:layoutModel,
               events: reducer.asSplayTreeMap(),
-              layoutModel: layoutModel,
-            ),
+            )
+
+            // CalendarView(
+            //   events: reducer.asSplayTreeMap(),
+            //   layoutModel: layoutModel,
+            // ),
           );
         }
 

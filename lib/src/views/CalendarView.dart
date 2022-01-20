@@ -26,12 +26,13 @@ class CalendarView extends StatefulWidget {
 }
 
 class _CalendarViewState extends State<CalendarView> {
-  TableCalendar _calendarController;
+
   Map<DateTime, List<EventEntryModel>> _events;
-  List<EventEntryModel> _eventListModels = [];
+  List<EventEntryModel> _eventListModels = List<EventEntryModel>.empty(growable: true);
   DateTime _initialSelectedDay = DateTime.now();
   String _currentMonth;
   String _currentDate;
+  final DateTime focusedDay = DateTime.now();
   @override
   void initState() {
     super.initState();
@@ -43,7 +44,7 @@ class _CalendarViewState extends State<CalendarView> {
     } else {
       _currentDate = DateFormat('MMMM, y').format(_initialSelectedDay);
     }
-    _calendarController = TableCalendar();
+
 
     _events = {};
     DateTime today = DateTime.now().copyWithHMS(0, 0, 0);
@@ -57,7 +58,7 @@ class _CalendarViewState extends State<CalendarView> {
 
   @override
   void dispose() {
-    _calendarController.;
+   // _calendarController.;
     super.dispose();
   }
 
@@ -142,11 +143,11 @@ class _CalendarViewState extends State<CalendarView> {
   }
 
   void _navigateCalendar(ScrollDirection direction) {
-    var lastDayOfPrevMonth = DateTime(_calendarController.selectedDay.year,
-        _calendarController.selectedDay.month, 0);
+    var lastDayOfPrevMonth = DateTime(focusedDay.year,
+        focusedDay.month, 0);
 
-    var firstDayOfNextMonth = DateTime(_calendarController.selectedDay.year,
-        _calendarController.selectedDay.month + 1, 1);
+    var firstDayOfNextMonth = DateTime(focusedDay.year,
+        focusedDay.month + 1, 1);
 
     var newDate = direction == ScrollDirection.forward
         ? firstDayOfNextMonth
@@ -156,12 +157,12 @@ class _CalendarViewState extends State<CalendarView> {
       newDate = DateTime.now();
     }
 
-    _calendarController.setSelectedDay(
-      newDate,
-      isProgrammatic: true,
-      animate: true,
-      runCallback: true,
-    );
+    // focusedDay.setSelectedDay(
+    //   newDate,
+    //   isProgrammatic: true,
+    //   animate: true,
+    //   runCallback: true,
+    // );
   }
 
   Widget _eventListHeader() {
@@ -177,6 +178,8 @@ class _CalendarViewState extends State<CalendarView> {
       ),
     );
   }
+
+
 
   Widget content() {
     return Column(
@@ -202,14 +205,25 @@ class _CalendarViewState extends State<CalendarView> {
 
   Widget _calendar() {
     return TableCalendar(
+     firstDay: kFirstDay,
+      lastDay: kLastDay,
       onDaySelected: (dateTime, focusedDay) {
         setState(() {
+          focusedDay= focusedDay;
           if (widget.events.length > 0) {
-            //_eventListModels
-            final _kEventSource = Map.fromIterable(List.generate(widget.events.length, (index) => index),
-                key: (item) => item,
-              value: (item) => _eventListModels.add(item)
-            );
+            // //_eventListModels
+            // final _kEventSource = Map.fromIterable(List.generate(widget.events.length, (index) => index),
+            //     key: (item) => item,
+            //   value: (item) => _eventListModels.add(item)
+            // );
+            //
+             widget.events.forEach((key, value) {
+               print("key is $key");
+               print("value is $value");
+               _eventListModels..addAll(value);
+             });
+          // kEvents[dateTime];
+
           } else {
             _eventListModels = [];
           }
@@ -328,9 +342,18 @@ class _CalendarViewState extends State<CalendarView> {
         ),
       ),
       rowHeight: 55,
-      eventLoader: _events,
+      eventLoader: _getEventsForDay,
+      onPageChanged: (focusedDay) {
+        _initialSelectedDay = focusedDay;
+      },
      // calendarController: _calendarController,
     );
+  }
+
+
+  List<EventEntryModel> _getEventsForDay(DateTime day) {
+    // Implementation example
+    return _events[day] ?? [];
   }
 
   void _openEventDetailRight(EventEntryModel eventEntryModel) {
@@ -390,3 +413,25 @@ class _CalendarViewState extends State<CalendarView> {
     return content();
   }
 }
+
+final kEvents = LinkedHashMap<DateTime, List<String>>(
+  equals: isSameDay,
+  hashCode: getHashCode,
+)..addAll(_kEventSource);
+
+final _kEventSource = Map.fromIterable(List.generate(50, (index) => index),
+    key: (item) => DateTime.utc(kFirstDay.year, kFirstDay.month, item * 5),
+    value: (item) => List.generate(
+        item % 4 + 1, (index) => 'Event $item | ${index + 1}'))
+  ..addAll({
+    kToday: [
+      'Today\'s Event 1',
+      'Today\'s Event 2',
+    ],
+  });
+int getHashCode(DateTime key) {
+  return key.day * 1000000 + key.month * 10000 + key.year;
+}
+final kToday= DateTime.now();
+final kFirstDay = DateTime(kToday.year, kToday.month - 6, kToday.day);
+final kLastDay = DateTime(kToday.year+4, kToday.month + 3, kToday.day);

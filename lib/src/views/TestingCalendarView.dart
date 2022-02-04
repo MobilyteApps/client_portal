@@ -1,24 +1,25 @@
-
-
 import 'dart:collection';
 
 import 'package:client_portal_app/src/models/EventEntryModel.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/utils/UtilTest.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
-
 
 class TestingCalendarView extends StatefulWidget {
   final LayoutModel layoutModel;
   final SplayTreeMap<DateTime, List<EventEntryModel>> events;
-  const TestingCalendarView({Key key, this.layoutModel,  this.events })
+
+  const TestingCalendarView({Key key, this.layoutModel, this.events})
       : super(key: key);
+
   @override
   _TestingCalendarViewState createState() => _TestingCalendarViewState();
 }
 
 class _TestingCalendarViewState extends State<TestingCalendarView> {
+  double size;
   ValueNotifier<List<EventEntryModel>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
@@ -27,11 +28,13 @@ class _TestingCalendarViewState extends State<TestingCalendarView> {
   DateTime _selectedDay;
   DateTime _rangeStart;
   DateTime _rangeEnd;
+  String _currentDate;
   Map<DateTime, List<EventEntryModel>> _events;
+
   @override
   void initState() {
     super.initState();
-  _events= widget.events;
+    _events = widget.events;
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay));
   }
@@ -44,7 +47,8 @@ class _TestingCalendarViewState extends State<TestingCalendarView> {
 
   List<EventEntryModel> _getEventsForDay(DateTime day) {
     // Implementation example
-    return kEvents[day] ?? [];
+    var date = DateTime(day.year, day.month, day.day);
+    return _events[date] ?? [];
   }
 
   List<EventEntryModel> _getEventsForRange(DateTime start, DateTime end) {
@@ -70,7 +74,6 @@ class _TestingCalendarViewState extends State<TestingCalendarView> {
     }
   }
 
-
   void _onRangeSelected(DateTime start, DateTime end, DateTime focusedDay) {
     setState(() {
       _selectedDay = null;
@@ -92,65 +95,146 @@ class _TestingCalendarViewState extends State<TestingCalendarView> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.height;
+
     return Scaffold(
-      body: Column(
-        children: [
-          TableCalendar<EventEntryModel>(
-            firstDay: kFirstDay,
-            lastDay: kLastDay,
-            focusedDay: _focusedDay,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            rangeStartDay: _rangeStart,
-            rangeEndDay: _rangeEnd,
-            calendarFormat: _calendarFormat,
-            rangeSelectionMode: _rangeSelectionMode,
-            eventLoader: (day) => _events,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            calendarStyle: CalendarStyle(
-              // Use `CalendarStyle` to customize the UI
-              outsideDaysVisible: false,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              color: Color(0xffCECDCF),
+              height: screenHeight * 0.6,
+
+              /// Table calendar
+              child: TableCalendar<EventEntryModel>(
+                firstDay: kFirstDay,
+                lastDay: kLastDay,
+                focusedDay: _focusedDay,
+                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                rangeStartDay: _rangeStart,
+                rangeEndDay: _rangeEnd,
+                calendarFormat: _calendarFormat,
+                rangeSelectionMode: _rangeSelectionMode,
+                eventLoader: _getEventsForDay,
+                startingDayOfWeek: StartingDayOfWeek.sunday,
+
+                /// Use `CalendarStyle` to customize the UI
+                calendarStyle: CalendarStyle(
+                    defaultTextStyle:
+                        TextStyle(color: Colors.black, fontSize: 17),
+                    outsideTextStyle:
+                        TextStyle(color: Colors.blueGrey, fontSize: 17),
+                    weekendTextStyle: TextStyle(
+                      color: Color.fromRGBO(0, 100, 168, 1),
+                      fontSize: 17,
+                    ),
+                    selectedDecoration: BoxDecoration(
+                      color: Colors.grey,
+                      shape: BoxShape.circle,
+                    ),
+                    todayDecoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    markerMargin: EdgeInsets.only(top: 8, left: 2),
+                    markersAlignment: Alignment.bottomCenter,
+                    cellMargin: EdgeInsets.all(10),
+                    markerDecoration: BoxDecoration(
+                        color: Color.fromRGBO(0, 100, 168, 1),
+                        shape: BoxShape.circle),
+
+                    // Use `CalendarStyle` to customize the UI
+                    outsideDaysVisible: true,
+                    todayTextStyle: TextStyle(color: Colors.black),
+                    selectedTextStyle: TextStyle(color: Colors.black)),
+
+                ///Heading view
+                headerStyle: HeaderStyle(
+                    formatButtonVisible: false,
+                    decoration:
+                        BoxDecoration(color: Color.fromRGBO(0, 100, 168, 1)),
+                    titleTextStyle: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                    leftChevronIcon: Icon(
+                      Icons.chevron_left,
+                      color: Colors.black,
+                    ),
+                    rightChevronIcon: Icon(
+                      Icons.chevron_right,
+                      color: Colors.black,
+                    )),
+                daysOfWeekStyle: DaysOfWeekStyle(
+                    dowTextFormatter: (date, locale) =>
+                        DateFormat.E(locale).format(date)[0],
+                    weekdayStyle: TextStyle(
+                      color: Color.fromRGBO(0, 100, 168, 1),
+                    ),
+                    weekendStyle: TextStyle(
+                      color: Color.fromRGBO(0, 100, 168, 1),
+                    )),
+                daysOfWeekHeight: screenHeight * 0.08,
+                rowHeight: screenHeight * 0.07,
+                onDaySelected: _onDaySelected,
+                onRangeSelected: _onRangeSelected,
+                onPageChanged: (focusedDay) {
+                  _focusedDay = focusedDay;
+                },
+              ),
             ),
-            onDaySelected: _onDaySelected,
-            onRangeSelected: _onRangeSelected,
-            onFormatChanged: (format) {
-              if (_calendarFormat != format) {
-                setState(() {
-                  _calendarFormat = format;
-                });
-              }
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
-          ),
-          const SizedBox(height: 8.0),
-          Expanded(
-            child: ValueListenableBuilder<List<EventEntryModel>>(
+            SizedBox(height: screenHeight * 0.02),
+            // Selected Date
+            Padding(
+              padding: EdgeInsets.only(left: screenWidth * 0.03),
+              child: Text(
+                "${DateFormat.LLLL().format(_selectedDay) + DateFormat(' dd, yyyy').format(_selectedDay)}",
+                style: TextStyle(fontSize: 18, color: Colors.black),
+              ),
+            ),
+            SizedBox(height: screenHeight * 0.02),
+
+            /// List of Events
+
+            ValueListenableBuilder<List<EventEntryModel>>(
               valueListenable: _selectedEvents,
               builder: (context, value, _) {
                 return ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.vertical,
                   itemCount: value.length,
                   itemBuilder: (context, index) {
                     return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
+                      margin: EdgeInsets.symmetric(
+                        horizontal: screenWidth * 0.03,
                         vertical: 4.0,
                       ),
                       decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(12.0),
+                        color: Color.fromRGBO(0, 100, 168, 1),
+                        borderRadius: BorderRadius.circular(5.0),
                       ),
                       child: ListTile(
-                        onTap: () => print('${value[index]}'),
-                        title: Text('${value[index]}'),
+                        onTap: () => print('..................${value[index]}'),
+                        title: value[index].title.isNotEmpty
+                            ? Text(
+                                '${value[index].title}',
+                                style: TextStyle(color: Colors.white),
+                              )
+                            : Text(
+                                'There is no event on this date',
+                                style: TextStyle(color: Colors.black),
+                              ),
                       ),
                     );
                   },
                 );
               },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

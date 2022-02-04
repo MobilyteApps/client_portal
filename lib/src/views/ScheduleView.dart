@@ -1,15 +1,14 @@
 import 'dart:convert';
-import 'package:client_portal_app/src/Brand.dart';
-import 'package:client_portal_app/src/models/RightDrawerModel.dart';
-import 'package:client_portal_app/src/reducers/EventEntryReducer.dart';
-import 'package:client_portal_app/src/widgets/EventEntryDetailPanel.dart';
 
 import 'package:client_portal_app/src/Api.dart';
+import 'package:client_portal_app/src/Brand.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
+import 'package:client_portal_app/src/models/RightDrawerModel.dart';
+import 'package:client_portal_app/src/reducers/EventEntryReducer.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/widgets/EventEntry.dart';
+import 'package:client_portal_app/src/widgets/EventEntryDetailPanel.dart';
 import 'package:flutter/foundation.dart';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:scoped_model/scoped_model.dart';
@@ -20,7 +19,6 @@ class ScheduleView extends StatefulWidget {
 }
 
 class _ScheduleViewState extends State<ScheduleView> {
-
   Future<http.Response> upNext() {
     Api api = Api(baseUrl: Config.apiBaseUrl);
     return api.upNext();
@@ -31,7 +29,8 @@ class _ScheduleViewState extends State<ScheduleView> {
 
     List<Widget> entries = [];
 
-    var reducer = EventEntryReducer(payload: List<Map<String, dynamic>>.from(jsonBody));
+    var reducer =
+        EventEntryReducer(payload: List<Map<String, dynamic>>.from(jsonBody));
 
     reducer.reduce();
 
@@ -115,7 +114,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                   ),
                 );
                 if (_entries.isEmpty) {
-                  _viewFullSchedule = SizedBox();
+                  // _viewFullSchedule = SizedBox();
                 }
                 var _header = Row(
                   children: [
@@ -141,22 +140,31 @@ class _ScheduleViewState extends State<ScheduleView> {
                         child: _header,
                         margin: EdgeInsets.only(bottom: 25),
                       ),
-                      kIsWeb && MediaQuery.of(context).size.width >= 1024?
-                      ListView(
-                        physics: NeverScrollableScrollPhysics() ,
-                        padding: EdgeInsets.only(right: 0, bottom: 15),
-                        shrinkWrap: true,
-                        children: _entries,
-                      ):Expanded(
-                        child: Scrollbar(
-                          isAlwaysShown: true,
-                          child: ListView(
-                            padding: EdgeInsets.only(right: 10, bottom: 15),
-                            shrinkWrap: true,
-                            children: _entries,
-                          ),
-                        ),
-                      ),
+                      _entries.isEmpty
+                          ? Center(
+                              child: Text(
+                              "No events on upcoming dates",
+                              textAlign: TextAlign.center,
+                            ))
+                          : kIsWeb && MediaQuery.of(context).size.width >= 1024
+                              ? ListView(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  padding:
+                                      EdgeInsets.only(right: 0, bottom: 15),
+                                  shrinkWrap: true,
+                                  children: _entries,
+                                )
+                              : Expanded(
+                                  child: Scrollbar(
+                                    isAlwaysShown: true,
+                                    child: ListView(
+                                      padding: EdgeInsets.only(
+                                          right: 10, bottom: 15),
+                                      shrinkWrap: true,
+                                      children: _entries,
+                                    ),
+                                  ),
+                                ),
                     ],
                   ),
                 );

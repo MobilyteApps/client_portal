@@ -1,20 +1,18 @@
 import 'dart:async';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
-import 'package:sentry/sentry.dart';
-import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart' as pathProvider;
-
+import 'package:client_portal_app/src/AppMain.dart';
 import 'package:client_portal_app/src/models/ProjectModel.dart';
 import 'package:client_portal_app/src/models/UserModel.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
-import 'package:client_portal_app/src/AppMain.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart' as pathProvider;
+import 'package:sentry/sentry.dart';
 
-
-final SentryClient sentry = new SentryClient(SentryOptions(dsn: Config.sentryDSN));
+final SentryClient sentry =
+    new SentryClient(SentryOptions(dsn: Config.sentryDSN));
 
 bool get isInDebugMode {
   // Assume you're in production mode.
@@ -37,7 +35,7 @@ Future<void> _reportError(dynamic error, dynamic stackTrace) async {
   } else {
     // Send the Exception and Stacktrace to Sentry in Production mode.
     sentry.captureException(
-       error,
+      error,
       stackTrace: stackTrace,
     );
   }

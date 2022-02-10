@@ -1,13 +1,12 @@
 import 'dart:convert';
-import 'package:client_portal_app/src/views/TestingCalendarView.dart';
-import 'package:flutter/material.dart';
 
+import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/controllers/ResponsiveController.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/reducers/EventEntryReducer.dart';
-import 'package:client_portal_app/src/views/CalendarView.dart';
-import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
+import 'package:client_portal_app/src/views/TestingCalendarView.dart';
+import 'package:flutter/material.dart';
 
 class LocalCalendarController extends ResponsiveController {
   LocalCalendarController() : super(panelLayoutTitle: 'Calendar');
@@ -34,7 +33,7 @@ class LocalCalendarController extends ResponsiveController {
         if (snapshot.hasError) {
           return Center(
             child: Text(
-              snapshot?.error?.toString()??"",
+              snapshot?.error?.toString() ?? "",
             ),
           );
         }
@@ -43,22 +42,20 @@ class LocalCalendarController extends ResponsiveController {
           var reducer = EventEntryReducer(
               payload: List<Map<String, dynamic>>.from(snapshot.data));
 
-          reducer.reduce();  
+          reducer.reduce();
 
           return Container(
-            height: 600,
-            child:
+              height: MediaQuery.of(context).size.height,
+              child: TestingCalendarView(
+                layoutModel: layoutModel,
+                events: reducer.asSplayTreeMap(),
+              )
 
-            TestingCalendarView(
-              layoutModel:layoutModel,
-              events: reducer.asSplayTreeMap(),
-            )
-
-            // CalendarView(
-            //   events: reducer.asSplayTreeMap(),
-            //   layoutModel: layoutModel,
-            // ),
-          );
+              // CalendarView(
+              //   events: reducer.asSplayTreeMap(),
+              //   layoutModel: layoutModel,
+              // ),
+              );
         }
 
         return Center(
@@ -69,5 +66,4 @@ class LocalCalendarController extends ResponsiveController {
       },
     );
   }
-
 }

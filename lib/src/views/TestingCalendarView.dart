@@ -96,9 +96,10 @@ class _TestingCalendarViewState extends State<TestingCalendarView> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.height;
-
+    double screenWidth = MediaQuery.of(context).size.width;
+    // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
     return Scaffold(
+      // backgroundColor: Colors.pink,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,6 +107,7 @@ class _TestingCalendarViewState extends State<TestingCalendarView> {
             Container(
               color: Color(0xffCECDCF),
               height: screenHeight * 0.6,
+              width: screenWidth,
 
               /// Table calendar
               child: TableCalendar<EventEntryModel>(

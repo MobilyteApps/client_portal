@@ -1,10 +1,18 @@
 import 'dart:collection';
 
+import 'package:client_portal_app/src/Brand.dart';
 import 'package:client_portal_app/src/models/EventEntryModel.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
+import 'package:client_portal_app/src/models/RightDrawerModel.dart';
+import 'package:client_portal_app/src/transitions/SlideLeftRoute.dart';
+import 'package:client_portal_app/src/utils/DateExtension.dart';
 import 'package:client_portal_app/src/utils/UtilTest.dart';
+import 'package:client_portal_app/src/widgets/BackButtonHeading.dart';
+import 'package:client_portal_app/src/widgets/EventEntryDetailPanel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class TestingCalendarView extends StatefulWidget {
@@ -28,7 +36,8 @@ class _TestingCalendarViewState extends State<TestingCalendarView> {
   DateTime _selectedDay;
   DateTime _rangeStart;
   DateTime _rangeEnd;
-  String _currentDate;
+  String _currentMonth;
+  DateTime now = DateTime.now();
   Map<DateTime, List<EventEntryModel>> _events;
 
   @override
@@ -37,6 +46,7 @@ class _TestingCalendarViewState extends State<TestingCalendarView> {
     _events = widget.events;
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay));
+    _currentMonth = DateFormat('MMMM y').format(_focusedDay);
   }
 
   @override
@@ -93,20 +103,141 @@ class _TestingCalendarViewState extends State<TestingCalendarView> {
     }
   }
 
+  void _openEventDetailRight(EventEntryModel eventEntryModel) {
+    Scaffold.of(context).openEndDrawer();
+    ScopedModel.of<RightDrawerModel>(context).setContent(
+      EventEntryDetailPanel(
+        eventEntryModel: eventEntryModel,
+      ),
+    );
+  }
+
+  Color _backgroundColor() {
+    return MediaQuery.of(context).size.width < 1024
+        ? Colors.black12
+        : Colors.white;
+  }
+
+  Widget _backButton() {
+    if (MediaQuery.of(context).size.width < 1024) {
+      return SizedBox();
+    }
+    return Padding(
+      child: BackButtonHeading(),
+      padding: EdgeInsets.only(top: 25, left: 40, bottom: 25),
+    );
+  }
+
+  Widget _customHeader() {
+    var _padding = EdgeInsets.only(top: 5, bottom: 5, left: 20, right: 5);
+    if (MediaQuery.of(context).size.width >= 1024) {
+      _padding = EdgeInsets.only(top: 5, bottom: 15, left: 40, right: 25);
+    }
+    return Container(
+      padding: _padding,
+      color: MediaQuery.of(context).size.width >= 1024
+          ? Colors.white
+          : Colors.white,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: _currentMonth != null
+                ? Text(
+                    _currentMonth,
+                    style: TextStyle(
+                      color: _backgroundColor() == Colors.black12
+                          ? Colors.black.withOpacity(.54)
+                          : Colors.black.withOpacity(.54),
+                      fontSize: 18,
+                    ),
+                  )
+                : null,
+          ),
+          SizedBox(
+            child: IconButton(
+              highlightColor: Colors.transparent,
+              focusColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              hoverColor: Colors.transparent,
+              onPressed: () {
+                setState(() {
+                  _focusedDay =
+                      DateTime(_focusedDay.year, _focusedDay.month - 1);
+                  _currentMonth = DateFormat.yMMM().format(_focusedDay);
+                });
+              },
+              icon: Icon(
+                Icons.chevron_left,
+                color: _backgroundColor() == Brand.primary
+                    ? Colors.white
+                    : Colors.black.withOpacity(.54),
+              ),
+            ),
+          ),
+          SizedBox(
+            child: IconButton(
+              highlightColor: Colors.transparent,
+              focusColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              hoverColor: Colors.transparent,
+              onPressed: () {
+                setState(() {
+                  _focusedDay =
+                      DateTime(_focusedDay.year, _focusedDay.month + 1);
+                  _currentMonth = DateFormat.yMMM().format(_focusedDay);
+                });
+              },
+              icon: Icon(
+                Icons.chevron_right,
+                color: _backgroundColor() == Brand.primary
+                    ? Colors.white
+                    : Colors.black.withOpacity(.54),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  void _navigateCalendar(ScrollDirection direction) {
+    var lastDayOfPrevMonth = DateTime(_focusedDay.year, _focusedDay.month, 0);
+
+    var firstDayOfNextMonth =
+        DateTime(_focusedDay.year, _focusedDay.month + 1, 1);
+
+    var newDate = direction == ScrollDirection.forward
+        ? firstDayOfNextMonth
+        : lastDayOfPrevMonth;
+
+    if (DateTime.now().isSameMonthAs(newDate)) {
+      newDate = DateTime.now();
+    }
+
+    // focusedDay.setSelectedDay(
+    //   newDate,
+    //   isProgrammatic: true,
+    //   animate: true,
+    //   runCallback: true,
+    // );
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
     return Scaffold(
-      // backgroundColor: Colors.pink,
+      backgroundColor: Color(0xffFFFFFF),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            _backButton(),
+            _customHeader(),
             Container(
-              color: Color(0xffCECDCF),
-              height: screenHeight * 0.6,
+              color: Color(0xffFFFFFF),
+              height: screenHeight * 0.55,
               width: screenWidth,
 
               /// Table calendar
@@ -122,15 +253,37 @@ class _TestingCalendarViewState extends State<TestingCalendarView> {
                 eventLoader: _getEventsForDay,
                 startingDayOfWeek: StartingDayOfWeek.sunday,
 
+                calendarBuilders: CalendarBuilders(
+                  singleMarkerBuilder: (context, datetime, event) {
+                    Color eventColor = Color(event.backgroundColor);
+                    return Padding(
+                      padding:
+                          EdgeInsets.only(top: screenHeight * 0.006, left: 2),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width >= 1024
+                            ? 8
+                            : screenWidth * 0.02,
+                        height: MediaQuery.of(context).size.width >= 1024
+                            ? 8
+                            : screenHeight * 0.02,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: eventColor,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+
                 /// Use `CalendarStyle` to customize the UI
                 calendarStyle: CalendarStyle(
-                    defaultTextStyle:
-                        TextStyle(color: Colors.black, fontSize: 17),
-                    outsideTextStyle:
-                        TextStyle(color: Colors.blueGrey, fontSize: 17),
+                    defaultTextStyle: TextStyle(
+                        color: Colors.black, fontSize: screenHeight * 0.02),
+                    outsideTextStyle: TextStyle(
+                        color: Colors.blueGrey, fontSize: screenHeight * 0.02),
                     weekendTextStyle: TextStyle(
                       color: Color.fromRGBO(0, 100, 168, 1),
-                      fontSize: 17,
+                      fontSize: screenHeight * 0.02,
                     ),
                     selectedDecoration: BoxDecoration(
                       color: Colors.grey,
@@ -140,44 +293,30 @@ class _TestingCalendarViewState extends State<TestingCalendarView> {
                       color: Colors.white,
                       shape: BoxShape.circle,
                     ),
-                    markerMargin: EdgeInsets.only(top: 8, left: 2),
                     markersAlignment: Alignment.bottomCenter,
-                    cellMargin: EdgeInsets.all(10),
+                    cellMargin: EdgeInsets.symmetric(
+                        horizontal: screenWidth * 0.015,
+                        vertical: screenHeight * 0.015),
                     markerDecoration: BoxDecoration(
                         color: Color.fromRGBO(0, 100, 168, 1),
                         shape: BoxShape.circle),
-
-                    // Use `CalendarStyle` to customize the UI
                     outsideDaysVisible: true,
-                    todayTextStyle: TextStyle(color: Colors.black),
+                    todayTextStyle: TextStyle(
+                        color: Colors.black, fontSize: screenHeight * 0.02),
                     selectedTextStyle: TextStyle(color: Colors.black)),
 
                 ///Heading view
-                headerStyle: HeaderStyle(
-                    formatButtonVisible: false,
-                    decoration:
-                        BoxDecoration(color: Color.fromRGBO(0, 100, 168, 1)),
-                    titleTextStyle: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                    leftChevronIcon: Icon(
-                      Icons.chevron_left,
-                      color: Colors.black,
-                    ),
-                    rightChevronIcon: Icon(
-                      Icons.chevron_right,
-                      color: Colors.black,
-                    )),
+                headerVisible: false,
+
                 daysOfWeekStyle: DaysOfWeekStyle(
                     dowTextFormatter: (date, locale) =>
                         DateFormat.E(locale).format(date)[0],
                     weekdayStyle: TextStyle(
-                      color: Color.fromRGBO(0, 100, 168, 1),
-                    ),
+                        color: Color.fromRGBO(0, 100, 168, 1),
+                        fontSize: screenHeight * 0.02),
                     weekendStyle: TextStyle(
-                      color: Color.fromRGBO(0, 100, 168, 1),
-                    )),
+                        color: Color.fromRGBO(0, 100, 168, 1),
+                        fontSize: screenHeight * 0.02)),
                 daysOfWeekHeight: screenHeight * 0.08,
                 rowHeight: screenHeight * 0.07,
                 onDaySelected: _onDaySelected,
@@ -187,14 +326,21 @@ class _TestingCalendarViewState extends State<TestingCalendarView> {
                 },
               ),
             ),
-            SizedBox(height: screenHeight * 0.02),
+            //SizedBox(height: screenHeight * 0.1),
             // Selected Date
             Padding(
               padding: EdgeInsets.only(left: screenWidth * 0.03),
-              child: Text(
-                "${DateFormat.LLLL().format(_selectedDay) + DateFormat(' dd, yyyy').format(_selectedDay)}",
-                style: TextStyle(fontSize: 18, color: Colors.black),
-              ),
+              child: DateTime(now.year, now.month, now.day) ==
+                      DateTime(
+                          _focusedDay.year, _focusedDay.month, _focusedDay.day)
+                  ? Text(
+                      "Today",
+                      style: TextStyle(fontSize: 18, color: Colors.black),
+                    )
+                  : Text(
+                      "${DateFormat.LLLL().format(_selectedDay) + DateFormat(' dd, yyyy').format(_selectedDay)}",
+                      style: TextStyle(fontSize: 18, color: Colors.black),
+                    ),
             ),
             SizedBox(height: screenHeight * 0.02),
 
@@ -203,36 +349,63 @@ class _TestingCalendarViewState extends State<TestingCalendarView> {
             ValueListenableBuilder<List<EventEntryModel>>(
               valueListenable: _selectedEvents,
               builder: (context, value, _) {
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  itemCount: value.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: EdgeInsets.symmetric(
-                        horizontal: screenWidth * 0.03,
-                        vertical: 4.0,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Color.fromRGBO(0, 100, 168, 1),
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      child: ListTile(
-                        onTap: () => print('..................${value[index]}'),
-                        title: value[index].title.isNotEmpty
-                            ? Text(
-                                '${value[index].title}',
-                                style: TextStyle(color: Colors.white),
-                              )
-                            : Text(
-                                'There is no event on this date',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                      ),
-                    );
-                  },
-                );
+                return value.isEmpty
+                    ? Center(
+                        child: Text(
+                          'No activities scheduled for this day',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      )
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        itemCount: value.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.03,
+                              vertical: 5.0,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Color(value[index].backgroundColor),
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            child: ListTile(
+                                onTap: () {
+                                  if (MediaQuery.of(context).size.width >=
+                                      1024) {
+                                    _openEventDetailRight(value[index]);
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      SlideLeftRoute(
+                                        settings: RouteSettings(),
+                                        page: Material(
+                                          child: EventEntryDetailPanel(
+                                            eventEntryModel: value[index],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${value[index].title}',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    Text(
+                                      '${value[index].trailing}',
+                                      style: TextStyle(color: Colors.white),
+                                    )
+                                  ],
+                                )),
+                          );
+                        },
+                      );
               },
             ),
           ],

@@ -9,7 +9,7 @@ import 'package:client_portal_app/src/views/TestingCalendarView.dart';
 import 'package:flutter/material.dart';
 
 class LocalCalendarController extends ResponsiveController {
-  LocalCalendarController() : super(panelLayoutTitle: 'Calendar');
+  LocalCalendarController() : super(panelLayoutTitle: 'Back');
 
   Widget buildContent(LayoutModel layoutModel, BuildContext context) {
     return createView(layoutModel);
@@ -46,6 +46,7 @@ class LocalCalendarController extends ResponsiveController {
 
           return Container(
               height: MediaQuery.of(context).size.height,
+              color: Color(0xffFFFFFF),
               child: TestingCalendarView(
                 layoutModel: layoutModel,
                 events: reducer.asSplayTreeMap(),

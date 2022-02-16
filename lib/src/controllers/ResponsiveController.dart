@@ -1,4 +1,3 @@
-import 'package:client_portal_app/src/Brand.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/widgets/Layout.dart';
 import 'package:client_portal_app/src/widgets/PanelLayout.dart';
@@ -40,11 +39,17 @@ abstract class ResponsiveController extends StatelessWidget {
     return AppBar(
       actions: [],
       elevation: 0,
-      backgroundColor: Color(Brand.primaryDark),
-      centerTitle: panelCenterTitle??"",
-      title: Text(panelLayoutTitle??''),
+      backgroundColor: Color(0xffFFFFFF),
+      centerTitle: panelCenterTitle ?? "",
+      title: Text(
+        panelLayoutTitle ?? '',
+        style: TextStyle(color: Colors.black),
+      ),
       leading: IconButton(
-        icon: Icon(appBarIcon == null ? Icons.close : appBarIcon),
+        icon: Icon(
+          appBarIcon == null ? Icons.keyboard_backspace_rounded : appBarIcon,
+          color: Colors.black,
+        ),
         onPressed: () {
           Navigator.of(context).pop();
         },

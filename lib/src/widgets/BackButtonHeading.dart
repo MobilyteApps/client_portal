@@ -11,7 +11,9 @@ class BackButtonHeading extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Icon(Icons.arrow_back),
-          SizedBox(width: 10,),
+          SizedBox(
+            width: 10,
+          ),
           Text(
             'Back',
             style: Theme.of(context).textTheme.headline6,

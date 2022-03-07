@@ -20,22 +20,20 @@ class DocumentController extends ResponsiveController {
     bool panelCenterTitle = false,
     IconData appBarIcon,
   }) : super(
-      panelLayoutTitle: panelLayoutTitle,
-      panelCenterTitle: panelCenterTitle,
-      appBarIcon: appBarIcon);
-
+            panelLayoutTitle: panelLayoutTitle,
+            panelCenterTitle: panelCenterTitle,
+            appBarIcon: appBarIcon);
 
   final _api = Api(baseUrl: Config.apiBaseUrl);
 
   Future<List<ContentModel>> _getDocument() async {
     var response = await _api.document();
     List<Map<String, dynamic>> _json =
-    List<Map<String, dynamic>>.from(json.decode(response.body));
+        List<Map<String, dynamic>>.from(json.decode(response.body));
     return _json.map((e) {
       return ContentModel.fromMap(e);
     }).toList();
   }
-
 
   @override
   Widget buildContent(LayoutModel layoutModel, BuildContext context) {
@@ -43,12 +41,12 @@ class DocumentController extends ResponsiveController {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           EdgeInsets titlePadding =
-          EdgeInsets.only(top: 30, left: 60, right: 30);
+              EdgeInsets.only(top: 30, left: 60, right: 30);
           var padding = EdgeInsets.only(left: 30);
 
           if (MediaQuery.of(context).size.width >= 1024) {
             titlePadding = titlePadding.copyWith(left: 60, right: 60, top: 20);
-            padding= padding.copyWith(bottom: 60);
+            padding = padding.copyWith(bottom: 60);
           }
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,12 +59,12 @@ class DocumentController extends ResponsiveController {
                 padding: titlePadding,
               ),
               Padding(
-                child:
-                ListView.builder(
+                child: ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    var padding = EdgeInsets.only(left: 60,right: 0,top: 15,bottom: 15);
+                    var padding = EdgeInsets.only(
+                        left: 60, right: 0, top: 15, bottom: 15);
                     if (MediaQuery.of(context).size.width >= 1024) {
                       padding = padding.copyWith(left: 30, right: 0);
                     }
@@ -79,7 +77,9 @@ class DocumentController extends ResponsiveController {
                                     color: Colors.black.withOpacity(.12)))),
                         child: Row(
                           children: <Widget>[
-                            IconButton(onPressed: null, icon: FaIcon(FontAwesomeIcons.file)),
+                            IconButton(
+                                onPressed: null,
+                                icon: FaIcon(FontAwesomeIcons.file)),
                             SizedBox(
                               width: 10,
                             ),
@@ -98,9 +98,13 @@ class DocumentController extends ResponsiveController {
                           ],
                         ),
                       ),
-                      onTap: (){
+                      onTap: () {
                         if (MediaQuery.of(context).size.width >= 1024) {
-                          Navigator.pushNamed(context, '/pdf-content-view', arguments:[snapshot?.data[index]?.title.toString(),snapshot?.data[index]?.file.toString()]);
+                          Navigator.pushNamed(context, '/pdf-content-view',
+                              arguments: [
+                                snapshot?.data[index]?.title.toString(),
+                                snapshot?.data[index]?.file.toString()
+                              ]);
                         } else {
                           Navigator.push(
                             context,
@@ -108,7 +112,9 @@ class DocumentController extends ResponsiveController {
                               settings: RouteSettings(arguments: 'person'),
                               page: PanelScaffold(
                                 title: 'Document',
-                                body: PdfDataView(pdfName:snapshot?.data[index]?.file.toString()),
+                                body: PdfDataView(
+                                    pdfName:
+                                        snapshot?.data[index]?.file.toString()),
                               ),
                             ),
                           );

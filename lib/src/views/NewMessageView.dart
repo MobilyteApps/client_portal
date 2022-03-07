@@ -1,21 +1,37 @@
 import 'dart:convert';
 
 import 'package:client_portal_app/src/Api.dart';
+import 'package:client_portal_app/src/models/AvatarModel.dart';
 import 'package:client_portal_app/src/models/ConversationModel.dart';
 import 'package:client_portal_app/src/models/MessageModel.dart';
 import 'package:client_portal_app/src/models/PersonModel.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/widgets/PersonAvatar.dart';
+import 'package:client_portal_app/src/widgets/custom_drop_down.dart' as cdd;
 import 'package:flutter/material.dart';
 
 class NewMessageView extends StatefulWidget {
-  NewMessageView({Key key}) : super(key: key);
+  NewMessageView(
+      {Key key,
+      this.needDropDown = false,
+      this.isteammember,
+      this.personTitle,
+      this.personAvatar,
+      this.personName})
+      : super(key: key);
+  bool isteammember = false;
+
+  bool needDropDown = false;
+  PersonModel personAvatar;
+  String personName;
+  String personTitle;
 
   @override
   _NewMessageViewState createState() => _NewMessageViewState();
 }
 
 class _NewMessageViewState extends State<NewMessageView> {
+  bool isTeam = false;
   MessageModel message = MessageModel();
   PersonModel toPerson = PersonModel();
   String subject;
@@ -49,6 +65,7 @@ class _NewMessageViewState extends State<NewMessageView> {
   @override
   void initState() {
     super.initState();
+
     Future.delayed(Duration.zero, () {
       setState(() {
         PersonModel args = ModalRoute.of(context).settings == null
@@ -70,63 +87,149 @@ class _NewMessageViewState extends State<NewMessageView> {
   }
 
   Widget toField(value) {
+    // var margin =EdgeInsets.all(4);
+    var margin = EdgeInsets.only(left: 20, right: 20);
+    if (MediaQuery.of(context).size.width >= 1024) {
+      margin = EdgeInsets.all(0);
+    }
+    return Container(
+      margin: margin,
+      child: (toPerson.avatar == null || widget.needDropDown == true)
+          ? DropdownButtonFormField(
+              isDense: false,
+              itemHeight: 50,
+              decoration: InputDecoration(
+                hintMaxLines: 2,
+                labelText: 'To',
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+              ),
+              hint: Text('Select team member'),
+              items: teamMembers.map(
+                (person) {
+                  return DropdownMenuItem<String>(
+                    alignment: Alignment.center,
+                    value: person.title,
+                    child: Row(
+                      children: <Widget>[
+                        PersonAvatar(
+                          person: person,
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              person != null ? person.name : '',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            Text(person != null ? person.title : '',
+                                style: TextStyle(fontSize: 12)),
+                          ],
+                        )
+                      ],
+                    ),
+                  );
+                },
+              ).toList(),
+              onChanged: (value) {
+                setState(() {
+                  var to = teamMembers
+                      .firstWhere((element) => element.title == value);
+                  toPerson = to;
+                  value = value;
+                });
+              },
+            )
+          : Row(
+              children: [
+                PersonAvatar(
+                  person: toPerson,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      toPerson.name != null ? toPerson.name : '',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    Text(toPerson.title != null ? toPerson.title : '',
+                        style: TextStyle(fontSize: 12)),
+                  ],
+                )
+              ],
+            ),
+    );
+  }
+
+  Widget toFieldV1(value) {
+    // var margin =EdgeInsets.all(4);
     var margin = EdgeInsets.only(left: 20, right: 20);
     if (MediaQuery.of(context).size.width >= 1024) {
       margin = EdgeInsets.all(0);
     }
 
     return Container(
-      margin: margin,
-      child: Container(
-        child: DropdownButtonFormField(
-          decoration: InputDecoration(
-            hintMaxLines: 2,
-            labelText: 'To',
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-          ),
-          hint: Text('Select team member'),
-         // value: value,
-          // selectedItemBuilder: (context) {
-          //   return teamMembers.map<Widget>((person) {
-          //     return Text(person != null ? person.name : '');
-          //   }).toList();
-          // },
-          items: teamMembers.map(
-            (person) {
-              return DropdownMenuItem<String>(
-                alignment: Alignment.center,
-                value: person.title,
-                child: Container(
-                  child: Row(
-                    children: <Widget>[
-                      PersonAvatar(
-                        person: person,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(person != null ? person.name : '',style: TextStyle(fontSize: 6),),
-                          Text(person != null ? person.title : '',style: TextStyle(fontSize: 6)),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              );
-            },
-          ).toList(),
-          onChanged: (value) {
-            setState(() {
-              var to = teamMembers.firstWhere((element) => element.title == value);
-              toPerson = to;
-             value= value;
-            });
-          },
+      // margin: margin,
+      child: cdd.DropdownButtonFormField(
+        //itemHeight: ,
+
+        decoration: InputDecoration(
+          hintMaxLines: 2,
+          labelText: 'To',
+          floatingLabelBehavior: FloatingLabelBehavior.always,
         ),
+        // itemHeight: MediaQuery.of(context).size.height*0.06,
+        hint: Text('Select team member'),
+        // value: value,
+        // selectedItemBuilder: (context) {
+        //   return teamMembers.map<Widget>((person) {
+        //     return Text(person != null ? person.name : '');
+        //   }).toList();
+        // },
+        items: teamMembers.map(
+          (person) {
+            return cdd.DropdownMenuItem<String>(
+              value: person.title,
+              child: Text(
+                person != null ? person.name : '',
+                style: TextStyle(fontSize: 14),
+              ),
+              // Row(
+              //   children: <Widget>[
+              //     PersonAvatar(
+              //       person: person,
+              //     ),
+              //     SizedBox(
+              //       width: 10,
+              //     ),
+              //     Column(
+              //       crossAxisAlignment: CrossAxisAlignment.start,
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       children: <Widget>[
+              //         Text(person != null ? person.name : '',style: TextStyle(fontSize: 14),),
+              //         Text(person != null ? person.title : '',style: TextStyle(fontSize: 12)),
+              //       ],
+              //     )
+              //   ],
+              // ),
+            );
+          },
+        ).toList(),
+        onChanged: (value) {
+          setState(() {
+            var to =
+                teamMembers.firstWhere((element) => element.title == value);
+            toPerson = to;
+            value = value;
+          });
+        },
       ),
     );
   }
@@ -191,12 +294,8 @@ class _NewMessageViewState extends State<NewMessageView> {
         key: formKey,
         child: Column(
           children: <Widget>[
-            Column(
-              children: <Widget>[
-                toField(toPerson != null ? toPerson.id : null),
-                subjectField(),
-              ],
-            ),
+            toField(toPerson != null ? toPerson.id : null),
+            subjectField(),
             _spacer(),
             TextFormField(
               validator: (value) {

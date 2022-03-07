@@ -9,7 +9,6 @@ import 'package:client_portal_app/src/utils/Config.dart';
 import 'package:client_portal_app/src/views/AllMessagesView.dart';
 import 'package:client_portal_app/src/views/NewMessageView.dart';
 import 'package:client_portal_app/src/widgets/ConversationCard.dart';
-import 'package:client_portal_app/src/widgets/MyCustomScrollBehaviour.dart';
 import 'package:client_portal_app/src/widgets/PanelScaffold.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -54,7 +53,7 @@ class _RecentMessagesViewState extends State<RecentMessagesView> {
     }).toList();
   }
 
-  Widget heading(context) {
+  Widget heading(context, dropDown) {
     return Row(
       children: <Widget>[
         Expanded(
@@ -78,7 +77,9 @@ class _RecentMessagesViewState extends State<RecentMessagesView> {
                   settings: RouteSettings(),
                   page: PanelScaffold(
                     title: 'New Message',
-                    body: NewMessageView(),
+                    body: NewMessageView(
+                      needDropDown: dropDown,
+                    ),
                   ),
                 ),
               );
@@ -124,7 +125,9 @@ class _RecentMessagesViewState extends State<RecentMessagesView> {
                                 settings: RouteSettings(),
                                 page: PanelScaffold(
                                   title: 'New Message',
-                                  body: NewMessageView(),
+                                  body: NewMessageView(
+                                    needDropDown: true,
+                                  ),
                                 ),
                               ),
                             );
@@ -164,43 +167,53 @@ class _RecentMessagesViewState extends State<RecentMessagesView> {
 
         _columns.add(button(context));
 
-        EdgeInsets padding = EdgeInsets.only(top: 20, left: 10, right: kIsWeb && MediaQuery.of(context).size.width >= 1024? 60:0);
+        EdgeInsets padding = EdgeInsets.only(
+            top: 20,
+            left: 10,
+            right:
+                kIsWeb && MediaQuery.of(context).size.width >= 1024 ? 60 : 0);
 
         if (MediaQuery.of(context).size.width >= 1024) {
-          padding = padding.copyWith(left: 60, right:60, bottom: 10);
+          padding = padding.copyWith(left: 60, right: 60, bottom: 10);
         }
 
-        return  kIsWeb && MediaQuery.of(context).size.width >= 1024 ? Container(
-          padding: padding,
-          child: Column(
-            children: [
-              heading(context),
-
-              ListView.builder(
-                  shrinkWrap: true,
-                  physics:NeverScrollableScrollPhysics(),
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (context, index){
-                    ConversationModel conversations= snapshot.data[index];
-                return ConversationCard(me: widget.layoutModel!=null? widget.layoutModel.identity.id.toString():"",conversation: conversations);
-
-              }),
-            ],
-          ),
-        ): Container(
-          padding: padding,
-          child: Column(
-            children: [
-              heading(context),
-              Expanded(
-                child: ListView(
-                  shrinkWrap: true,
-                  children: _columns,
+        return kIsWeb && MediaQuery.of(context).size.width >= 1024
+            ? Container(
+                padding: padding,
+                child: Column(
+                  children: [
+                    heading(context, true),
+                    ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index) {
+                          ConversationModel conversations =
+                              snapshot.data[index];
+                          return ConversationCard(
+                              me: widget.layoutModel != null
+                                  ? widget.layoutModel.identity.id.toString()
+                                  : "",
+                              conversation: conversations);
+                        }),
+                  ],
                 ),
-              ),
-            ],
-          ),
-        );;
+              )
+            : Container(
+                padding: padding,
+                child: Column(
+                  children: [
+                    heading(context, true),
+                    Expanded(
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: _columns,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+        ;
       },
     );
   }

@@ -44,8 +44,9 @@ class TeamView extends StatelessWidget {
             SlideUpRoute(
               settings: RouteSettings(arguments: person),
               page: PanelScaffold(
+
                 title: 'New Message',
-                body: NewMessageView(),
+                body: NewMessageView( isteammember:true ,needDropDown: false ,personAvatar:person,personTitle:person.title,personName:person.name),
               ),
             ),
           );

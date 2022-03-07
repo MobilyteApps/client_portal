@@ -11,10 +11,11 @@ class PersonAvatar extends StatelessWidget {
     var _child;
     var _background;
 
-    if (person.avatar.url != null && person.avatar.url.length > 0) {
+
+    if (person.avatar?.url != null && person.avatar?.url?.length > 0) {
       _background = NetworkImage(person.avatar.url);
     } else {
-      _child = Text(person.avatar.text != null ? person.avatar.text : '');
+      _child = Text(person.avatar?.text != null ? person.avatar?.text : '');
     }
 // profile image
 

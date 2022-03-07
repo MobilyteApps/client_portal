@@ -14,17 +14,17 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DocumentView extends StatelessWidget {
-  const DocumentView({Key key}) : super(key: key);
-
   Future<List<ContentModel>> _getTeam() async {
     var api = Api(baseUrl: Config.apiBaseUrl);
     var response = await api.document();
     List<Map<String, dynamic>> _json =
-    List<Map<String, dynamic>>.from(json.decode(response.body));
+        List<Map<String, dynamic>>.from(json.decode(response.body));
     return _json.map((e) {
       return ContentModel.fromMap(e);
     }).toList();
   }
+
+  var fileDoc;
 
   Widget _messageButton(context, PersonModel person) {
     if (person.messagingOptIn == false) {
@@ -32,7 +32,10 @@ class DocumentView extends StatelessWidget {
     }
 
     return TextButton(
-      style: TextButton.styleFrom(backgroundColor:Brand.primary,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)) ),
+      style: TextButton.styleFrom(
+          backgroundColor: Brand.primary,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
       child: Text(
         'Message'.toUpperCase(),
         style: TextStyle(color: Colors.white),
@@ -63,8 +66,7 @@ class DocumentView extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           var padding = EdgeInsets.only(top: 20);
 
-          return
-            Padding(
+          return Padding(
             child: ListView.builder(
               shrinkWrap: true,
               itemBuilder: (context, index) {
@@ -81,8 +83,10 @@ class DocumentView extends StatelessWidget {
                                 color: Colors.black.withOpacity(.12)))),
                     child: Row(
                       children: <Widget>[
-                      //  _avatar(context, snapshot.data[index]),//snapshot?.data[index]?.icon
-                        IconButton(onPressed: null, icon: FaIcon(FontAwesomeIcons.file)),
+                        //  _avatar(context, snapshot.data[index]),//snapshot?.data[index]?.icon
+                        IconButton(
+                            onPressed: null,
+                            icon: FaIcon(FontAwesomeIcons.file)),
                         SizedBox(
                           width: 10,
                         ),
@@ -92,27 +96,48 @@ class DocumentView extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                             // Text(snapshot?.data[index]?.slug),
+                              // Text(snapshot?.data[index]?.slug),
                               Text(snapshot?.data[index]?.title),
                             ],
                           ),
                         ),
-                       // _messageButton(context, snapshot?.data[index]),
+                        // _messageButton(context, snapshot?.data[index]),
                       ],
                     ),
                   ),
-                  onTap: (){
+                  onTap: () async {
                     if (MediaQuery.of(context).size.width >= 1024) {
-                      Navigator.pushNamed(context, '/new-message', arguments: 'person');
+                      Navigator.pushNamed(context, '/new-message',
+                          arguments: 'person');
                     } else {
+                      //  var doc = await _getTeamV2(snapshot.data[index]?.file);
                       Navigator.push(
                         context,
                         SlideUpRoute(
                           settings: RouteSettings(arguments: 'person'),
-                          page: PanelScaffold(
-                            title: snapshot?.data[index]?.title.toString(),
-                            body: PdfDataView(pdfName:snapshot?.data[index]?.file.toString()),
+                          page: PdfDataView(
+                            pdfName: snapshot?.data[index]?.file.toString(),
+                            onGetFile: (doc) {
+                              // setState(() {
+                              //   fileDoc = doc;
+                              // });
+                            },
                           ),
+
+
+                          // PanelScaffold(
+                          //   needPrintAction: true,
+                          //   title: snapshot?.data[index]?.title.toString(),
+                          //   //document: fileDoc, //snapshot.data[index],
+                          //   body: PdfDataView(
+                          //     pdfName: snapshot?.data[index]?.file.toString(),
+                          //     onGetFile: (doc) {
+                          //       // setState(() {
+                          //       //   fileDoc = doc;
+                          //       // });
+                          //     },
+                          //   ),
+                          // ),
                         ),
                       );
                     }
@@ -139,5 +164,11 @@ class DocumentView extends StatelessWidget {
       },
       future: _getTeam(),
     );
+  }
+
+  dynamic _getTeamV2(doc) async {
+    var api = Api(baseUrl: Config.apiBaseUrl);
+    var response = await api.fileContent(doc);
+    return response.bodyBytes;
   }
 }

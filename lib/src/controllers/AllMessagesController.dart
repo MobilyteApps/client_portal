@@ -17,6 +17,7 @@ class AllMessagesController extends ResponsiveController {
 
   @override
   AppBar buildAppBar(BuildContext context) {
+    print('all message controller');
     var appBar = super.buildAppBar(context);
     appBar.actions.add(
       IconButton(

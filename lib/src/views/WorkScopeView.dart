@@ -40,7 +40,7 @@ class WorkScopeView extends StatelessWidget {
           if (MediaQuery.of(context).size.width >= 1024) {
             padding = padding.copyWith(left: 60, right: 60, bottom: 0, top: 20);
           }
-          return kIsWeb &&MediaQuery.of(context).size.width >= 1024 ?Column(
+          return kIsWeb && MediaQuery.of(context).size.width >= 1024 ?Column(
             children: [
               Padding(padding: padding, child: heading(context)),
               Container(

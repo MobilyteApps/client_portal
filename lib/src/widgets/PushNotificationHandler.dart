@@ -1,8 +1,8 @@
 import 'package:client_portal_app/src/Api.dart';
 import 'package:client_portal_app/src/models/LayoutModel.dart';
 import 'package:client_portal_app/src/utils/Config.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class PushNotificationHandler extends StatefulWidget {
@@ -156,6 +156,7 @@ class _PushNotificationHandlerState extends State<PushNotificationHandler> {
     //   ),
     // );
 
+    ///  error in this line
     model.firebaseMessaging.requestPermission(
         sound: true, badge: true, alert: true, provisional: true);
 
